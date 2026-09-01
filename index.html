@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>ЗМЕЯ — Архив игр и Доска почета</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            margin: 0; min-height: 100vh; background: #050510;
+            background-image: radial-gradient(circle at 20% 30%, rgba(76, 255, 128, 0.08) 0%, transparent 40%),
+                              radial-gradient(circle at 80% 70%, rgba(255, 50, 50, 0.08) 0%, transparent 40%);
+            font-family: 'Inter', sans-serif; color: #ffffff; overflow-x: hidden;
+        }
+        .lang-switcher {
+            position: fixed; top: 24px; right: 24px; z-index: 1000; display: flex;
+            background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px; padding: 4px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.15);
+        }
+        .lang-btn {
+            padding: 10px 18px; font-size: 13px; font-weight: 800; color: #8899aa;
+            background: transparent; border: none; border-radius: 10px; cursor: pointer;
+            transition: all 0.3s; letter-spacing: 1.5px; text-transform: uppercase;
+        }
+        .lang-btn.active {
+            color: #ffffff; background: linear-gradient(135deg, rgba(76, 255, 128, 0.25), rgba(34, 170, 255, 0.2));
+            box-shadow: 0 4px 16px rgba(76, 255, 128, 0.35), inset 0 1px 2px rgba(255,255,255,0.3); transform: translateY(-1px);
+        }
+        .lang-btn:hover:not(.active) { color: #ffffff; background: rgba(255, 255, 255, 0.05); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .main-header { text-align: center; margin-bottom: 50px; margin-top: 30px; }
+        .main-title {
+            font-size: clamp(48px, 10vw, 80px); font-weight: 900;
+            background: linear-gradient(135deg, #ff3333 0%, #ff8800 50%, #ffdd00 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 60px rgba(255, 50, 50, 0.4); letter-spacing: 4px; margin-bottom: 10px;
+            animation: titlePulse 4s ease-in-out infinite; display: flex; align-items: center; justify-content: center; gap: 0.15em;
+        }
+        .title-icon { height: 0.85em; width: auto; vertical-align: middle; filter: drop-shadow(0 0 15px rgba(76, 255, 128, 0.6)); }
+        @keyframes titlePulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.2); } }
+        .main-subtitle { font-size: 18px; color: #aaccbb; letter-spacing: 2px; text-transform: uppercase; }
+        .tabs { display: flex; justify-content: center; gap: 16px; margin-bottom: 30px; flex-wrap: wrap; }
+        .tab-btn {
+            padding: 16px 36px; font-size: 15px; font-weight: 800; color: #8899aa;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px;
+            cursor: pointer; transition: all 0.4s; text-transform: uppercase; letter-spacing: 1.5px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.12);
+        }
+        .tab-btn.active {
+            color: #ffffff; background: linear-gradient(135deg, rgba(76, 255, 128, 0.2), rgba(34, 170, 255, 0.15));
+            border-color: rgba(76, 255, 128, 0.5); transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(76, 255, 128, 0.3), inset 0 1px 2px rgba(255,255,255,0.3);
+        }
+        .tab-btn:hover:not(.active) { background: rgba(255, 255, 255, 0.08); color: #ffffff; transform: translateY(-2px); }
+        .section { display: none; animation: fadeIn 0.4s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+        .game-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px;
+            padding: 28px; transition: all 0.4s; position: relative; overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3); display: flex; flex-direction: column;
+        }
+        .game-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #4cff80, #2288ff, #ff4cff); opacity: 0.7; }
+        .game-card:hover { transform: translateY(-8px); border-color: rgba(76, 255, 128, 0.4); box-shadow: 0 20px 60px rgba(76, 255, 128, 0.15); }
+        .game-icon { font-size: 52px; margin-bottom: 16px; }
+        .game-title { font-size: 22px; font-weight: 800; margin-bottom: 10px; color: #ffffff; }
+        .game-desc { font-size: 14px; color: #8899aa; line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
+        .play-btn {
+            display: block; width: 100%; padding: 16px; text-align: center;
+            background: linear-gradient(135deg, #4cff80, #22aa55); color: #000; font-weight: 800;
+            text-decoration: none; border-radius: 12px; transition: all 0.3s; text-transform: uppercase;
+            box-shadow: 0 6px 20px rgba(76, 255, 128, 0.3); margin-top: auto;
+        }
+        .play-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 30px rgba(76, 255, 128, 0.5); }
+
+        /* МОДАЛЬНОЕ ОКНО С ЗАЩИТОЙ */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;
+        }
+        .modal-overlay.show { display: flex; opacity: 1; }
+        .modal-content {
+            background: linear-gradient(135deg, rgba(20, 20, 40, 0.95), rgba(10, 10, 20, 0.98));
+            border: 1px solid rgba(76, 255, 128, 0.3); border-radius: 24px; padding: 32px;
+            width: 90%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .modal-overlay.show .modal-content { transform: scale(1); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .modal-title { font-size: 22px; font-weight: 800; color: #4cff80; }
+        .modal-close { background: none; border: none; color: #8899aa; font-size: 28px; cursor: pointer; transition: color 0.2s; }
+        .modal-close:hover { color: #ff4444; }
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-size: 13px; color: #aaccbb; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .form-input {
+            width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
+            color: #ffffff; font-size: 16px; font-family: 'Inter', sans-serif; transition: all 0.3s; outline: none;
+        }
+        .form-input:focus { border-color: #4cff80; box-shadow: 0 0 0 3px rgba(76, 255, 128, 0.15); }
+        .form-input:disabled { background: rgba(76, 255, 128, 0.05); border-color: rgba(76, 255, 128, 0.3); color: #4cff80; cursor: not-allowed; }
+        
+        .verified-badge {
+            display: none; align-items: center; gap: 6px; margin-top: 8px;
+            font-size: 13px; color: #4cff80; font-weight: 600;
+        }
+        .verified-badge.show { display: flex; }
+        
+        .reward-hint {
+            font-size: 12px; color: #8899aa; margin-top: 6px; line-height: 1.4;
+            background: rgba(255, 255, 255, 0.03); padding: 10px; border-radius: 8px; border-left: 3px solid #4cff80;
+        }
+        .submit-btn {
+            width: 100%; padding: 16px; margin-top: 10px;
+            background: linear-gradient(135deg, #4cff80, #22aa55); color: #000;
+            font-weight: 800; font-size: 16px; border: none; border-radius: 12px;
+            cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(76, 255, 128, 0.3);
+        }
+        .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(76, 255, 128, 0.5); }
+        .submit-btn:disabled { background: #333; color: #666; cursor: not-allowed; box-shadow: none; }
+
+        /* ТАБЛИЦА */
+        .leaderboard-container {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
+            backdrop-filter: blur(20px); border: 1px solid rgba(255, 100, 100, 0.2);
+            border-radius: 24px; padding: 24px; overflow-x: auto;
+        }
+        .lb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        .lb-title { font-size: 24px; font-weight: 800; color: #ff8888; display: flex; align-items: center; gap: 10px; }
+        .lb-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .add-result-btn {
+            padding: 12px 22px; background: linear-gradient(135deg, rgba(76, 255, 128, 0.2), rgba(34, 170, 255, 0.15));
+            border: 1px solid rgba(76, 255, 128, 0.4); color: #4cff80; border-radius: 12px;
+            cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase;
+        }
+        .add-result-btn:hover { background: linear-gradient(135deg, rgba(76, 255, 128, 0.3), rgba(34, 170, 255, 0.25)); transform: translateY(-2px); }
+        .clear-btn {
+            padding: 12px 22px; background: linear-gradient(135deg, rgba(255, 50, 50, 0.15), rgba(255, 50, 50, 0.05));
+            border: 1px solid rgba(255, 50, 50, 0.3); color: #ff6666; border-radius: 12px;
+            cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase;
+        }
+        .clear-btn:hover { background: linear-gradient(135deg, rgba(255, 50, 50, 0.25), rgba(255, 50, 50, 0.1)); transform: translateY(-2px); }
+        table { width: 100%; border-collapse: collapse; min-width: 500px; }
+        th { text-align: left; padding: 16px; color: #8899aa; font-size: 13px; text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        td { padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 16px; }
+        tr:first-child td { color: #ffdd88; font-weight: 800; font-size: 18px; background: rgba(255, 221, 136, 0.03); }
+        .rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-weight: 800; font-size: 14px; }
+        .rank-1 { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
+        .rank-2 { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #000; }
+        .rank-3 { background: linear-gradient(135deg, #cd7f32, #a0522d); color: #fff; }
+        .rank-other { background: rgba(255, 255, 255, 0.1); color: #fff; }
+        .game-tag { display: inline-block; padding: 4px 10px; background: rgba(76, 255, 128, 0.1); border: 1px solid rgba(76, 255, 128, 0.3); border-radius: 6px; font-size: 12px; color: #4cff80; font-weight: 600; }
+        .score-cell { text-align: right; font-weight: 800; color: #ff6666; font-size: 18px; }
+        .empty-state { text-align: center; padding: 40px; color: #667788; font-size: 16px; }
+
+        .support-footer {
+            background: linear-gradient(135deg, rgba(76, 255, 128, 0.05), rgba(34, 136, 255, 0.05));
+            border: 1px solid rgba(76, 255, 128, 0.15); border-radius: 24px; padding: 28px 24px; margin-top: 60px;
+            backdrop-filter: blur(10px); text-align: center;
+        }
+        .support-line-1 { font-size: 15px; color: #aaccbb; margin-bottom: 18px; line-height: 1.6; }
+        .support-line-1 strong { color: #ffffff; font-size: 17px; }
+        .support-line-2 {
+            font-size: 16px; color: #ffffff; transition: all 0.3s; padding: 16px; border-radius: 16px;
+            cursor: pointer; border: 1px dashed rgba(76, 255, 128, 0.3); background: rgba(0, 0, 0, 0.2);
+        }
+        .support-line-2:hover { background: rgba(76, 255, 128, 0.08); border-color: rgba(76, 255, 128, 0.6); transform: translateY(-2px); }
+        .phone-highlight { color: #4cff80; font-weight: 900; font-size: 20px; letter-spacing: 1px; display: inline-block; margin: 0 4px; }
+        .support-badges { display: block; margin-top: 10px; font-size: 13px; color: #88ddff; font-weight: 600; }
+        .copy-toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: rgba(76, 255, 128, 0.95); color: #000; padding: 14px 28px; border-radius: 30px;
+            font-weight: 800; font-size: 15px; opacity: 0; transition: all 0.4s; pointer-events: none; z-index: 3000;
+        }
+        .copy-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        @media (max-width: 600px) {
+            .container { padding: 20px 16px; } .games-grid { grid-template-columns: 1fr; }
+            .tab-btn { padding: 12px 20px; font-size: 14px; flex: 1; text-align: center; }
+            th, td { padding: 12px 8px; font-size: 14px; } .lang-switcher { top: 12px; right: 12px; }
+            .lang-btn { padding: 8px 14px; font-size: 12px; } .phone-highlight { font-size: 18px; }
+            .lb-header { flex-direction: column; align-items: stretch; } .lb-actions { justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-switcher">
+        <button class="lang-btn active" data-lang="ru" onclick="switchLang('ru')">RU</button>
+        <button class="lang-btn" data-lang="en" onclick="switchLang('en')">EN</button>
+    </div>
+
+    <div class="container">
+        <header class="main-header">
+            <div class="main-title">
+                <img src="favicon.ico" alt="icon" class="title-icon">
+                <span data-i18n="title">ЗМЕЯ</span>
+            </div>
+            <div class="main-subtitle" data-i18n="subtitle">Архив игр и Доска почета</div>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('games')" data-i18n="tabGames">🎮 Игры</button>
+            <button class="tab-btn" onclick="switchTab('leaderboard')" data-i18n="tabLeaderboard">🏆 Результаты</button>
+        </div>
+
+        <div id="tab-games" class="section active">
+            <div class="games-grid">
+                <div class="game-card">
+                    <div class="game-icon">🐜</div>
+                    <div class="game-title" data-i18n="game1Title">Змея и Муравей</div>
+                    <div class="game-desc" data-i18n="game1Desc">🐍 - 🐜 Анти-ИИ Змея и Муравей. Управляйте змеёй, которая должна аккуратно переползти через муравиную тропу и муравейник, не разбудив стражу.</div>
+                    <a href="https://anti-ai-snake-ant.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">🎵</div>
+                    <div class="game-title" data-i18n="game2Title">Змея и Мелодия</div>
+                    <div class="game-desc" data-i18n="game2Desc">🐍 - 🎵 Анти-ИИ: Змея и Мелодия (Ночная версия). Музыкальная 3D-игра, где вы управляете змеёй, повторяя мелодии на светящихся плитках.</div>
+                    <a href="https://anti-ai-snake-melody-night.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">🫧</div>
+                    <div class="game-title" data-i18n="game3Title">Змея и Пузыри</div>
+                    <div class="game-desc" data-i18n="game3Desc">🐍 - 🫧 3D игра "Змея и Мыльные пузыри". Ломай пузыри хвостом змеи! Динамичная аркада с красивыми визуальными эффектами.</div>
+                    <a href="https://anti-ai-snake-and-bubbles.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">🪰</div>
+                    <div class="game-title" data-i18n="game4Title">Змея и Стрекоза</div>
+                    <div class="game-desc" data-i18n="game4Desc">🐍 - 🪰 Анти ИИ Змея и Стрекоза. Управляйте змеей в 3D-мире и охотитесь на проворную стрекозу! Поймайте её 3 раза за 3 минуты.</div>
+                    <a href="https://anti-ii-snake-and-dragonfly.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">🐭</div>
+                    <div class="game-title" data-i18n="game5Title">Змея и Мышка</div>
+                    <div class="game-desc" data-i18n="game5Desc">🐍 - 🐭 Змея и Мышка — 3D-игра. Управляйте змеёй, которая должна поймать мышку 3 раза за 3 минуты. Мышка убегает, прячется в норки.</div>
+                    <a href="https://anti-a-i-snake-and-mouse.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">🍎</div>
+                    <div class="game-title" data-i18n="game6Title">Змея и Яблоки</div>
+                    <div class="game-desc" data-i18n="game6Desc">🐍 - 🍎 Anti‑AI Змея и Яблоки. 3D‑игра, где змея из стекла с подсветкой собирает яблоки за 3 минуты.</div>
+                    <a href="https://anti-ai-snake-apples.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-leaderboard" class="section">
+            <div class="leaderboard-container">
+                <div class="lb-header">
+                    <div class="lb-title" data-i18n="hallOfFame">🐍 Зал славы Красных Змей</div>
+                    <div class="lb-actions">
+                        <button class="add-result-btn" onclick="openModal()" data-i18n="addResult">➕ Добавить результат</button>
+                        <button class="clear-btn" onclick="clearGlobalLeaderboard()" data-i18n="clearAll">🗑 Очистить</button>
+                    </div>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">#</th>
+                            <th style="width: 30%;" data-i18n="thPlayer">Игрок</th>
+                            <th style="width: 25%;" data-i18n="thGame">Игра</th>
+                            <th style="width: 15%; text-align: right;" data-i18n="thSnakes">Змеи</th>
+                            <th style="width: 20%; text-align: right;" data-i18n="thDate">Дата</th>
+                        </tr>
+                    </thead>
+                    <tbody id="global-leaderboard-body"></tbody>
+                </table>
+                <div id="empty-state" class="empty-state" style="display: none;" data-i18n="emptyState">Пока нет записанных результатов. Станьте первым героем!</div>
+            </div>
+        </div>
+
+        <footer class="support-footer">
+            <div class="support-line-1">
+                🤝 <strong>ПОДДЕРЖАТЬ ПРОЕКТ</strong> 💙 Приложение бесплатное. Было и останется.<br>
+                Если проект помог вам или вашим близким — можете поддержать разработку добровольным переводом.
+            </div>
+            <div class="support-line-2" onclick="copyPhone()" title="Нажмите, чтобы скопировать номер">
+                📱 ПЕРЕВОД ПО НОМЕРУ ТЕЛЕФОНА: <span class="phone-highlight">8-920-227-56-76</span> 📋 <u>Копировать номер</u>
+                <span class="support-badges">✅ Деньги придут мгновенно. Без комиссии. Безопасно.</span>
+            </div>
+        </footer>
+        <div id="copy-toast" class="copy-toast">✅ Номер скопирован в буфер обмена!</div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО С ЗАЩИТОЙ ОТ НАКРУТОК -->
+    <div id="score-modal" class="modal-overlay" onclick="closeModalOutside(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" data-i18n="modalTitle">🏆 Добавить результат</div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" data-i18n="labelCode">Код награды из игры</label>
+                <input type="text" id="reward-code" class="form-input" placeholder="Вставьте код сюда..." oninput="verifyCode()">
+                <div class="reward-hint" data-i18n="rewardHint">
+                    💡 В конце игры нажмите кнопку «Получить код награды». Он автоматически скопируется. Вставьте его сюда, чтобы система подтвердила ваш честный результат.
+                </div>
+                <div id="verified-badge" class="verified-badge">
+                    ✅ <span data-i18n="verified">Код проверен. Результат защищён от изменений.</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" data-i18n="labelName">Ваше имя или никнейм</label>
+                <input type="text" id="player-name" class="form-input" maxlength="20" placeholder="Например: Змейка_Мастер">
+            </div>
+
+            <!-- Скрытые поля, которые заполняются автоматически из кода -->
+            <input type="hidden" id="decoded-game">
+            <input type="hidden" id="decoded-score">
+
+            <button id="submit-btn" class="submit-btn" onclick="submitScore()" disabled data-i18n="submitBtn">Сначала вставьте код награды</button>
+        </div>
+    </div>
+
+    <script>
+        const GLOBAL_LB_KEY = 'snake_global_leaderboard_v1';
+        const SECRET_SALT = 'AntonKuznetsovSnakeProject2026'; // Простая защита от подделки кода вручную
+
+        const translations = {
+            ru: {
+                title: "ЗМЕЯ", subtitle: "Архив игр и Доска почета", tabGames: "🎮 Игры", tabLeaderboard: "🏆 Результаты",
+                game1Title: "Змея и Муравей", game1Desc: "🐍 - 🐜 Анти-ИИ Змея и Муравей. Управляйте змеёй, которая должна аккуратно переползти через муравиную тропу и муравейник, не разбудив стражу.",
+                game2Title: "Змея и Мелодия", game2Desc: "🐍 - 🎵 Анти-ИИ: Змея и Мелодия (Ночная версия). Музыкальная 3D-игра, где вы управляете змеёй, повторяя мелодии на светящихся плитках.",
+                game3Title: "Змея и Пузыри", game3Desc: "🐍 - 🫧 3D игра \"Змея и Мыльные пузыри\". Ломай пузыри хвостом змеи! Динамичная аркада с красивыми визуальными эффектами.",
+                game4Title: "Змея и Стрекоза", game4Desc: "🐍 - 🪰 Анти ИИ Змея и Стрекоза. Управляйте змеей в 3D-мире и охотитесь на проворную стрекозу! Поймайте её 3 раза за 3 минуты.",
+                game5Title: "Змея и Мышка", game5Desc: "🐍 - 🐭 Змея и Мышка — 3D-игра. Управляйте змеёй, которая должна поймать мышку 3 раза за 3 минуты. Мышка убегает, прячется в норки.",
+                game6Title: "Змея и Яблоки", game6Desc: "🐍 - 🍎 Anti‑AI Змея и Яблоки. 3D‑игра, где змея из стекла с подсветкой собирает яблоки за 3 минуты.",
+                play: "▶ Играть", hallOfFame: "🐍 Зал славы Красных Змей", addResult: "➕ Добавить результат", clearAll: "🗑 Очистить",
+                thPlayer: "Игрок", thGame: "Игра", thSnakes: "Змеи", thDate: "Дата",
+                emptyState: "Пока нет записанных результатов. Станьте первым героем!",
+                modalTitle: "🏆 Добавить результат", labelCode: "Код награды из игры", labelName: "Ваше имя или никнейм",
+                rewardHint: "💡 В конце игры нажмите кнопку «Получить код награды». Он автоматически скопируется. Вставьте его сюда, чтобы система подтвердила ваш честный результат.",
+                verified: "Код проверен. Результат защищён от изменений.",
+                submitBtn: "Отправить на доску", submitBtnDisabled: "Сначала вставьте код награды",
+                confirmClear: "Вы уверены, что хотите стереть ВСЕ результаты? Это действие нельзя отменить.",
+                successMsg: "✅ Результат успешно добавлен!",
+                errorName: "Пожалуйста, введите имя",
+                errorInvalidCode: "Неверный или подделанный код награды",
+                errorExpiredCode: "Срок действия кода истёк (более 24 часов)",
+                pageTitle: "ЗМЕЯ — Архив игр и Доска почета"
+            },
+            en: {
+                title: "SNAKE", subtitle: "Game Archive & Hall of Fame", tabGames: "🎮 Games", tabLeaderboard: "🏆 Results",
+                game1Title: "Snake & Ant", game1Desc: "🐍 - 🐜 Anti-AI Snake and Ant. Control a snake that must carefully crawl through the ant trail and anthill without waking the guard.",
+                game2Title: "Snake & Melody", game2Desc: "🐍 - 🎵 Anti-AI: Snake and Melody (Night Version). Musical 3D game where you control a snake, repeating melodies on glowing tiles.",
+                game3Title: "Snake & Bubbles", game3Desc: "🐍 - 🫧 3D game \"Snake and Soap Bubbles\". Break bubbles with the snake's tail! Dynamic arcade with beautiful visual effects.",
+                game4Title: "Snake & Dragonfly", game4Desc: "🐍 - 🪰 Anti-AI Snake and Dragonfly. Control a snake in a 3D world and hunt an agile dragonfly! Catch it 3 times in 3 minutes.",
+                game5Title: "Snake & Mouse", game5Desc: "🐍 - 🐭 Snake and Mouse - 3D game. Control a snake that must catch a mouse 3 times in 3 minutes. The mouse runs away, hides in holes.",
+                game6Title: "Snake & Apples", game6Desc: "🐍 - 🍎 Anti-AI Snake and Apples. 3D game where a glass snake with backlight collects apples in 3 minutes.",
+                play: "▶ Play", hallOfFame: "🐍 Red Snakes Hall of Fame", addResult: "➕ Add Result", clearAll: "🗑 Clear",
+                thPlayer: "Player", thGame: "Game", thSnakes: "Snakes", thDate: "Date",
+                emptyState: "No recorded results yet. Be the first hero!",
+                modalTitle: "🏆 Add Result", labelCode: "Reward code from game", labelName: "Your name or nickname",
+                rewardHint: "💡 At the end of the game, click 'Get reward code'. It will copy automatically. Paste it here so the system can verify your honest result.",
+                verified: "Code verified. Result is protected from changes.",
+                submitBtn: "Submit to board", submitBtnDisabled: "Please paste reward code first",
+                confirmClear: "Are you sure you want to erase ALL results? This action cannot be undone.",
+                successMsg: "✅ Result successfully added!",
+                errorName: "Please enter a name",
+                errorInvalidCode: "Invalid or tampered reward code",
+                errorExpiredCode: "Code has expired (older than 24 hours)",
+                pageTitle: "SNAKE — Game Archive & Hall of Fame"
+            }
+        };
+
+        window.switchLang = function(lang) {
+            document.documentElement.lang = lang;
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (translations[lang][key]) el.textContent = translations[lang][key];
+            });
+            document.title = translations[lang].pageTitle;
+            localStorage.setItem('snake_lang', lang);
+            if (document.getElementById('tab-leaderboard').classList.contains('active')) loadGlobalLeaderboard();
+            
+            // Обновляем текст кнопки при смене языка
+            const submitBtn = document.getElementById('submit-btn');
+            const code = document.getElementById('reward-code').value;
+            submitBtn.textContent = code ? translations[lang].submitBtn : translations[lang].submitBtnDisabled;
+        };
+        const savedLang = localStorage.getItem('snake_lang') || 'ru';
+        switchLang(savedLang);
+
+        window.switchTab = function(tabName) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            event.target.classList.add('active');
+            if (tabName === 'leaderboard') loadGlobalLeaderboard();
+        };
+
+        window.openModal = function() {
+            document.getElementById('score-modal').classList.add('show');
+            document.getElementById('reward-code').value = '';
+            document.getElementById('player-name').value = '';
+            document.getElementById('verified-badge').classList.remove('show');
+            document.getElementById('submit-btn').disabled = true;
+            const lang = localStorage.getItem('snake_lang') || 'ru';
+            document.getElementById('submit-btn').textContent = translations[lang].submitBtnDisabled;
+        }
+        window.closeModal = function() { document.getElementById('score-modal').classList.remove('show'); }
+        window.closeModalOutside = function(event) { if (event.target === document.getElementById('score-modal')) closeModal(); }
+
+        // ===== ПРОВЕРКА КОДА НАГРАДЫ =====
+        window.verifyCode = function() {
+            const lang = localStorage.getItem('snake_lang') || 'ru';
+            const codeInput = document.getElementById('reward-code').value.trim();
+            const badge = document.getElementById('verified-badge');
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (!codeInput) {
+                badge.classList.remove('show');
+                submitBtn.disabled = true;
+                submitBtn.textContent = translations[lang].submitBtnDisabled;
+                return;
+            }
+
+            try {
+                // Декодируем Base64
+                const decodedStr = atob(codeInput);
+                const data = JSON.parse(decodedStr);
+
+                // Проверяем подпись (простая защита от ручного создания кода)
+                const expectedSig = btoa(data.g + data.s + data.t + SECRET_SALT);
+                if (data.sig !== expectedSig) {
+                    throw new Error("Tampered");
+                }
+
+                // Проверяем, что код не старше 24 часов (86400000 мс)
+                if (Date.now() - data.t > 86400000) {
+                    alert(translations[lang].errorExpiredCode);
+                    badge.classList.remove('show');
+                    submitBtn.disabled = true;
+                    return;
+                }
+
+                // Всё отлично! Заполняем скрытые поля и показываем бейдж
+                document.getElementById('decoded-game').value = data.g;
+                document.getElementById('decoded-score').value = data.s;
+                badge.classList.add('show');
+                submitBtn.disabled = false;
+                submitBtn.textContent = translations[lang].submitBtn;
+
+            } catch (e) {
+                badge.classList.remove('show');
+                submitBtn.disabled = true;
+                submitBtn.textContent = translations[lang].submitBtnDisabled;
+            }
+        }
+
+        window.submitScore = function() {
+            const lang = localStorage.getItem('snake_lang') || 'ru';
+            const name = document.getElementById('player-name').value.trim();
+            const game = document.getElementById('decoded-game').value;
+            const score = parseInt(document.getElementById('decoded-score').value);
+
+            if (!name) { alert(translations[lang].errorName); return; }
+            if (!game || isNaN(score)) { alert(translations[lang].errorInvalidCode); return; }
+
+            const newEntry = {
+                name: name,
+                game: game,
+                snakes: score,
+                date: new Date().toLocaleDateString(),
+                dateRaw: new Date().toISOString()
+            };
+
+            const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
+            data.push(newEntry);
+            localStorage.setItem(GLOBAL_LB_KEY, JSON.stringify(data));
+
+            closeModal();
+            showToastCustom(translations[lang].successMsg);
+            loadGlobalLeaderboard();
+        }
+
+        window.loadGlobalLeaderboard = function() {
+            const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
+            const tbody = document.getElementById('global-leaderboard-body');
+            const emptyState = document.getElementById('empty-state');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) { emptyState.style.display = 'block'; return; }
+            emptyState.style.display = 'none';
+
+            data.sort((a, b) => {
+                if (b.snakes !== a.snakes) return b.snakes - a.snakes;
+                return new Date(b.dateRaw) - new Date(a.dateRaw);
+            });
+
+            const topData = data.slice(0, 50);
+            topData.forEach((entry, index) => {
+                const tr = document.createElement('tr');
+                const rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : 'rank-other'));
+                const medal = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : ''));
+                tr.innerHTML = `
+                    <td><span class="rank-badge ${rankClass}">${index + 1}</span></td>
+                    <td>${medal} ${escapeHtml(entry.name)}</td>
+                    <td><span class="game-tag">${escapeHtml(entry.game)}</span></td>
+                    <td class="score-cell">${entry.snakes} 🐍</td>
+                    <td style="text-align: right; color: #8899aa; font-size: 14px;">${entry.date}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        };
+
+        window.clearGlobalLeaderboard = function() {
+            const lang = localStorage.getItem('snake_lang') || 'ru';
+            if (confirm(translations[lang].confirmClear)) {
+                localStorage.removeItem(GLOBAL_LB_KEY);
+                loadGlobalLeaderboard();
+            }
+        };
+
+        window.copyPhone = function() {
+            navigator.clipboard.writeText("89202275676").then(() => showToast()).catch(() => {
+                const textArea = document.createElement("textarea");
+                textArea.value = "89202275676"; document.body.appendChild(textArea); textArea.select();
+                document.execCommand("copy"); document.body.removeChild(textArea); showToast();
+            });
+        };
+
+        function showToast() {
+            const toast = document.getElementById('copy-toast');
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300);
+            }, 2500);
+        }
+        
+        function showToastCustom(msg) {
+            const toast = document.getElementById('copy-toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300);
+            }, 2500);
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div'); div.textContent = text; return div.innerHTML;
+        }
+
+        loadGlobalLeaderboard();
+    </script>
+</body>
+</html>
