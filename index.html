@@ -90,6 +90,7 @@
             border: 1px solid rgba(76, 255, 128, 0.3); border-radius: 24px; padding: 32px;
             width: 90%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            max-height: 90vh; overflow-y: auto;
         }
         .modal-overlay.show .modal-content { transform: scale(1); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
@@ -98,21 +99,17 @@
         .modal-close:hover { color: #ff4444; }
         .form-group { margin-bottom: 16px; }
         .form-label { display: block; font-size: 13px; color: #aaccbb; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-input, .form-select {
+        .form-input {
             width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
             color: #ffffff; font-size: 16px; font-family: 'Inter', sans-serif; transition: all 0.3s; outline: none;
         }
-        .form-select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234cff80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            background-size: 18px;
-            padding-right: 40px;
+        .form-input:focus { border-color: #4cff80; box-shadow: 0 0 0 3px rgba(76, 255, 128, 0.15); }
+        .readonly-box {
+            width: 100%; padding: 14px; background: rgba(76, 255, 128, 0.06);
+            border: 1px solid rgba(76, 255, 128, 0.25); border-radius: 12px;
+            color: #88ffaa; font-size: 16px; font-weight: 600;
         }
-        .form-select option { background: #15152a; color: #ffffff; padding: 10px; }
-        .form-input:focus, .form-select:focus { border-color: #4cff80; box-shadow: 0 0 0 3px rgba(76, 255, 128, 0.15); }
         .submit-btn {
             width: 100%; padding: 16px; margin-top: 10px;
             background: linear-gradient(135deg, #4cff80, #22aa55); color: #000;
@@ -122,6 +119,122 @@
         }
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(76, 255, 128, 0.5); }
 
+        /* 🤖 СТИЛИ БОТА */
+        #player-search-bot {
+            display: none;
+            background: linear-gradient(135deg, rgba(76, 255, 128, 0.08), rgba(34, 170, 255, 0.05));
+            border: 1px solid rgba(76, 255, 128, 0.3);
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 10px;
+        }
+        #player-search-bot.show {
+            display: block;
+            animation: botSlideIn 0.3s ease;
+        }
+        @keyframes botSlideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .bot-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            font-size: 13px;
+            color: #88ffaa;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .bot-icon {
+            font-size: 18px;
+            animation: botPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes botPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+        .bot-result {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+            line-height: 1.6;
+            min-height: 50px;
+        }
+        .bot-result .player-name {
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 16px;
+        }
+        .bot-result .player-game {
+            color: #88ddff;
+            font-size: 13px;
+            margin: 4px 0;
+        }
+        .bot-result .player-score {
+            color: #ff8866;
+            font-weight: 800;
+            font-size: 17px;
+            margin-top: 4px;
+        }
+        .bot-result .bot-hint {
+            color: #88ffaa;
+            font-size: 12px;
+            margin-top: 8px;
+            font-style: italic;
+            opacity: 0.9;
+        }
+        .bot-result .btn-find-in-table {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 6px 14px;
+            background: rgba(76, 255, 128, 0.15);
+            border: 1px solid rgba(76, 255, 128, 0.4);
+            color: #88ffaa;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .bot-result .btn-find-in-table:hover {
+            background: rgba(76, 255, 128, 0.25);
+            transform: translateY(-1px);
+        }
+        .bot-not-found {
+            color: #88ddff;
+            font-size: 13px;
+            padding: 8px 12px;
+            background: rgba(34, 170, 255, 0.08);
+            border-radius: 8px;
+        }
+        .bot-not-found .welcome {
+            color: #88ffaa;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        .similar-player {
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+        }
+        .similar-player:last-child { border-bottom: none; }
+        .search-loader {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+            border-top-color: #88ffaa;
+            animation: spin 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
         .leaderboard-container {
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
             backdrop-filter: blur(20px); border: 1px solid rgba(255, 100, 100, 0.2);
@@ -130,12 +243,6 @@
         .lb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
         .lb-title { font-size: 24px; font-weight: 800; color: #ff8888; display: flex; align-items: center; gap: 10px; }
         .lb-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-        .add-result-btn {
-            padding: 12px 22px; background: linear-gradient(135deg, rgba(76, 255, 128, 0.2), rgba(34, 170, 255, 0.15));
-            border: 1px solid rgba(76, 255, 128, 0.4); color: #4cff80; border-radius: 12px;
-            cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase;
-        }
-        .add-result-btn:hover { background: linear-gradient(135deg, rgba(76, 255, 128, 0.3), rgba(34, 170, 255, 0.25)); transform: translateY(-2px); }
         .clear-btn {
             padding: 12px 22px; background: linear-gradient(135deg, rgba(255, 50, 50, 0.15), rgba(255, 50, 50, 0.05));
             border: 1px solid rgba(255, 50, 50, 0.3); color: #ff6666; border-radius: 12px;
@@ -159,9 +266,15 @@
             box-shadow: inset 0 0 0 1px rgba(76, 255, 128, 0.5);
             animation: rowPulse 1.5s ease-in-out 3;
         }
-        @keyframes rowPulse {
-            0%, 100% { background: rgba(76,255,128,0.15); }
-            50% { background: rgba(76,255,128,0.35); }
+        @keyframes rowPulse { 0%, 100% { background: rgba(76,255,128,0.15); } 50% { background: rgba(76,255,128,0.35); } }
+        tr.bot-highlight td {
+            background: rgba(76, 255, 128, 0.25) !important;
+            box-shadow: inset 0 0 0 2px rgba(76, 255, 128, 0.7);
+            animation: botRowPulse 1s ease-in-out 3;
+        }
+        @keyframes botRowPulse {
+            0%, 100% { background: rgba(76, 255, 128, 0.15); }
+            50% { background: rgba(76, 255, 128, 0.4); }
         }
 
         .support-footer {
@@ -218,37 +331,37 @@
                 <div class="game-card">
                     <div class="game-icon">🐜</div>
                     <div class="game-title" data-i18n="game1Title">Змея и Муравей</div>
-                    <div class="game-desc" data-i18n="game1Desc">🐍 - 🐜 Анти-ИИ Змея и Муравей. Управляйте змеёй, которая должна аккуратно переползти через муравиную тропу и муравейник, не разбудив стражу.</div>
+                    <div class="game-desc" data-i18n="game1Desc"></div>
                     <a href="https://anti-ai-snake-ant.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🎵</div>
                     <div class="game-title" data-i18n="game2Title">Змея и Мелодия</div>
-                    <div class="game-desc" data-i18n="game2Desc">🐍 - 🎵 Анти-ИИ: Змея и Мелодия (Ночная версия). Музыкальная 3D-игра, где вы управляете змеёй, повторяя мелодии на светящихся плитках.</div>
+                    <div class="game-desc" data-i18n="game2Desc"></div>
                     <a href="https://anti-ai-snake-melody-night.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🫧</div>
                     <div class="game-title" data-i18n="game3Title">Змея и Пузыри</div>
-                    <div class="game-desc" data-i18n="game3Desc">🐍 - 🫧 3D игра "Змея и Мыльные пузыри". Ломай пузыри хвостом змеи! Динамичная аркада с красивыми визуальными эффектами.</div>
+                    <div class="game-desc" data-i18n="game3Desc"></div>
                     <a href="https://anti-ai-snake-and-bubbles.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🪰</div>
                     <div class="game-title" data-i18n="game4Title">Змея и Стрекоза</div>
-                    <div class="game-desc" data-i18n="game4Desc">🐍 - 🪰 Анти ИИ Змея и Стрекоза. Управляйте змеей в 3D-мире и охотитесь на проворную стрекозу! Поймайте её 3 раза за 3 минуты.</div>
+                    <div class="game-desc" data-i18n="game4Desc"></div>
                     <a href="https://anti-ii-snake-and-dragonfly.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🐭</div>
                     <div class="game-title" data-i18n="game5Title">Змея и Мышка</div>
-                    <div class="game-desc" data-i18n="game5Desc">🐍 -  Змея и Мышка — 3D-игра. Управляйте змеёй, которая должна поймать мышку 3 раза за 3 минуты. Мышка убегает, прячется в норки.</div>
+                    <div class="game-desc" data-i18n="game5Desc"></div>
                     <a href="https://anti-a-i-snake-and-mouse.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🍎</div>
                     <div class="game-title" data-i18n="game6Title">Змея и Яблоки</div>
-                    <div class="game-desc" data-i18n="game6Desc">🐍 -  Anti‑AI Змея и Яблоки. 3D‑игра, где змея из стекла с подсветкой собирает яблоки за 3 минуты.</div>
+                    <div class="game-desc" data-i18n="game6Desc"></div>
                     <a href="https://anti-ai-snake-apples.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
             </div>
@@ -259,7 +372,6 @@
                 <div class="lb-header">
                     <div class="lb-title" data-i18n="hallOfFame">🐍 Зал славы Красных Змей</div>
                     <div class="lb-actions">
-                        <button class="add-result-btn" onclick="openModal()" data-i18n="addResult">➕ Добавить результат</button>
                         <button class="clear-btn" onclick="clearGlobalLeaderboard()" data-i18n="clearAll">🗑 Очистить</button>
                     </div>
                 </div>
@@ -280,46 +392,43 @@
         </div>
 
         <footer class="support-footer">
-            <div class="support-line-1">
-                🤝 <strong>ПОДДЕРЖАТЬ ПРОЕКТ</strong> 💙 Приложение бесплатное. Было и останется.<br>
-                Если проект помог вам или вашим близким — можете поддержать разработку добровольным переводом.
-            </div>
-            <div class="support-line-2" onclick="copyPhone()" title="Нажмите, чтобы скопировать номер">
-                📱 ПЕРЕВОД ПО НОМЕРУ ТЕЛЕФОНА: <span class="phone-highlight">8-920-227-56-76</span> 📋 <u>Копировать номер</u>
-                <span class="support-badges">✅ Деньги придут мгновенно. Без комиссии. Безопасно.</span>
-            </div>
+            <div class="support-line-1">🤝 <strong>ПОДДЕРЖАТЬ ПРОЕКТ</strong> 💙 Приложение бесплатное. Было и останется.<br>Если проект помог вам или вашим близким — можете поддержать разработку добровольным переводом.</div>
+            <div class="support-line-2" onclick="copyPhone()" title="Нажмите, чтобы скопировать номер">📱 ПЕРЕВОД ПО НОМЕРУ ТЕЛЕФОНА: <span class="phone-highlight">8-920-227-56-76</span> 📋 <u>Копировать номер</u><span class="support-badges">✅ Деньги придут мгновенно. Без комиссии. Безопасно.</span></div>
         </footer>
         <div id="copy-toast" class="copy-toast">✅ Номер скопирован в буфер обмена!</div>
     </div>
 
-    <!-- ✅ НОВАЯ ФОРМА: БЕЗ КОДА! Только Имя + Игра + Змеи -->
     <div id="score-modal" class="modal-overlay" onclick="closeModalOutside(event)">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title" data-i18n="modalTitle">🏆 Добавить результат</div>
+                <div class="modal-title" data-i18n="modalTitle">🏆 Засчитать победу</div>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
 
             <div class="form-group">
                 <label class="form-label" data-i18n="labelName">Ваше имя или никнейм</label>
-                <input type="text" id="player-name" class="form-input" maxlength="20" placeholder="Например: Змейка_Мастер">
+                <input type="text" id="player-name" class="form-input" maxlength="20"
+                       placeholder="Например: Змейка_Мастер"
+                       oninput="searchPlayer(this.value)"
+                       autocomplete="off">
+
+                <div id="player-search-bot">
+                    <div class="bot-header">
+                        <span class="bot-icon">🤖</span>
+                        <span class="bot-label">Бот-поисковик</span>
+                    </div>
+                    <div class="bot-result" id="bot-result"></div>
+                </div>
             </div>
 
             <div class="form-group">
                 <label class="form-label" data-i18n="labelGame">Игра</label>
-                <select id="game-select" class="form-select">
-                    <option value="🐍 - 🐜 Змея и Муравей">🐍 - 🐜 Змея и Муравей</option>
-                    <option value="🐍 -  Змея и Мелодия">🐍 -  Змея и Мелодия</option>
-                    <option value="🐍 -  Змея и Пузыри">🐍 - 🫧 Змея и Пузыри</option>
-                    <option value="🐍 -  Змея и Стрекоза">🐍 -  Змея и Стрекоза</option>
-                    <option value="🐍 -  Змея и Мышка">🐍 - 🐭 Змея и Мышка</option>
-                    <option value="🐍 -  Змея и Яблоки">🐍 - 🍎 Змея и Яблоки</option>
-                </select>
+                <div class="readonly-box" id="game-display">—</div>
             </div>
 
             <div class="form-group">
-                <label class="form-label" data-i18n="labelScore">Красных змей 🐍</label>
-                <input type="number" id="score-input" class="form-input" min="1" max="999" value="1">
+                <label class="form-label" data-i18n="labelScore">Награда за эту победу</label>
+                <div class="readonly-box" id="score-display">+1 🐍</div>
             </div>
 
             <button id="submit-btn" class="submit-btn" onclick="submitScore()" data-i18n="submitBtn">Отправить на доску</button>
@@ -328,52 +437,77 @@
 
     <script>
         const GLOBAL_LB_KEY = 'snake_global_leaderboard_v1';
+        const USED_TOKENS_KEY = 'snake_used_tokens_v1';
+        const SECRET_SALT = 'AntonKuznetsovSnakeProject2026';
         let lastAddedDateRaw = null;
+        let pendingToken = null;
+        let searchTimeout = null;
+        let currentHighlightRow = null;
 
         const translations = {
             ru: {
                 title: "ЗМЕЯ", subtitle: "Архив игр и Доска почета", tabGames: "🎮 Игры", tabLeaderboard: "🏆 Результаты",
-                game1Title: "Змея и Муравей", game1Desc: "🐍 -  Анти-ИИ Змея и Муравей. Управляйте змеёй, которая должна аккуратно переползти через муравиную тропу и муравейник, не разбудив стражу.",
-                game2Title: "Змея и Мелодия", game2Desc: "🐍 -  Анти-ИИ: Змея и Мелодия (Ночная версия). Музыкальная 3D-игра, где вы управляете змеёй, повторяя мелодии на светящихся плитках.",
-                game3Title: "Змея и Пузыри", game3Desc: "🐍 -  3D игра \"Змея и Мыльные пузыри\". Ломай пузыри хвостом змеи! Динамичная аркада с красивыми визуальными эффектами.",
-                game4Title: "Змея и Стрекоза", game4Desc: "🐍 -  Анти ИИ Змея и Стрекоза. Управляйте змеей в 3D-мире и охотитесь на проворную стрекозу! Поймайте её 3 раза за 3 минуты.",
-                game5Title: "Змея и Мышка", game5Desc: "🐍 - 🐭 Змея и Мышка — 3D-игра. Управляйте змеёй, которая должна поймать мышку 3 раза за 3 минуты. Мышка убегает, прячется в норки.",
-                game6Title: "Змея и Яблоки", game6Desc: "🐍 -  Anti‑AI Змея и Яблоки. 3D‑игра, где змея из стекла с подсветкой собирает яблоки за 3 минуты.",
-                play: "▶ Играть", hallOfFame: "🐍 Зал славы Красных Змей", addResult: "➕ Добавить результат", clearAll: "🗑 Очистить",
+                game1Title: "Змея и Муравей", game2Title: "Змея и Мелодия", game3Title: "Змея и Пузыри",
+                game4Title: "Змея и Стрекоза", game5Title: "Змея и Мышка", game6Title: "Змея и Яблоки",
+                game1Desc: "", game2Desc: "", game3Desc: "", game4Desc: "", game5Desc: "", game6Desc: "",
+                play: "▶ Играть", hallOfFame: "🐍 Зал славы Красных Змей", clearAll: "🗑 Очистить",
                 thPlayer: "Игрок", thGame: "Игра", thSnakes: "Змеи", thDate: "Дата",
                 emptyState: "Пока нет записанных результатов. Станьте первым героем!",
-                modalTitle: "🏆 Добавить результат", labelName: "Ваше имя или никнейм",
-                labelGame: "Игра", labelScore: "Красных змей 🐍",
+                modalTitle: "🏆 Засчитать победу", labelName: "Ваше имя или никнейм",
+                labelGame: "Игра", labelScore: "Награда за эту победу",
                 submitBtn: "Отправить на доску",
                 confirmClear: "Вы уверены, что хотите стереть ВСЕ результаты? Это действие нельзя отменить.",
-                successMsg: "✅ Результат добавлен! Ваше имя в Зале славы!",
+                successMsg: "✅ Победа засчитана! Ваше имя в Зале славы!",
+                successUpdated: "✅ Добавлено к вашему результату!",
                 errorName: "Пожалуйста, введите имя",
-                errorScore: "Введите корректное количество змей (1-999)",
-                pageTitle: "ЗМЕЯ — Архив игр и Доска почета"
+                errorInvalid: "❌ Нет действительной победы. Сначала пройдите игру!",
+                errorUsed: "⚠️ Эта победа уже записана. Одна победа = одна змея!",
+                pageTitle: "ЗМЕЯ — Архив игр и Доска почета",
+                botYou: "✨ Это вы! Новая победа добавится к текущему результату.",
+                botSimilar: "🔎 Похожие игроки:",
+                botTypo: "✍️ Возможно, вы имели в виду:",
+                botTypoHint: "💡 Проверьте написание или создайте новый ник",
+                botNotFound: "🤖 Такого игрока ещё нет",
+                botWelcome: "✨ Вы станете первым с таким именем!",
+                botHint: "💡 Если это не вы — напишите полное имя",
+                botShowInTable: "🔍 Показать в таблице",
+                botSearching: "🔍 Поиск...",
+                confirmSimilar: "⚠️ Имя \"{name}\" очень похоже на \"{similar}\" (отличается на {dist} символа).\nВы уверены, что хотите создать нового игрока, а не добавить к существующему?"
             },
             en: {
                 title: "SNAKE", subtitle: "Game Archive & Hall of Fame", tabGames: "🎮 Games", tabLeaderboard: "🏆 Results",
-                game1Title: "Snake & Ant", game1Desc: "🐍 -  Anti-AI Snake and Ant. Control a snake that must carefully crawl through the ant trail and anthill without waking the guard.",
-                game2Title: "Snake & Melody", game2Desc: "🐍 -  Anti-AI: Snake and Melody (Night Version). Musical 3D game where you control a snake, repeating melodies on glowing tiles.",
-                game3Title: "Snake & Bubbles", game3Desc: "🐍 -  3D game \"Snake and Soap Bubbles\". Break bubbles with the snake's tail! Dynamic arcade with beautiful visual effects.",
-                game4Title: "Snake & Dragonfly", game4Desc: "🐍 - 🪰 Anti-AI Snake and Dragonfly. Control a snake in a 3D world and hunt an agile dragonfly! Catch it 3 times in 3 minutes.",
-                game5Title: "Snake & Mouse", game5Desc: "🐍 -  Snake and Mouse - 3D game. Control a snake that must catch a mouse 3 times in 3 minutes. The mouse runs away, hides in holes.",
-                game6Title: "Snake & Apples", game6Desc: "🐍 - 🍎 Anti-AI Snake and Apples. 3D game where a glass snake with backlight collects apples in 3 minutes.",
-                play: "▶ Play", hallOfFame: "🐍 Red Snakes Hall of Fame", addResult: "➕ Add Result", clearAll: "🗑 Clear",
+                game1Title: "Snake & Ant", game2Title: "Snake & Melody", game3Title: "Snake & Bubbles",
+                game4Title: "Snake & Dragonfly", game5Title: "Snake & Mouse", game6Title: "Snake & Apples",
+                game1Desc: "", game2Desc: "", game3Desc: "", game4Desc: "", game5Desc: "", game6Desc: "",
+                play: "▶ Play", hallOfFame: "🐍 Red Snakes Hall of Fame", clearAll: "🗑 Clear",
                 thPlayer: "Player", thGame: "Game", thSnakes: "Snakes", thDate: "Date",
                 emptyState: "No recorded results yet. Be the first hero!",
-                modalTitle: "🏆 Add Result", labelName: "Your name or nickname",
-                labelGame: "Game", labelScore: "Red snakes 🐍",
+                modalTitle: "🏆 Count Victory", labelName: "Your name or nickname",
+                labelGame: "Game", labelScore: "Reward for this victory",
                 submitBtn: "Submit to board",
                 confirmClear: "Are you sure you want to erase ALL results? This action cannot be undone.",
-                successMsg: "✅ Result added! Your name is in the Hall of Fame!",
+                successMsg: "✅ Victory counted! Your name is in the Hall of Fame!",
+                successUpdated: "✅ Added to your total!",
                 errorName: "Please enter a name",
-                errorScore: "Enter a valid number of snakes (1-999)",
-                pageTitle: "SNAKE — Game Archive & Hall of Fame"
+                errorInvalid: "❌ No valid victory. Please finish the game first!",
+                errorUsed: "⚠️ This victory is already recorded. One victory = one snake!",
+                pageTitle: "SNAKE — Game Archive & Hall of Fame",
+                botYou: "✨ That's you! New victory will be added to your total.",
+                botSimilar: "🔎 Similar players:",
+                botTypo: "✍️ Maybe you meant:",
+                botTypoHint: "💡 Check spelling or create a new nickname",
+                botNotFound: "🤖 No such player yet",
+                botWelcome: "✨ You will be the first with this name!",
+                botHint: "💡 If this is not you — write full name",
+                botShowInTable: "🔍 Show in table",
+                botSearching: "🔍 Searching...",
+                confirmSimilar: "⚠️ The name \"{name}\" is very similar to \"{similar}\" (differs by {dist} characters).\nAre you sure you want to create a new player instead of adding to the existing one?"
             }
         };
 
-        window.switchLang = function(lang) {
+        function curLang() { return localStorage.getItem('snake_lang') || 'ru'; }
+
+        function switchLang(lang) {
             document.documentElement.lang = lang;
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
             document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -383,75 +517,297 @@
             document.title = translations[lang].pageTitle;
             localStorage.setItem('snake_lang', lang);
             if (document.getElementById('tab-leaderboard').classList.contains('active')) loadGlobalLeaderboard();
-        };
-        const savedLang = localStorage.getItem('snake_lang') || 'ru';
-        switchLang(savedLang);
+        }
 
-        window.switchTab = function(tabName, event) {
+        function switchTab(tabName, event) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`tab-${tabName}`).classList.add('active');
-            if (event && event.target) {
-                event.target.classList.add('active');
-            } else {
+            if (event && event.target) { event.target.classList.add('active'); }
+            else {
                 document.querySelectorAll('.tab-btn').forEach(b => {
-                    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${tabName}'`)) {
-                        b.classList.add('active');
-                    }
+                    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${tabName}'`)) b.classList.add('active');
                 });
             }
             if (tabName === 'leaderboard') loadGlobalLeaderboard();
-        };
+        }
 
-        window.openModal = function() {
-            document.getElementById('score-modal').classList.add('show');
-            document.getElementById('player-name').value = '';
-            document.getElementById('score-input').value = 1;
-        };
-        window.closeModal = function() { document.getElementById('score-modal').classList.remove('show'); };
-        window.closeModalOutside = function(event) { if (event.target === document.getElementById('score-modal')) closeModal(); };
+        function openModal() { document.getElementById('score-modal').classList.add('show'); }
+        
+        function closeModal() {
+            document.getElementById('score-modal').classList.remove('show');
+            const bot = document.getElementById('player-search-bot');
+            bot.classList.remove('show');
+            document.getElementById('bot-result').innerHTML = '';
+            if (currentHighlightRow) {
+                currentHighlightRow.classList.remove('bot-highlight');
+                currentHighlightRow = null;
+            }
+        }
+        
+        function closeModalOutside(event) { 
+            if (event.target === document.getElementById('score-modal')) closeModal(); 
+        }
 
-        window.submitScore = function() {
-            const lang = localStorage.getItem('snake_lang') || 'ru';
+        function levenshteinDistance(a, b) {
+            if (a.length === 0) return b.length;
+            if (b.length === 0) return a.length;
+            const matrix = [];
+            for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+            for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+            for (let i = 1; i <= b.length; i++) {
+                for (let j = 1; j <= a.length; j++) {
+                    if (b[i-1] === a[j-1]) matrix[i][j] = matrix[i-1][j-1];
+                    else matrix[i][j] = Math.min(
+                        matrix[i-1][j-1] + 1,
+                        matrix[i][j-1] + 1,
+                        matrix[i-1][j] + 1
+                    );
+                }
+            }
+            return matrix[b.length][a.length];
+        }
+
+        function getThreshold(length) {
+            if (length <= 4) return 1;
+            if (length <= 8) return 2;
+            if (length <= 12) return 3;
+            return 4;
+        }
+
+        function searchPlayer(query) {
+            clearTimeout(searchTimeout);
+
+            if (currentHighlightRow) {
+                currentHighlightRow.classList.remove('bot-highlight');
+                currentHighlightRow = null;
+            }
+
+            const bot = document.getElementById('player-search-bot');
+            const result = document.getElementById('bot-result');
+
+            query = query.trim();
+
+            if (query.length < 2) {
+                bot.classList.remove('show');
+                result.innerHTML = '';
+                return;
+            }
+
+            bot.classList.add('show');
+            result.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px; color: #88ddff; padding: 8px;">
+                    <span class="search-loader"></span>
+                    <span>${translations[curLang()].botSearching}</span>
+                </div>
+            `;
+
+            searchTimeout = setTimeout(() => {
+                const lang = curLang();
+                const t = translations[lang];
+                const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
+
+                const exact = data.find(e => e.name.toLowerCase() === query.toLowerCase());
+                const startsWith = data.filter(e =>
+                    e.name.toLowerCase().startsWith(query.toLowerCase()) &&
+                    e.name.toLowerCase() !== query.toLowerCase()
+                ).slice(0, 3);
+
+                let typoMatches = [];
+                if (startsWith.length === 0 && query.length >= 2) {
+                    const threshold = getThreshold(query.length);
+                    typoMatches = data
+                        .map(e => ({
+                            entry: e,
+                            dist: levenshteinDistance(query.toLowerCase(), e.name.toLowerCase())
+                        }))
+                        .filter(x => x.dist > 0 && x.dist <= threshold)
+                        .sort((a, b) => a.dist - b.dist)
+                        .slice(0, 3)
+                        .map(x => x.entry);
+                }
+
+                if (exact) {
+                    const sortedData = [...data].sort((a, b) => {
+                        if (b.snakes !== a.snakes) return b.snakes - a.snakes;
+                        return new Date(b.dateRaw) - new Date(a.dateRaw);
+                    });
+                    const rank = sortedData.findIndex(e => e.name.toLowerCase() === query.toLowerCase()) + 1;
+                    const medals = { 1: '🥇', 2: '🥈', 3: '🥉' };
+                    const medal = medals[rank] || '';
+
+                    result.innerHTML = `
+                        <div class="player-name">${medal} ${escapeHtml(exact.name)}</div>
+                        <div class="player-game">${escapeHtml(exact.game)}</div>
+                        <div class="player-score">${exact.snakes} 🐍</div>
+                        <div class="bot-hint">${t.botYou}</div>
+                        <a href="#" class="btn-find-in-table" onclick="highlightInTable('${escapeHtml(exact.name).replace(/'/g, "\\'")}'); return false;">
+                            ${t.botShowInTable}
+                        </a>
+                    `;
+
+                } else if (startsWith.length > 0) {
+                    const list = startsWith.map(p =>
+                        `<div class="similar-player">
+                            <strong>${escapeHtml(p.name)}</strong> — <span style="color: #ff8866; font-weight: 700;">${p.snakes} 🐍</span>
+                        </div>`
+                    ).join('');
+
+                    result.innerHTML = `
+                        <div style="color: #88ddff; font-size: 13px; margin-bottom: 8px;">${t.botSimilar}</div>
+                        ${list}
+                        <div class="bot-hint" style="margin-top: 10px;">${t.botHint}</div>
+                    `;
+
+                } else if (typoMatches.length > 0) {
+                    const list = typoMatches.map(p =>
+                        `<div class="similar-player">
+                            <strong>${escapeHtml(p.name)}</strong> — <span style="color: #ff8866; font-weight: 700;">${p.snakes} 🐍</span>
+                        </div>`
+                    ).join('');
+
+                    result.innerHTML = `
+                        <div style="color: #ffcc00; font-size: 13px; margin-bottom: 8px;">${t.botTypo}</div>
+                        ${list}
+                        <div class="bot-hint" style="margin-top: 10px;">${t.botTypoHint}</div>
+                    `;
+
+                } else {
+                    result.innerHTML = `
+                        <div class="bot-not-found">
+                            ${t.botNotFound}
+                            <div class="welcome">${t.botWelcome}</div>
+                        </div>
+                    `;
+                }
+            }, 300);
+        }
+
+        function highlightInTable(name) {
+            if (currentHighlightRow) {
+                currentHighlightRow.classList.remove('bot-highlight');
+            }
+
+            const rows = document.querySelectorAll('#global-leaderboard-body tr');
+            for (let row of rows) {
+                const cells = row.querySelectorAll('td');
+                if (cells[1] && cells[1].textContent.includes(name)) {
+                    row.classList.add('bot-highlight');
+                    currentHighlightRow = row;
+                    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => {
+                        if (row.classList.contains('bot-highlight')) {
+                            row.classList.remove('bot-highlight');
+                        }
+                    }, 5000);
+                    break;
+                }
+            }
+            closeModal();
+        }
+
+        function decodeToken(str) {
+            try {
+                const data = JSON.parse(decodeURIComponent(escape(atob(str))));
+                const expected = btoa(unescape(encodeURIComponent(
+                    data.g + '|' + data.s + '|' + data.t + '|' + data.n + '|' + SECRET_SALT
+                )));
+                if (data.sig !== expected) return null;
+                if (Date.now() - data.t > 86400000) return null;
+                return data;
+            } catch (e) { return null; }
+        }
+        
+        function isTokenUsed(nonce) {
+            return (JSON.parse(localStorage.getItem(USED_TOKENS_KEY) || '[]')).includes(nonce);
+        }
+        
+        function markTokenUsed(nonce) {
+            const used = JSON.parse(localStorage.getItem(USED_TOKENS_KEY) || '[]');
+            used.push(nonce);
+            localStorage.setItem(USED_TOKENS_KEY, JSON.stringify(used));
+        }
+
+        function submitScore() {
+            const lang = curLang();
+            const t = translations[lang];
+
+            if (!pendingToken) { alert(t.errorInvalid); return; }
+            if (isTokenUsed(pendingToken.n)) {
+                alert(t.errorUsed);
+                pendingToken = null; closeModal(); return;
+            }
+
             const name = document.getElementById('player-name').value.trim();
-            const game = document.getElementById('game-select').value;
-            const score = parseInt(document.getElementById('score-input').value);
-
-            if (!name) { alert(translations[lang].errorName); return; }
-            if (!score || score < 1 || score > 999) { alert(translations[lang].errorScore); return; }
-
-            const newEntry = {
-                name: name,
-                game: game,
-                snakes: score,
-                date: new Date().toLocaleDateString(),
-                dateRaw: new Date().toISOString()
-            };
-            lastAddedDateRaw = newEntry.dateRaw;
+            if (!name) { alert(t.errorName); return; }
 
             const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
-            data.push(newEntry);
+            const exact = data.find(e => e.name.toLowerCase() === name.toLowerCase());
+
+            if (!exact) {
+                const threshold = 1;
+                const similar = data
+                    .map(e => ({ entry: e, dist: levenshteinDistance(name.toLowerCase(), e.name.toLowerCase()) }))
+                    .filter(x => x.dist > 0 && x.dist <= threshold)
+                    .sort((a, b) => a.dist - b.dist);
+
+                if (similar.length > 0) {
+                    const s = similar[0];
+                    const msg = t.confirmSimilar
+                        .replace('{name}', name)
+                        .replace('{similar}', s.entry.name)
+                        .replace('{dist}', s.dist);
+                    if (!confirm(msg)) {
+                        return;
+                    }
+                }
+            }
+
+            const game = pendingToken.g;
+            const add = pendingToken.s;
+            const existing = data.find(e => e.name.toLowerCase() === name.toLowerCase());
+            let newRowKey;
+            let isUpdate = false;
+
+            if (existing) {
+                existing.snakes += add;
+                existing.date = new Date().toLocaleDateString();
+                existing.dateRaw = new Date().toISOString();
+                newRowKey = existing.dateRaw;
+                isUpdate = true;
+            } else {
+                const entry = {
+                    name: name,
+                    game: game,
+                    snakes: add,
+                    date: new Date().toLocaleDateString(),
+                    dateRaw: new Date().toISOString()
+                };
+                data.push(entry);
+                newRowKey = entry.dateRaw;
+            }
+
             localStorage.setItem(GLOBAL_LB_KEY, JSON.stringify(data));
+            markTokenUsed(pendingToken.n);
+            pendingToken = null;
+            lastAddedDateRaw = newRowKey;
 
             closeModal();
-            showToastCustom(translations[lang].successMsg);
+            showToastCustom(isUpdate ? t.successUpdated : t.successMsg);
             loadGlobalLeaderboard();
-        };
+        }
 
-        window.loadGlobalLeaderboard = function() {
+        function loadGlobalLeaderboard() {
             const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
             const tbody = document.getElementById('global-leaderboard-body');
             const emptyState = document.getElementById('empty-state');
             tbody.innerHTML = '';
-
             if (data.length === 0) { emptyState.style.display = 'block'; return; }
             emptyState.style.display = 'none';
-
             data.sort((a, b) => {
                 if (b.snakes !== a.snakes) return b.snakes - a.snakes;
                 return new Date(b.dateRaw) - new Date(a.dateRaw);
             });
-
             let newRow = null;
             data.slice(0, 50).forEach((entry, index) => {
                 const tr = document.createElement('tr');
@@ -464,88 +820,82 @@
                     <td class="score-cell">${entry.snakes} 🐍</td>
                     <td style="text-align: right; color: #8899aa; font-size: 14px;">${entry.date}</td>
                 `;
-                if (entry.dateRaw === lastAddedDateRaw) {
-                    tr.classList.add('highlight-row');
-                    newRow = tr;
-                }
+                if (entry.dateRaw === lastAddedDateRaw) { tr.classList.add('highlight-row'); newRow = tr; }
                 tbody.appendChild(tr);
             });
-
             if (newRow) {
                 setTimeout(() => newRow.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
                 lastAddedDateRaw = null;
             }
-        };
+        }
 
-        window.clearGlobalLeaderboard = function() {
-            const lang = localStorage.getItem('snake_lang') || 'ru';
-            if (confirm(translations[lang].confirmClear)) {
+        function clearGlobalLeaderboard() {
+            if (confirm(translations[curLang()].confirmClear)) {
                 localStorage.removeItem(GLOBAL_LB_KEY);
+                localStorage.removeItem(USED_TOKENS_KEY);
                 loadGlobalLeaderboard();
             }
-        };
+        }
 
-        window.copyPhone = function() {
+        function copyPhone() {
             navigator.clipboard.writeText("89202275676").then(() => showToast()).catch(() => {
                 const textArea = document.createElement("textarea");
-                textArea.value = "89202275676"; document.body.appendChild(textArea); textArea.select();
-                document.execCommand("copy"); document.body.removeChild(textArea); showToast();
+                textArea.value = "89202275676"; 
+                document.body.appendChild(textArea); 
+                textArea.select();
+                document.execCommand("copy"); 
+                document.body.removeChild(textArea); 
+                showToast();
             });
-        };
+        }
 
         function showToast() {
             const toast = document.getElementById('copy-toast');
             toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300);
+            setTimeout(() => { 
+                toast.classList.remove('show'); 
+                setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300); 
             }, 2500);
         }
-
+        
         function showToastCustom(msg) {
             const toast = document.getElementById('copy-toast');
             toast.textContent = msg;
             toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300);
+            setTimeout(() => { 
+                toast.classList.remove('show'); 
+                setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300); 
             }, 2500);
         }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div'); div.textContent = text; return div.innerHTML;
+        
+        function escapeHtml(text) { 
+            const div = document.createElement('div'); 
+            div.textContent = text; 
+            return div.innerHTML; 
         }
 
+        switchLang(curLang());
         loadGlobalLeaderboard();
 
-        // ============================================================
-        // ✅ ПЕРЕХОД ИЗ ИГРЫ: ?game=...&score=...
-        // Автоматически: вкладка "Результаты" + открытая форма с выбранной игрой
-        // ============================================================
         function handleParamsFromGame() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const gameFromUrl = urlParams.get('game');
-            const scoreFromUrl = urlParams.get('score');
-
-            if (!gameFromUrl) return;
-
+            const reward = new URLSearchParams(window.location.search).get('reward');
+            if (!reward) return;
             window.history.replaceState({}, document.title, window.location.pathname);
 
             setTimeout(() => {
                 switchTab('leaderboard', null);
+                const data = decodeToken(reward);
 
+                if (!data) { showToastCustom(translations[curLang()].errorInvalid); return; }
+                if (isTokenUsed(data.n)) { showToastCustom(translations[curLang()].errorUsed); return; }
+
+                pendingToken = data;
                 setTimeout(() => {
+                    document.getElementById('game-display').textContent = data.g;
+                    document.getElementById('score-display').textContent = '+' + data.s + ' 🐍';
+                    document.getElementById('player-name').value = '';
                     openModal();
-
-                    setTimeout(() => {
-                        const gameSelect = document.getElementById('game-select');
-                        const match = Array.from(gameSelect.options).find(opt => opt.value === gameFromUrl);
-                        if (match) gameSelect.value = gameFromUrl;
-                        if (scoreFromUrl && !isNaN(parseInt(scoreFromUrl))) {
-                            document.getElementById('score-input').value = parseInt(scoreFromUrl);
-                        }
-                        document.getElementById('player-name').focus();
-                    }, 300);
+                    setTimeout(() => document.getElementById('player-name').focus(), 300);
                 }, 400);
             }, 500);
         }
