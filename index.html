@@ -79,7 +79,6 @@
         }
         .play-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 30px rgba(76, 255, 128, 0.5); }
 
-        /* МОДАЛЬНОЕ ОКНО С ЗАЩИТОЙ */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
@@ -99,24 +98,21 @@
         .modal-close:hover { color: #ff4444; }
         .form-group { margin-bottom: 16px; }
         .form-label { display: block; font-size: 13px; color: #aaccbb; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-input {
+        .form-input, .form-select {
             width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
             color: #ffffff; font-size: 16px; font-family: 'Inter', sans-serif; transition: all 0.3s; outline: none;
         }
-        .form-input:focus { border-color: #4cff80; box-shadow: 0 0 0 3px rgba(76, 255, 128, 0.15); }
-        .form-input:disabled { background: rgba(76, 255, 128, 0.05); border-color: rgba(76, 255, 128, 0.3); color: #4cff80; cursor: not-allowed; }
-        
-        .verified-badge {
-            display: none; align-items: center; gap: 6px; margin-top: 8px;
-            font-size: 13px; color: #4cff80; font-weight: 600;
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234cff80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 18px;
+            padding-right: 40px;
         }
-        .verified-badge.show { display: flex; }
-        
-        .reward-hint {
-            font-size: 12px; color: #8899aa; margin-top: 6px; line-height: 1.4;
-            background: rgba(255, 255, 255, 0.03); padding: 10px; border-radius: 8px; border-left: 3px solid #4cff80;
-        }
+        .form-select option { background: #15152a; color: #ffffff; padding: 10px; }
+        .form-input:focus, .form-select:focus { border-color: #4cff80; box-shadow: 0 0 0 3px rgba(76, 255, 128, 0.15); }
         .submit-btn {
             width: 100%; padding: 16px; margin-top: 10px;
             background: linear-gradient(135deg, #4cff80, #22aa55); color: #000;
@@ -124,10 +120,8 @@
             cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;
             box-shadow: 0 6px 20px rgba(76, 255, 128, 0.3);
         }
-        .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(76, 255, 128, 0.5); }
-        .submit-btn:disabled { background: #333; color: #666; cursor: not-allowed; box-shadow: none; }
+        .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(76, 255, 128, 0.5); }
 
-        /* ТАБЛИЦА */
         .leaderboard-container {
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
             backdrop-filter: blur(20px); border: 1px solid rgba(255, 100, 100, 0.2);
@@ -160,6 +154,15 @@
         .game-tag { display: inline-block; padding: 4px 10px; background: rgba(76, 255, 128, 0.1); border: 1px solid rgba(76, 255, 128, 0.3); border-radius: 6px; font-size: 12px; color: #4cff80; font-weight: 600; }
         .score-cell { text-align: right; font-weight: 800; color: #ff6666; font-size: 18px; }
         .empty-state { text-align: center; padding: 40px; color: #667788; font-size: 16px; }
+        tr.highlight-row td {
+            background: rgba(76, 255, 128, 0.15) !important;
+            box-shadow: inset 0 0 0 1px rgba(76, 255, 128, 0.5);
+            animation: rowPulse 1.5s ease-in-out 3;
+        }
+        @keyframes rowPulse {
+            0%, 100% { background: rgba(76,255,128,0.15); }
+            50% { background: rgba(76,255,128,0.35); }
+        }
 
         .support-footer {
             background: linear-gradient(135deg, rgba(76, 255, 128, 0.05), rgba(34, 136, 255, 0.05));
@@ -206,8 +209,8 @@
         </header>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('games')" data-i18n="tabGames">🎮 Игры</button>
-            <button class="tab-btn" onclick="switchTab('leaderboard')" data-i18n="tabLeaderboard">🏆 Результаты</button>
+            <button class="tab-btn active" onclick="switchTab('games', event)" data-i18n="tabGames">🎮 Игры</button>
+            <button class="tab-btn" onclick="switchTab('leaderboard', event)" data-i18n="tabLeaderboard">🏆 Результаты</button>
         </div>
 
         <div id="tab-games" class="section active">
@@ -239,13 +242,13 @@
                 <div class="game-card">
                     <div class="game-icon">🐭</div>
                     <div class="game-title" data-i18n="game5Title">Змея и Мышка</div>
-                    <div class="game-desc" data-i18n="game5Desc">🐍 - 🐭 Змея и Мышка — 3D-игра. Управляйте змеёй, которая должна поймать мышку 3 раза за 3 минуты. Мышка убегает, прячется в норки.</div>
+                    <div class="game-desc" data-i18n="game5Desc">🐍 -  Змея и Мышка — 3D-игра. Управляйте змеёй, которая должна поймать мышку 3 раза за 3 минуты. Мышка убегает, прячется в норки.</div>
                     <a href="https://anti-a-i-snake-and-mouse.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🍎</div>
                     <div class="game-title" data-i18n="game6Title">Змея и Яблоки</div>
-                    <div class="game-desc" data-i18n="game6Desc">🐍 - 🍎 Anti‑AI Змея и Яблоки. 3D‑игра, где змея из стекла с подсветкой собирает яблоки за 3 минуты.</div>
+                    <div class="game-desc" data-i18n="game6Desc">🐍 -  Anti‑AI Змея и Яблоки. 3D‑игра, где змея из стекла с подсветкой собирает яблоки за 3 минуты.</div>
                     <a href="https://anti-ai-snake-apples.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
             </div>
@@ -289,23 +292,12 @@
         <div id="copy-toast" class="copy-toast">✅ Номер скопирован в буфер обмена!</div>
     </div>
 
-    <!-- МОДАЛЬНОЕ ОКНО С ЗАЩИТОЙ ОТ НАКРУТОК -->
+    <!-- ✅ НОВАЯ ФОРМА: БЕЗ КОДА! Только Имя + Игра + Змеи -->
     <div id="score-modal" class="modal-overlay" onclick="closeModalOutside(event)">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="modal-title" data-i18n="modalTitle">🏆 Добавить результат</div>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
-            </div>
-            
-            <div class="form-group">
-                <label class="form-label" data-i18n="labelCode">Код награды из игры</label>
-                <input type="text" id="reward-code" class="form-input" placeholder="Вставьте код сюда..." oninput="verifyCode()">
-                <div class="reward-hint" data-i18n="rewardHint">
-                    💡 В конце игры нажмите кнопку «Получить код награды». Он автоматически скопируется. Вставьте его сюда, чтобы система подтвердила ваш честный результат.
-                </div>
-                <div id="verified-badge" class="verified-badge">
-                    ✅ <span data-i18n="verified">Код проверен. Результат защищён от изменений.</span>
-                </div>
             </div>
 
             <div class="form-group">
@@ -313,61 +305,70 @@
                 <input type="text" id="player-name" class="form-input" maxlength="20" placeholder="Например: Змейка_Мастер">
             </div>
 
-            <!-- Скрытые поля, которые заполняются автоматически из кода -->
-            <input type="hidden" id="decoded-game">
-            <input type="hidden" id="decoded-score">
+            <div class="form-group">
+                <label class="form-label" data-i18n="labelGame">Игра</label>
+                <select id="game-select" class="form-select">
+                    <option value="🐍 - 🐜 Змея и Муравей">🐍 - 🐜 Змея и Муравей</option>
+                    <option value="🐍 -  Змея и Мелодия">🐍 -  Змея и Мелодия</option>
+                    <option value="🐍 -  Змея и Пузыри">🐍 - 🫧 Змея и Пузыри</option>
+                    <option value="🐍 -  Змея и Стрекоза">🐍 -  Змея и Стрекоза</option>
+                    <option value="🐍 -  Змея и Мышка">🐍 - 🐭 Змея и Мышка</option>
+                    <option value="🐍 -  Змея и Яблоки">🐍 - 🍎 Змея и Яблоки</option>
+                </select>
+            </div>
 
-            <button id="submit-btn" class="submit-btn" onclick="submitScore()" disabled data-i18n="submitBtn">Сначала вставьте код награды</button>
+            <div class="form-group">
+                <label class="form-label" data-i18n="labelScore">Красных змей 🐍</label>
+                <input type="number" id="score-input" class="form-input" min="1" max="999" value="1">
+            </div>
+
+            <button id="submit-btn" class="submit-btn" onclick="submitScore()" data-i18n="submitBtn">Отправить на доску</button>
         </div>
     </div>
 
     <script>
         const GLOBAL_LB_KEY = 'snake_global_leaderboard_v1';
-        const SECRET_SALT = 'AntonKuznetsovSnakeProject2026'; // Простая защита от подделки кода вручную
+        let lastAddedDateRaw = null;
 
         const translations = {
             ru: {
                 title: "ЗМЕЯ", subtitle: "Архив игр и Доска почета", tabGames: "🎮 Игры", tabLeaderboard: "🏆 Результаты",
-                game1Title: "Змея и Муравей", game1Desc: "🐍 - 🐜 Анти-ИИ Змея и Муравей. Управляйте змеёй, которая должна аккуратно переползти через муравиную тропу и муравейник, не разбудив стражу.",
-                game2Title: "Змея и Мелодия", game2Desc: "🐍 - 🎵 Анти-ИИ: Змея и Мелодия (Ночная версия). Музыкальная 3D-игра, где вы управляете змеёй, повторяя мелодии на светящихся плитках.",
-                game3Title: "Змея и Пузыри", game3Desc: "🐍 - 🫧 3D игра \"Змея и Мыльные пузыри\". Ломай пузыри хвостом змеи! Динамичная аркада с красивыми визуальными эффектами.",
-                game4Title: "Змея и Стрекоза", game4Desc: "🐍 - 🪰 Анти ИИ Змея и Стрекоза. Управляйте змеей в 3D-мире и охотитесь на проворную стрекозу! Поймайте её 3 раза за 3 минуты.",
+                game1Title: "Змея и Муравей", game1Desc: "🐍 -  Анти-ИИ Змея и Муравей. Управляйте змеёй, которая должна аккуратно переползти через муравиную тропу и муравейник, не разбудив стражу.",
+                game2Title: "Змея и Мелодия", game2Desc: "🐍 -  Анти-ИИ: Змея и Мелодия (Ночная версия). Музыкальная 3D-игра, где вы управляете змеёй, повторяя мелодии на светящихся плитках.",
+                game3Title: "Змея и Пузыри", game3Desc: "🐍 -  3D игра \"Змея и Мыльные пузыри\". Ломай пузыри хвостом змеи! Динамичная аркада с красивыми визуальными эффектами.",
+                game4Title: "Змея и Стрекоза", game4Desc: "🐍 -  Анти ИИ Змея и Стрекоза. Управляйте змеей в 3D-мире и охотитесь на проворную стрекозу! Поймайте её 3 раза за 3 минуты.",
                 game5Title: "Змея и Мышка", game5Desc: "🐍 - 🐭 Змея и Мышка — 3D-игра. Управляйте змеёй, которая должна поймать мышку 3 раза за 3 минуты. Мышка убегает, прячется в норки.",
-                game6Title: "Змея и Яблоки", game6Desc: "🐍 - 🍎 Anti‑AI Змея и Яблоки. 3D‑игра, где змея из стекла с подсветкой собирает яблоки за 3 минуты.",
+                game6Title: "Змея и Яблоки", game6Desc: "🐍 -  Anti‑AI Змея и Яблоки. 3D‑игра, где змея из стекла с подсветкой собирает яблоки за 3 минуты.",
                 play: "▶ Играть", hallOfFame: "🐍 Зал славы Красных Змей", addResult: "➕ Добавить результат", clearAll: "🗑 Очистить",
                 thPlayer: "Игрок", thGame: "Игра", thSnakes: "Змеи", thDate: "Дата",
                 emptyState: "Пока нет записанных результатов. Станьте первым героем!",
-                modalTitle: "🏆 Добавить результат", labelCode: "Код награды из игры", labelName: "Ваше имя или никнейм",
-                rewardHint: "💡 В конце игры нажмите кнопку «Получить код награды». Он автоматически скопируется. Вставьте его сюда, чтобы система подтвердила ваш честный результат.",
-                verified: "Код проверен. Результат защищён от изменений.",
-                submitBtn: "Отправить на доску", submitBtnDisabled: "Сначала вставьте код награды",
+                modalTitle: "🏆 Добавить результат", labelName: "Ваше имя или никнейм",
+                labelGame: "Игра", labelScore: "Красных змей 🐍",
+                submitBtn: "Отправить на доску",
                 confirmClear: "Вы уверены, что хотите стереть ВСЕ результаты? Это действие нельзя отменить.",
-                successMsg: "✅ Результат успешно добавлен!",
+                successMsg: "✅ Результат добавлен! Ваше имя в Зале славы!",
                 errorName: "Пожалуйста, введите имя",
-                errorInvalidCode: "Неверный или подделанный код награды",
-                errorExpiredCode: "Срок действия кода истёк (более 24 часов)",
+                errorScore: "Введите корректное количество змей (1-999)",
                 pageTitle: "ЗМЕЯ — Архив игр и Доска почета"
             },
             en: {
                 title: "SNAKE", subtitle: "Game Archive & Hall of Fame", tabGames: "🎮 Games", tabLeaderboard: "🏆 Results",
-                game1Title: "Snake & Ant", game1Desc: "🐍 - 🐜 Anti-AI Snake and Ant. Control a snake that must carefully crawl through the ant trail and anthill without waking the guard.",
-                game2Title: "Snake & Melody", game2Desc: "🐍 - 🎵 Anti-AI: Snake and Melody (Night Version). Musical 3D game where you control a snake, repeating melodies on glowing tiles.",
-                game3Title: "Snake & Bubbles", game3Desc: "🐍 - 🫧 3D game \"Snake and Soap Bubbles\". Break bubbles with the snake's tail! Dynamic arcade with beautiful visual effects.",
+                game1Title: "Snake & Ant", game1Desc: "🐍 -  Anti-AI Snake and Ant. Control a snake that must carefully crawl through the ant trail and anthill without waking the guard.",
+                game2Title: "Snake & Melody", game2Desc: "🐍 -  Anti-AI: Snake and Melody (Night Version). Musical 3D game where you control a snake, repeating melodies on glowing tiles.",
+                game3Title: "Snake & Bubbles", game3Desc: "🐍 -  3D game \"Snake and Soap Bubbles\". Break bubbles with the snake's tail! Dynamic arcade with beautiful visual effects.",
                 game4Title: "Snake & Dragonfly", game4Desc: "🐍 - 🪰 Anti-AI Snake and Dragonfly. Control a snake in a 3D world and hunt an agile dragonfly! Catch it 3 times in 3 minutes.",
-                game5Title: "Snake & Mouse", game5Desc: "🐍 - 🐭 Snake and Mouse - 3D game. Control a snake that must catch a mouse 3 times in 3 minutes. The mouse runs away, hides in holes.",
+                game5Title: "Snake & Mouse", game5Desc: "🐍 -  Snake and Mouse - 3D game. Control a snake that must catch a mouse 3 times in 3 minutes. The mouse runs away, hides in holes.",
                 game6Title: "Snake & Apples", game6Desc: "🐍 - 🍎 Anti-AI Snake and Apples. 3D game where a glass snake with backlight collects apples in 3 minutes.",
                 play: "▶ Play", hallOfFame: "🐍 Red Snakes Hall of Fame", addResult: "➕ Add Result", clearAll: "🗑 Clear",
                 thPlayer: "Player", thGame: "Game", thSnakes: "Snakes", thDate: "Date",
                 emptyState: "No recorded results yet. Be the first hero!",
-                modalTitle: "🏆 Add Result", labelCode: "Reward code from game", labelName: "Your name or nickname",
-                rewardHint: "💡 At the end of the game, click 'Get reward code'. It will copy automatically. Paste it here so the system can verify your honest result.",
-                verified: "Code verified. Result is protected from changes.",
-                submitBtn: "Submit to board", submitBtnDisabled: "Please paste reward code first",
+                modalTitle: "🏆 Add Result", labelName: "Your name or nickname",
+                labelGame: "Game", labelScore: "Red snakes 🐍",
+                submitBtn: "Submit to board",
                 confirmClear: "Are you sure you want to erase ALL results? This action cannot be undone.",
-                successMsg: "✅ Result successfully added!",
+                successMsg: "✅ Result added! Your name is in the Hall of Fame!",
                 errorName: "Please enter a name",
-                errorInvalidCode: "Invalid or tampered reward code",
-                errorExpiredCode: "Code has expired (older than 24 hours)",
+                errorScore: "Enter a valid number of snakes (1-999)",
                 pageTitle: "SNAKE — Game Archive & Hall of Fame"
             }
         };
@@ -382,90 +383,42 @@
             document.title = translations[lang].pageTitle;
             localStorage.setItem('snake_lang', lang);
             if (document.getElementById('tab-leaderboard').classList.contains('active')) loadGlobalLeaderboard();
-            
-            // Обновляем текст кнопки при смене языка
-            const submitBtn = document.getElementById('submit-btn');
-            const code = document.getElementById('reward-code').value;
-            submitBtn.textContent = code ? translations[lang].submitBtn : translations[lang].submitBtnDisabled;
         };
         const savedLang = localStorage.getItem('snake_lang') || 'ru';
         switchLang(savedLang);
 
-        window.switchTab = function(tabName) {
+        window.switchTab = function(tabName, event) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`tab-${tabName}`).classList.add('active');
-            event.target.classList.add('active');
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${tabName}'`)) {
+                        b.classList.add('active');
+                    }
+                });
+            }
             if (tabName === 'leaderboard') loadGlobalLeaderboard();
         };
 
         window.openModal = function() {
             document.getElementById('score-modal').classList.add('show');
-            document.getElementById('reward-code').value = '';
             document.getElementById('player-name').value = '';
-            document.getElementById('verified-badge').classList.remove('show');
-            document.getElementById('submit-btn').disabled = true;
-            const lang = localStorage.getItem('snake_lang') || 'ru';
-            document.getElementById('submit-btn').textContent = translations[lang].submitBtnDisabled;
-        }
-        window.closeModal = function() { document.getElementById('score-modal').classList.remove('show'); }
-        window.closeModalOutside = function(event) { if (event.target === document.getElementById('score-modal')) closeModal(); }
-
-        // ===== ПРОВЕРКА КОДА НАГРАДЫ =====
-        window.verifyCode = function() {
-            const lang = localStorage.getItem('snake_lang') || 'ru';
-            const codeInput = document.getElementById('reward-code').value.trim();
-            const badge = document.getElementById('verified-badge');
-            const submitBtn = document.getElementById('submit-btn');
-
-            if (!codeInput) {
-                badge.classList.remove('show');
-                submitBtn.disabled = true;
-                submitBtn.textContent = translations[lang].submitBtnDisabled;
-                return;
-            }
-
-            try {
-                // Декодируем Base64
-                const decodedStr = atob(codeInput);
-                const data = JSON.parse(decodedStr);
-
-                // Проверяем подпись (простая защита от ручного создания кода)
-                const expectedSig = btoa(data.g + data.s + data.t + SECRET_SALT);
-                if (data.sig !== expectedSig) {
-                    throw new Error("Tampered");
-                }
-
-                // Проверяем, что код не старше 24 часов (86400000 мс)
-                if (Date.now() - data.t > 86400000) {
-                    alert(translations[lang].errorExpiredCode);
-                    badge.classList.remove('show');
-                    submitBtn.disabled = true;
-                    return;
-                }
-
-                // Всё отлично! Заполняем скрытые поля и показываем бейдж
-                document.getElementById('decoded-game').value = data.g;
-                document.getElementById('decoded-score').value = data.s;
-                badge.classList.add('show');
-                submitBtn.disabled = false;
-                submitBtn.textContent = translations[lang].submitBtn;
-
-            } catch (e) {
-                badge.classList.remove('show');
-                submitBtn.disabled = true;
-                submitBtn.textContent = translations[lang].submitBtnDisabled;
-            }
-        }
+            document.getElementById('score-input').value = 1;
+        };
+        window.closeModal = function() { document.getElementById('score-modal').classList.remove('show'); };
+        window.closeModalOutside = function(event) { if (event.target === document.getElementById('score-modal')) closeModal(); };
 
         window.submitScore = function() {
             const lang = localStorage.getItem('snake_lang') || 'ru';
             const name = document.getElementById('player-name').value.trim();
-            const game = document.getElementById('decoded-game').value;
-            const score = parseInt(document.getElementById('decoded-score').value);
+            const game = document.getElementById('game-select').value;
+            const score = parseInt(document.getElementById('score-input').value);
 
             if (!name) { alert(translations[lang].errorName); return; }
-            if (!game || isNaN(score)) { alert(translations[lang].errorInvalidCode); return; }
+            if (!score || score < 1 || score > 999) { alert(translations[lang].errorScore); return; }
 
             const newEntry = {
                 name: name,
@@ -474,6 +427,7 @@
                 date: new Date().toLocaleDateString(),
                 dateRaw: new Date().toISOString()
             };
+            lastAddedDateRaw = newEntry.dateRaw;
 
             const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
             data.push(newEntry);
@@ -482,7 +436,7 @@
             closeModal();
             showToastCustom(translations[lang].successMsg);
             loadGlobalLeaderboard();
-        }
+        };
 
         window.loadGlobalLeaderboard = function() {
             const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
@@ -498,8 +452,8 @@
                 return new Date(b.dateRaw) - new Date(a.dateRaw);
             });
 
-            const topData = data.slice(0, 50);
-            topData.forEach((entry, index) => {
+            let newRow = null;
+            data.slice(0, 50).forEach((entry, index) => {
                 const tr = document.createElement('tr');
                 const rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : 'rank-other'));
                 const medal = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : ''));
@@ -510,8 +464,17 @@
                     <td class="score-cell">${entry.snakes} 🐍</td>
                     <td style="text-align: right; color: #8899aa; font-size: 14px;">${entry.date}</td>
                 `;
+                if (entry.dateRaw === lastAddedDateRaw) {
+                    tr.classList.add('highlight-row');
+                    newRow = tr;
+                }
                 tbody.appendChild(tr);
             });
+
+            if (newRow) {
+                setTimeout(() => newRow.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
+                lastAddedDateRaw = null;
+            }
         };
 
         window.clearGlobalLeaderboard = function() {
@@ -538,7 +501,7 @@
                 setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300);
             }, 2500);
         }
-        
+
         function showToastCustom(msg) {
             const toast = document.getElementById('copy-toast');
             toast.textContent = msg;
@@ -554,6 +517,39 @@
         }
 
         loadGlobalLeaderboard();
+
+        // ============================================================
+        // ✅ ПЕРЕХОД ИЗ ИГРЫ: ?game=...&score=...
+        // Автоматически: вкладка "Результаты" + открытая форма с выбранной игрой
+        // ============================================================
+        function handleParamsFromGame() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameFromUrl = urlParams.get('game');
+            const scoreFromUrl = urlParams.get('score');
+
+            if (!gameFromUrl) return;
+
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            setTimeout(() => {
+                switchTab('leaderboard', null);
+
+                setTimeout(() => {
+                    openModal();
+
+                    setTimeout(() => {
+                        const gameSelect = document.getElementById('game-select');
+                        const match = Array.from(gameSelect.options).find(opt => opt.value === gameFromUrl);
+                        if (match) gameSelect.value = gameFromUrl;
+                        if (scoreFromUrl && !isNaN(parseInt(scoreFromUrl))) {
+                            document.getElementById('score-input').value = parseInt(scoreFromUrl);
+                        }
+                        document.getElementById('player-name').focus();
+                    }, 300);
+                }, 400);
+            }, 500);
+        }
+        handleParamsFromGame();
     </script>
 </body>
 </html>
