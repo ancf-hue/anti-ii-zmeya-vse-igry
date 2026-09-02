@@ -42,6 +42,7 @@
         .title-icon { height: 0.85em; width: auto; vertical-align: middle; filter: drop-shadow(0 0 15px rgba(76, 255, 128, 0.6)); }
         @keyframes titlePulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.2); } }
         .main-subtitle { font-size: 18px; color: #aaccbb; letter-spacing: 2px; text-transform: uppercase; }
+        .games-counter { display: inline-block; padding: 4px 12px; background: rgba(76, 255, 128, 0.15); border: 1px solid rgba(76, 255, 128, 0.3); border-radius: 20px; font-size: 13px; color: #4cff80; margin-left: 10px; font-weight: 700; }
         .tabs { display: flex; justify-content: center; gap: 16px; margin-bottom: 30px; flex-wrap: wrap; }
         .tab-btn {
             padding: 16px 36px; font-size: 15px; font-weight: 800; color: #8899aa;
@@ -119,7 +120,6 @@
         }
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(76, 255, 128, 0.5); }
 
-        /* 🤖 БОТ */
         #player-search-bot {
             display: none;
             background: linear-gradient(135deg, rgba(76, 255, 128, 0.08), rgba(34, 170, 255, 0.05));
@@ -175,7 +175,6 @@
             cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase;
         }
         .clear-btn:hover { background: linear-gradient(135deg, rgba(255, 50, 50, 0.25), rgba(255, 50, 50, 0.1)); transform: translateY(-2px); }
-        /* 🔍 НАЙТИ МЕНЯ */
         .find-me-btn {
             padding: 12px 22px; background: linear-gradient(135deg, rgba(76, 255, 128, 0.2), rgba(34, 170, 255, 0.15));
             border: 1px solid rgba(76, 255, 128, 0.4); color: #4cff80; border-radius: 12px;
@@ -256,7 +255,10 @@
                 <img src="favicon.ico" alt="icon" class="title-icon">
                 <span data-i18n="title">ЗМЕЯ</span>
             </div>
-            <div class="main-subtitle" data-i18n="subtitle">Архив игр и Доска почета</div>
+            <div class="main-subtitle">
+                <span data-i18n="subtitle">Архив игр и Доска почета</span>
+                <span class="games-counter" id="games-counter">0 игр</span>
+            </div>
         </header>
 
         <div class="tabs">
@@ -265,13 +267,8 @@
         </div>
 
         <div id="tab-games" class="section active">
-            <div class="games-grid">
-                <div class="game-card"><div class="game-icon">🐜</div><div class="game-title" data-i18n="game1Title">Змея и Муравей</div><div class="game-desc" data-i18n="game1Desc"></div><a href="https://anti-ai-snake-ant.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a></div>
-                <div class="game-card"><div class="game-icon">🎵</div><div class="game-title" data-i18n="game2Title">Змея и Мелодия</div><div class="game-desc" data-i18n="game2Desc"></div><a href="https://anti-ai-snake-melody-night.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a></div>
-                <div class="game-card"><div class="game-icon">🫧</div><div class="game-title" data-i18n="game3Title">Змея и Пузыри</div><div class="game-desc" data-i18n="game3Desc"></div><a href="https://anti-ai-snake-and-bubbles.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a></div>
-                <div class="game-card"><div class="game-icon">🪰</div><div class="game-title" data-i18n="game4Title">Змея и Стрекоза</div><div class="game-desc" data-i18n="game4Desc"></div><a href="https://anti-ii-snake-and-dragonfly.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a></div>
-                <div class="game-card"><div class="game-icon">🐭</div><div class="game-title" data-i18n="game5Title">Змея и Мышка</div><div class="game-desc" data-i18n="game5Desc"></div><a href="https://anti-a-i-snake-and-mouse.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a></div>
-                <div class="game-card"><div class="game-icon">🍎</div><div class="game-title" data-i18n="game6Title">Змея и Яблоки</div><div class="game-desc" data-i18n="game6Desc"></div><a href="https://anti-ai-snake-apples.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a></div>
+            <div class="games-grid" id="games-grid">
+                <!-- Карточки генерируются автоматически из массива GAMES -->
             </div>
         </div>
 
@@ -346,12 +343,87 @@
     </div>
 
     <script>
+        // ============================================================
+        // 🎮 МАССИВ ИГР — добавляй новые игры сюда!
+        // ============================================================
+        const GAMES = [
+            {
+                id: 'ant',
+                icon: '🐜',
+                url: 'https://anti-ai-snake-ant.vercel.app/',
+                name: { ru: 'Змея и Муравей', en: 'Snake & Ant' },
+                desc: { 
+                    ru: '🐍 - 🐜 Анти-ИИ Змея и Муравей. Управляйте змеёй, которая должна аккуратно переползти через муравьиную тропу и муравейник, не разбудив стражу.',
+                    en: '🐍 - 🐜 Anti-AI Snake and Ant. Control a snake that must carefully crawl through the ant trail and anthill without waking the guard.'
+                }
+            },
+            {
+                id: 'melody',
+                icon: '🎵',
+                url: 'https://anti-ai-snake-melody-night.vercel.app/',
+                name: { ru: 'Змея и Мелодия', en: 'Snake & Melody' },
+                desc: {
+                    ru: '🐍 - 🎵 Анти-ИИ: Змея и Мелодия (Ночная версия). Музыкальная 3D-игра, где вы управляете змеёй, повторяя мелодии на светящихся плитках.',
+                    en: '🐍 - 🎵 Anti-AI: Snake and Melody (Night Version). Musical 3D game where you control a snake, repeating melodies on glowing tiles.'
+                }
+            },
+            {
+                id: 'bubbles',
+                icon: '🫧',
+                url: 'https://anti-ai-snake-and-bubbles.vercel.app/',
+                name: { ru: 'Змея и Пузыри', en: 'Snake & Bubbles' },
+                desc: {
+                    ru: '🐍 - 🫧 3D игра "Змея и Мыльные пузыри". Ломай пузыри хвостом змеи! Динамичная аркада с красивыми визуальными эффектами.',
+                    en: '🐍 - 🫧 3D game "Snake and Soap Bubbles". Break bubbles with the snake\'s tail! Dynamic arcade with beautiful visual effects.'
+                }
+            },
+            {
+                id: 'dragonfly',
+                icon: '🪰',
+                url: 'https://anti-ii-snake-and-dragonfly.vercel.app/',
+                name: { ru: 'Змея и Стрекоза', en: 'Snake & Dragonfly' },
+                desc: {
+                    ru: '🐍 - 🪰 Анти ИИ Змея и Стрекоза. Управляйте змеей в 3D-мире и охотитесь на проворную стрекозу! Поймайте её 3 раза за 3 минуты.',
+                    en: '🐍 - 🪰 Anti-AI Snake and Dragonfly. Control a snake in a 3D world and hunt an agile dragonfly! Catch it 3 times in 3 minutes.'
+                }
+            },
+            {
+                id: 'mouse',
+                icon: '🐭',
+                url: 'https://anti-a-i-snake-and-mouse.vercel.app/',
+                name: { ru: 'Змея и Мышка', en: 'Snake & Mouse' },
+                desc: {
+                    ru: '🐍 - 🐭 Змея и Мышка — 3D-игра. Управляйте змеёй, которая должна поймать мышку 3 раза за 3 минуты. Мышка убегает, прячется в норки.',
+                    en: '🐍 - 🐭 Snake and Mouse - 3D game. Control a snake that must catch a mouse 3 times in 3 minutes. The mouse runs away, hides in holes.'
+                }
+            },
+            {
+                id: 'apples',
+                icon: '🍎',
+                url: 'https://anti-ai-snake-apples.vercel.app/',
+                name: { ru: 'Змея и Яблоки', en: 'Snake & Apples' },
+                desc: {
+                    ru: '🐍 - 🍎 Anti‑AI Змея и Яблоки. 3D‑игра, где змея из стекла с подсветкой собирает яблоки за 3 минуты.',
+                    en: '🐍 - 🍎 Anti-AI Snake and Apples. 3D game where a glass snake with backlight collects apples in 3 minutes.'
+                }
+            },
+            // ⬇️ ДОБАВЛЯЙ НОВЫЕ ИГРЫ СЮДА! Пример:
+            // {
+            //     id: 'scorpion',
+            //     icon: '🦂',
+            //     url: 'https://ваша-новая-игра.vercel.app/',
+            //     name: { ru: 'Змея и Скорпион', en: 'Snake & Scorpion' },
+            //     desc: { ru: '🐍 - 🦂 Описание...', en: '🐍 - 🦂 Description...' }
+            // },
+        ];
+        // ============================================================
+
         const GLOBAL_LB_KEY = 'snake_global_leaderboard_v1';
         const USED_TOKENS_KEY = 'snake_used_tokens_v1';
         const COOLDOWN_KEY = 'snake_last_add_time';
         const PLAYER_ID_KEY = 'snake_player_id';
         const SECRET_SALT = 'AntonKuznetsovSnakeProject2026';
-        const COOLDOWN_MS = 10 * 60 * 1000;
+        const COOLDOWN_MS = 30 * 1000;
         let lastAddedDateRaw = null;
         let pendingToken = null;
         let searchTimeout = null;
@@ -369,12 +441,12 @@
 
         const translations = {
             ru: {
-                title: "ЗМЕЯ", subtitle: "Архив игр и Доска почета", tabGames: "🎮 Игры", tabLeaderboard: "🏆 Результаты",
-                game1Title: "Змея и Муравей", game2Title: "Змея и Мелодия", game3Title: "Змея и Пузыри",
-                game4Title: "Змея и Стрекоза", game5Title: "Змея и Мышка", game6Title: "Змея и Яблоки",
-                game1Desc: "", game2Desc: "", game3Desc: "", game4Desc: "", game5Desc: "", game6Desc: "",
+                title: "ЗМЕЯ", subtitle: "Архив игр и Доска почета",
+                tabGames: "🎮 Игры", tabLeaderboard: "🏆 Результаты",
                 play: "▶ Играть", hallOfFame: "🐍 Зал славы Красных Змей", clearAll: "🗑 Очистить",
                 thPlayer: "Игрок", thGame: "Игра", thSnakes: "Змеи", thDate: "Дата",
+                gamesCount: "{n} игр",
+                gamesCountSingular: "{n} игра", gamesCountPlural: "{n} игры",
                 emptyState: "Пока нет записанных результатов. Станьте первым героем!",
                 modalTitle: "🏆 Засчитать победу", labelName: "Ваше имя или никнейм",
                 labelGame: "Игра", labelScore: "Награда за эту победу",
@@ -385,9 +457,9 @@
                 errorName: "Пожалуйста, введите имя",
                 errorInvalid: "❌ Нет действительной победы. Сначала пройдите игру!",
                 errorUsed: "⚠️ Эта победа уже записана. Одна победа = одна змея!",
-                waitCooldown: "⏳ Подождите ещё {minutes} мин. перед новой записью.",
+                waitCooldown: "⏳ Слишком быстро! Подождите {seconds} сек.",
                 findMeBtn: "🔍 Найти меня", findMePlaceholder: "Ваше имя",
-                findMeNotFound: "🤖 Игрок не найден на доске",
+                findMeNotFound: "🤖 Игрок не найден. Сначала пройдите игру!",
                 findMeFound: "🔍 Найдено: {count}. Ваша строка подсвечена!",
                 botGreeting: "✍️ Введите имя — я найду вас среди всех игроков",
                 botYou: "✨ Это ВЫ! Новая победа добавится к вашему счёту.",
@@ -400,15 +472,16 @@
                 botHint: "💡 Если это не вы — добавьте номер или символ к имени",
                 botShowInTable: "🔍 Показать в таблице",
                 botSearching: "🔍 Поиск...",
-                confirmAnother: "⚠️ \"{name}\" — имя другого игрока (не ваше).\nДобавить как нового игрока?"
+                confirmAnother: "⚠️ \"{name}\" — имя другого игрока (не ваше).\nДобавить как нового игрока?",
+                unknownGame: "Неизвестная игра"
             },
             en: {
-                title: "SNAKE", subtitle: "Game Archive & Hall of Fame", tabGames: "🎮 Games", tabLeaderboard: "🏆 Results",
-                game1Title: "Snake & Ant", game2Title: "Snake & Melody", game3Title: "Snake & Bubbles",
-                game4Title: "Snake & Dragonfly", game5Title: "Snake & Mouse", game6Title: "Snake & Apples",
-                game1Desc: "", game2Desc: "", game3Desc: "", game4Desc: "", game5Desc: "", game6Desc: "",
+                title: "SNAKE", subtitle: "Game Archive & Hall of Fame",
+                tabGames: "🎮 Games", tabLeaderboard: "🏆 Results",
                 play: "▶ Play", hallOfFame: "🐍 Red Snakes Hall of Fame", clearAll: "🗑 Clear",
                 thPlayer: "Player", thGame: "Game", thSnakes: "Snakes", thDate: "Date",
+                gamesCount: "{n} games",
+                gamesCountSingular: "{n} game", gamesCountPlural: "{n} games",
                 emptyState: "No recorded results yet. Be the first hero!",
                 modalTitle: "🏆 Count Victory", labelName: "Your name or nickname",
                 labelGame: "Game", labelScore: "Reward for this victory",
@@ -419,9 +492,9 @@
                 errorName: "Please enter a name",
                 errorInvalid: "❌ No valid victory. Please finish the game first!",
                 errorUsed: "⚠️ This victory is already recorded. One victory = one snake!",
-                waitCooldown: "⏳ Please wait {minutes} more min. before a new entry.",
+                waitCooldown: "⏳ Too fast! Wait {seconds} sec.",
                 findMeBtn: "🔍 Find me", findMePlaceholder: "Your name",
-                findMeNotFound: "🤖 Player not found on the board",
+                findMeNotFound: "🤖 Player not found. Finish a game first!",
                 findMeFound: "🔍 Found: {count}. Your row is highlighted!",
                 botGreeting: "✍️ Type your name — I'll find you among all players",
                 botYou: "✨ That's YOU! New victory will be added to your total.",
@@ -434,11 +507,64 @@
                 botHint: "💡 If this is not you — add a number or symbol to the name",
                 botShowInTable: "🔍 Show in table",
                 botSearching: "🔍 Searching...",
-                confirmAnother: "⚠️ \"{name}\" is another player's name (not yours).\nAdd as a new player?"
+                confirmAnother: "⚠️ \"{name}\" is another player's name (not yours).\nAdd as a new player?",
+                unknownGame: "Unknown game"
             }
         };
 
         function curLang() { return localStorage.getItem('snake_lang') || 'ru'; }
+
+        // ============================================================
+        // 🎮 ГЕНЕРАЦИЯ КАРТОЧЕК ИГР ИЗ МАССИВА GAMES
+        // ============================================================
+        function renderGames() {
+            const lang = curLang();
+            const grid = document.getElementById('games-grid');
+            grid.innerHTML = '';
+            
+            GAMES.forEach(game => {
+                const card = document.createElement('div');
+                card.className = 'game-card';
+                card.innerHTML = `
+                    <div class="game-icon">${game.icon}</div>
+                    <div class="game-title">${escapeHtml(game.name[lang] || game.name.ru)}</div>
+                    <div class="game-desc">${escapeHtml(game.desc[lang] || game.desc.ru || '')}</div>
+                    <a href="${game.url}" class="play-btn" target="_blank" data-i18n="play">${translations[lang].play}</a>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Обновляем счётчик игр
+            const counter = document.getElementById('games-counter');
+            const n = GAMES.length;
+            if (lang === 'ru') {
+                if (n === 1) counter.textContent = `${n} игра`;
+                else if (n >= 2 && n <= 4) counter.textContent = `${n} игры`;
+                else counter.textContent = `${n} игр`;
+            } else {
+                counter.textContent = n === 1 ? `${n} game` : `${n} games`;
+            }
+        }
+
+        // Найти название игры по ID (для отображения в таблице и форме)
+        function getGameNameById(id) {
+            const lang = curLang();
+            const game = GAMES.find(g => g.id === id);
+            if (game) return game.name[lang] || game.name.ru;
+            // Если ID — это полное название (старый формат), возвращаем как есть
+            return id || translations[lang].unknownGame;
+        }
+
+        // Нормализация имени игры: превращает "Змея и Муравей" → id "ant" если возможно
+        function normalizeGameName(name) {
+            const lang = curLang();
+            for (const game of GAMES) {
+                if (game.name.ru === name || game.name.en === name || game.id === name) {
+                    return game.name[lang] || game.name.ru;
+                }
+            }
+            return name;
+        }
 
         function switchLang(lang) {
             document.documentElement.lang = lang;
@@ -451,8 +577,9 @@
                 const key = el.dataset.i18nPlaceholder;
                 if (translations[lang][key]) el.placeholder = translations[lang][key];
             });
-            document.title = translations[lang].pageTitle;
+            document.title = `${translations[lang].title} — ${translations[lang].subtitle}`;
             localStorage.setItem('snake_lang', lang);
+            renderGames();
             if (document.getElementById('tab-leaderboard').classList.contains('active')) loadGlobalLeaderboard();
         }
 
@@ -573,14 +700,14 @@
                     const medal = medals[rank] || '';
                     result.innerHTML = `
                         <div class="player-name">${medal} ${escapeHtml(myMatch.name)}</div>
-                        <div class="player-game">${escapeHtml(myMatch.game)}</div>
+                        <div class="player-game">${escapeHtml(normalizeGameName(myMatch.game))}</div>
                         <div class="player-score">${myMatch.snakes} 🐍</div>
                         <div class="bot-hint">${t.botYou}</div>
                         <a href="#" class="btn-find-in-table" onclick="highlightInTable('${escapeHtml(myMatch.name).replace(/'/g, "\\'")}', '${MY_ID}'); return false;">${t.botShowInTable}</a>`;
                 } else if (otherMatch) {
                     result.innerHTML = `
                         <div class="player-name">${escapeHtml(otherMatch.name)}</div>
-                        <div class="player-game">${escapeHtml(otherMatch.game)}</div>
+                        <div class="player-game">${escapeHtml(normalizeGameName(otherMatch.game))}</div>
                         <div class="player-score">${otherMatch.snakes} 🐍</div>
                         <div class="bot-hint" style="color: #ffcc00;">${t.botAnother}</div>
                         <div class="bot-hint">${t.botHint}</div>`;
@@ -667,7 +794,7 @@
                 const last = parseInt(localStorage.getItem(COOLDOWN_KEY) || '0');
                 const elapsed = Date.now() - last;
                 if (elapsed < COOLDOWN_MS) {
-                    alert(t.waitCooldown.replace('{minutes}', Math.ceil((COOLDOWN_MS - elapsed) / 60000)));
+                    alert(t.waitCooldown.replace('{seconds}', Math.ceil((COOLDOWN_MS - elapsed) / 1000)));
                     return;
                 }
             }
@@ -734,7 +861,7 @@
                 tr.innerHTML = `
                     <td><span class="rank-badge ${rankClass}">${index + 1}</span></td>
                     <td>${medal} ${escapeHtml(entry.name)}${meBadge}</td>
-                    <td><span class="game-tag">${escapeHtml(entry.game)}</span></td>
+                    <td><span class="game-tag">${escapeHtml(normalizeGameName(entry.game))}</span></td>
                     <td class="score-cell">${entry.snakes} 🐍</td>
                     <td style="text-align: right; color: #8899aa; font-size: 14px;">${entry.date}</td>`;
                 const rowKey = entry.dateRaw + '_' + (entry.playerId || '');
@@ -780,7 +907,7 @@
 
         function openWinForm(game, score) {
             setTimeout(() => {
-                document.getElementById('game-display').textContent = game;
+                document.getElementById('game-display').textContent = normalizeGameName(game);
                 document.getElementById('score-display').textContent = '+' + score + ' 🐍';
                 document.getElementById('player-name').value = '';
                 openModal();
@@ -811,6 +938,7 @@
             }, 500);
         }
 
+        // Инициализация
         deduplicateLegacy();
         switchLang(curLang());
         loadGlobalLeaderboard();
