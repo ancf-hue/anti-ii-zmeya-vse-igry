@@ -119,119 +119,45 @@
         }
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(76, 255, 128, 0.5); }
 
-        /* 🤖 СТИЛИ БОТА */
+        /* 🤖 БОТ */
         #player-search-bot {
             display: none;
             background: linear-gradient(135deg, rgba(76, 255, 128, 0.08), rgba(34, 170, 255, 0.05));
             border: 1px solid rgba(76, 255, 128, 0.3);
-            border-radius: 12px;
-            padding: 14px;
-            margin-top: 10px;
+            border-radius: 12px; padding: 14px; margin-top: 10px;
         }
-        #player-search-bot.show {
-            display: block;
-            animation: botSlideIn 0.3s ease;
-        }
-        @keyframes botSlideIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        #player-search-bot.show { display: block; animation: botSlideIn 0.3s ease; }
+        @keyframes botSlideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .bot-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
-            font-size: 13px;
-            color: #88ffaa;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+            font-size: 13px; color: #88ffaa; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
         }
-        .bot-icon {
-            font-size: 18px;
-            animation: botPulse 1.5s ease-in-out infinite;
-        }
-        @keyframes botPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
+        .bot-icon { font-size: 18px; animation: botPulse 1.5s ease-in-out infinite; }
+        @keyframes botPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
         .bot-result {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            padding: 12px;
-            font-size: 14px;
-            line-height: 1.6;
-            min-height: 50px;
+            background: rgba(0, 0, 0, 0.3); border-radius: 8px; padding: 12px;
+            font-size: 14px; line-height: 1.6; min-height: 50px;
         }
-        .bot-result .player-name {
-            color: #ffffff;
-            font-weight: 800;
-            font-size: 16px;
-        }
-        .bot-result .player-game {
-            color: #88ddff;
-            font-size: 13px;
-            margin: 4px 0;
-        }
-        .bot-result .player-score {
-            color: #ff8866;
-            font-weight: 800;
-            font-size: 17px;
-            margin-top: 4px;
-        }
-        .bot-result .bot-hint {
-            color: #88ffaa;
-            font-size: 12px;
-            margin-top: 8px;
-            font-style: italic;
-            opacity: 0.9;
-        }
+        .bot-result .player-name { color: #ffffff; font-weight: 800; font-size: 16px; }
+        .bot-result .player-game { color: #88ddff; font-size: 13px; margin: 4px 0; }
+        .bot-result .player-score { color: #ff8866; font-weight: 800; font-size: 17px; margin-top: 4px; }
+        .bot-result .bot-hint { color: #88ffaa; font-size: 12px; margin-top: 8px; font-style: italic; opacity: 0.9; }
         .bot-result .btn-find-in-table {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 6px 14px;
-            background: rgba(76, 255, 128, 0.15);
-            border: 1px solid rgba(76, 255, 128, 0.4);
-            color: #88ffaa;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-decoration: none;
+            display: inline-block; margin-top: 10px; padding: 6px 14px;
+            background: rgba(76, 255, 128, 0.15); border: 1px solid rgba(76, 255, 128, 0.4);
+            color: #88ffaa; border-radius: 8px; font-size: 12px; font-weight: 700;
+            cursor: pointer; transition: all 0.2s; text-decoration: none;
         }
-        .bot-result .btn-find-in-table:hover {
-            background: rgba(76, 255, 128, 0.25);
-            transform: translateY(-1px);
-        }
-        .bot-not-found {
-            color: #88ddff;
-            font-size: 13px;
-            padding: 8px 12px;
-            background: rgba(34, 170, 255, 0.08);
-            border-radius: 8px;
-        }
-        .bot-not-found .welcome {
-            color: #88ffaa;
-            font-weight: 700;
-            margin-top: 4px;
-        }
-        .similar-player {
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 13px;
-        }
+        .bot-result .btn-find-in-table:hover { background: rgba(76, 255, 128, 0.25); transform: translateY(-1px); }
+        .bot-not-found { color: #88ddff; font-size: 13px; padding: 8px 12px; background: rgba(34, 170, 255, 0.08); border-radius: 8px; }
+        .bot-not-found .welcome { color: #88ffaa; font-weight: 700; margin-top: 4px; }
+        .similar-player { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
         .similar-player:last-child { border-bottom: none; }
         .search-loader {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 50%;
-            border-top-color: #88ffaa;
-            animation: spin 0.8s linear infinite;
-            margin-right: 8px;
-            vertical-align: middle;
+            display: inline-block; width: 16px; height: 16px;
+            border: 2px solid rgba(255,255,255,0.2); border-radius: 50%;
+            border-top-color: #88ffaa; animation: spin 0.8s linear infinite;
+            margin-right: 8px; vertical-align: middle;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -242,13 +168,28 @@
         }
         .lb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
         .lb-title { font-size: 24px; font-weight: 800; color: #ff8888; display: flex; align-items: center; gap: 10px; }
-        .lb-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .lb-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
         .clear-btn {
             padding: 12px 22px; background: linear-gradient(135deg, rgba(255, 50, 50, 0.15), rgba(255, 50, 50, 0.05));
             border: 1px solid rgba(255, 50, 50, 0.3); color: #ff6666; border-radius: 12px;
             cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase;
         }
         .clear-btn:hover { background: linear-gradient(135deg, rgba(255, 50, 50, 0.25), rgba(255, 50, 50, 0.1)); transform: translateY(-2px); }
+        /* 🔍 НАЙТИ МЕНЯ */
+        .find-me-btn {
+            padding: 12px 22px; background: linear-gradient(135deg, rgba(76, 255, 128, 0.2), rgba(34, 170, 255, 0.15));
+            border: 1px solid rgba(76, 255, 128, 0.4); color: #4cff80; border-radius: 12px;
+            cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase;
+        }
+        .find-me-btn:hover { background: rgba(76, 255, 128, 0.25); transform: translateY(-2px); }
+        .find-me-input {
+            padding: 12px 16px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
+            color: #ffffff; font-size: 14px; outline: none; width: 150px;
+        }
+        .find-me-input:focus { border-color: #4cff80; }
+        .find-me-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
         table { width: 100%; border-collapse: collapse; min-width: 500px; }
         th { text-align: left; padding: 16px; color: #8899aa; font-size: 13px; text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
         td { padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 16px; }
@@ -272,10 +213,7 @@
             box-shadow: inset 0 0 0 2px rgba(76, 255, 128, 0.7);
             animation: botRowPulse 1s ease-in-out 3;
         }
-        @keyframes botRowPulse {
-            0%, 100% { background: rgba(76, 255, 128, 0.15); }
-            50% { background: rgba(76, 255, 128, 0.4); }
-        }
+        @keyframes botRowPulse { 0%, 100% { background: rgba(76, 255, 128, 0.15); } 50% { background: rgba(76, 255, 128, 0.4); } }
 
         .support-footer {
             background: linear-gradient(135deg, rgba(76, 255, 128, 0.05), rgba(34, 136, 255, 0.05));
@@ -328,42 +266,12 @@
 
         <div id="tab-games" class="section active">
             <div class="games-grid">
-                <div class="game-card">
-                    <div class="game-icon">🐜</div>
-                    <div class="game-title" data-i18n="game1Title">Змея и Муравей</div>
-                    <div class="game-desc" data-i18n="game1Desc"></div>
-                    <a href="https://anti-ai-snake-ant.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
-                </div>
-                <div class="game-card">
-                    <div class="game-icon">🎵</div>
-                    <div class="game-title" data-i18n="game2Title">Змея и Мелодия</div>
-                    <div class="game-desc" data-i18n="game2Desc"></div>
-                    <a href="https://anti-ai-snake-melody-night.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
-                </div>
-                <div class="game-card">
-                    <div class="game-icon">🫧</div>
-                    <div class="game-title" data-i18n="game3Title">Змея и Пузыри</div>
-                    <div class="game-desc" data-i18n="game3Desc"></div>
-                    <a href="https://anti-ai-snake-and-bubbles.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
-                </div>
-                <div class="game-card">
-                    <div class="game-icon">🪰</div>
-                    <div class="game-title" data-i18n="game4Title">Змея и Стрекоза</div>
-                    <div class="game-desc" data-i18n="game4Desc"></div>
-                    <a href="https://anti-ii-snake-and-dragonfly.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
-                </div>
-                <div class="game-card">
-                    <div class="game-icon">🐭</div>
-                    <div class="game-title" data-i18n="game5Title">Змея и Мышка</div>
-                    <div class="game-desc" data-i18n="game5Desc"></div>
-                    <a href="https://anti-a-i-snake-and-mouse.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
-                </div>
-                <div class="game-card">
-                    <div class="game-icon">🍎</div>
-                    <div class="game-title" data-i18n="game6Title">Змея и Яблоки</div>
-                    <div class="game-desc" data-i18n="game6Desc"></div>
-                    <a href="https://anti-ai-snake-apples.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
-                </div>
+                <div class="game-card"><div class="game-icon">🐜</div><div class="game-title" data-i18n="game1Title">Змея и Муравей</div><div class="game-desc" data-i18n="game1Desc"></div><a href="https://anti-ai-snake-ant.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a></div>
+                <div class="game-card"><div class="game-icon">🎵</div><div class="game-title" data-i18n="game2Title">Змея и Мелодия</div><div class="game-desc" data-i18n="game2Desc"></div><a href="https://anti-ai-snake-melody-night.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a></div>
+                <div class="game-card"><div class="game-icon">🫧</div><div class="game-title" data-i18n="game3Title">Змея и Пузыри</div><div class="game-desc" data-i18n="game3Desc"></div><a href="https://anti-ai-snake-and-bubbles.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a></div>
+                <div class="game-card"><div class="game-icon">🪰</div><div class="game-title" data-i18n="game4Title">Змея и Стрекоза</div><div class="game-desc" data-i18n="game4Desc"></div><a href="https://anti-ii-snake-and-dragonfly.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a></div>
+                <div class="game-card"><div class="game-icon">🐭</div><div class="game-title" data-i18n="game5Title">Змея и Мышка</div><div class="game-desc" data-i18n="game5Desc"></div><a href="https://anti-a-i-snake-and-mouse.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a></div>
+                <div class="game-card"><div class="game-icon">🍎</div><div class="game-title" data-i18n="game6Title">Змея и Яблоки</div><div class="game-desc" data-i18n="game6Desc"></div><a href="https://anti-ai-snake-apples.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a></div>
             </div>
         </div>
 
@@ -372,6 +280,10 @@
                 <div class="lb-header">
                     <div class="lb-title" data-i18n="hallOfFame">🐍 Зал славы Красных Змей</div>
                     <div class="lb-actions">
+                        <div class="find-me-group">
+                            <input type="text" id="find-me-input" class="find-me-input" placeholder="Ваше имя" maxlength="20" data-i18n-placeholder="findMePlaceholder">
+                            <button class="find-me-btn" onclick="findMe()" data-i18n="findMeBtn">🔍 Найти меня</button>
+                        </div>
                         <button class="clear-btn" onclick="clearGlobalLeaderboard()" data-i18n="clearAll">🗑 Очистить</button>
                     </div>
                 </div>
@@ -408,10 +320,8 @@
             <div class="form-group">
                 <label class="form-label" data-i18n="labelName">Ваше имя или никнейм</label>
                 <input type="text" id="player-name" class="form-input" maxlength="20"
-                       placeholder="Например: Змейка_Мастер"
-                       oninput="searchPlayer(this.value)"
-                       autocomplete="off">
-
+                       placeholder="Например: Антон_123"
+                       oninput="searchPlayer(this.value)" autocomplete="off">
                 <div id="player-search-bot">
                     <div class="bot-header">
                         <span class="bot-icon">🤖</span>
@@ -438,11 +348,24 @@
     <script>
         const GLOBAL_LB_KEY = 'snake_global_leaderboard_v1';
         const USED_TOKENS_KEY = 'snake_used_tokens_v1';
+        const COOLDOWN_KEY = 'snake_last_add_time';
+        const PLAYER_ID_KEY = 'snake_player_id';
         const SECRET_SALT = 'AntonKuznetsovSnakeProject2026';
+        const COOLDOWN_MS = 10 * 60 * 1000;
         let lastAddedDateRaw = null;
         let pendingToken = null;
         let searchTimeout = null;
         let currentHighlightRow = null;
+
+        function getPlayerId() {
+            let id = localStorage.getItem(PLAYER_ID_KEY);
+            if (!id) {
+                id = 'p_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 10);
+                localStorage.setItem(PLAYER_ID_KEY, id);
+            }
+            return id;
+        }
+        const MY_ID = getPlayerId();
 
         const translations = {
             ru: {
@@ -456,23 +379,28 @@
                 modalTitle: "🏆 Засчитать победу", labelName: "Ваше имя или никнейм",
                 labelGame: "Игра", labelScore: "Награда за эту победу",
                 submitBtn: "Отправить на доску",
-                confirmClear: "Вы уверены, что хотите стереть ВСЕ результаты? Это действие нельзя отменить.",
+                confirmClear: "Вы уверены, что хотите стереть ВСЕ результаты на этом устройстве?",
                 successMsg: "✅ Победа засчитана! Ваше имя в Зале славы!",
                 successUpdated: "✅ Добавлено к вашему результату!",
                 errorName: "Пожалуйста, введите имя",
                 errorInvalid: "❌ Нет действительной победы. Сначала пройдите игру!",
                 errorUsed: "⚠️ Эта победа уже записана. Одна победа = одна змея!",
-                pageTitle: "ЗМЕЯ — Архив игр и Доска почета",
-                botYou: "✨ Это вы! Новая победа добавится к текущему результату.",
+                waitCooldown: "⏳ Подождите ещё {minutes} мин. перед новой записью.",
+                findMeBtn: "🔍 Найти меня", findMePlaceholder: "Ваше имя",
+                findMeNotFound: "🤖 Игрок не найден на доске",
+                findMeFound: "🔍 Найдено: {count}. Ваша строка подсвечена!",
+                botGreeting: "✍️ Введите имя — я найду вас среди всех игроков",
+                botYou: "✨ Это ВЫ! Новая победа добавится к вашему счёту.",
+                botAnother: "⚠️ Это другой игрок с таким же именем (не вы).",
                 botSimilar: "🔎 Похожие игроки:",
                 botTypo: "✍️ Возможно, вы имели в виду:",
                 botTypoHint: "💡 Проверьте написание или создайте новый ник",
                 botNotFound: "🤖 Такого игрока ещё нет",
                 botWelcome: "✨ Вы станете первым с таким именем!",
-                botHint: "💡 Если это не вы — напишите полное имя",
+                botHint: "💡 Если это не вы — добавьте номер или символ к имени",
                 botShowInTable: "🔍 Показать в таблице",
                 botSearching: "🔍 Поиск...",
-                confirmSimilar: "⚠️ Имя \"{name}\" очень похоже на \"{similar}\" (отличается на {dist} символа).\nВы уверены, что хотите создать нового игрока, а не добавить к существующему?"
+                confirmAnother: "⚠️ \"{name}\" — имя другого игрока (не ваше).\nДобавить как нового игрока?"
             },
             en: {
                 title: "SNAKE", subtitle: "Game Archive & Hall of Fame", tabGames: "🎮 Games", tabLeaderboard: "🏆 Results",
@@ -485,23 +413,28 @@
                 modalTitle: "🏆 Count Victory", labelName: "Your name or nickname",
                 labelGame: "Game", labelScore: "Reward for this victory",
                 submitBtn: "Submit to board",
-                confirmClear: "Are you sure you want to erase ALL results? This action cannot be undone.",
+                confirmClear: "Are you sure you want to erase ALL results on this device?",
                 successMsg: "✅ Victory counted! Your name is in the Hall of Fame!",
                 successUpdated: "✅ Added to your total!",
                 errorName: "Please enter a name",
                 errorInvalid: "❌ No valid victory. Please finish the game first!",
                 errorUsed: "⚠️ This victory is already recorded. One victory = one snake!",
-                pageTitle: "SNAKE — Game Archive & Hall of Fame",
-                botYou: "✨ That's you! New victory will be added to your total.",
+                waitCooldown: "⏳ Please wait {minutes} more min. before a new entry.",
+                findMeBtn: "🔍 Find me", findMePlaceholder: "Your name",
+                findMeNotFound: "🤖 Player not found on the board",
+                findMeFound: "🔍 Found: {count}. Your row is highlighted!",
+                botGreeting: "✍️ Type your name — I'll find you among all players",
+                botYou: "✨ That's YOU! New victory will be added to your total.",
+                botAnother: "⚠️ That's another player with the same name (not you).",
                 botSimilar: "🔎 Similar players:",
                 botTypo: "✍️ Maybe you meant:",
                 botTypoHint: "💡 Check spelling or create a new nickname",
                 botNotFound: "🤖 No such player yet",
                 botWelcome: "✨ You will be the first with this name!",
-                botHint: "💡 If this is not you — write full name",
+                botHint: "💡 If this is not you — add a number or symbol to the name",
                 botShowInTable: "🔍 Show in table",
                 botSearching: "🔍 Searching...",
-                confirmSimilar: "⚠️ The name \"{name}\" is very similar to \"{similar}\" (differs by {dist} characters).\nAre you sure you want to create a new player instead of adding to the existing one?"
+                confirmAnother: "⚠️ \"{name}\" is another player's name (not yours).\nAdd as a new player?"
             }
         };
 
@@ -513,6 +446,10 @@
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.dataset.i18n;
                 if (translations[lang][key]) el.textContent = translations[lang][key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.dataset.i18nPlaceholder;
+                if (translations[lang][key]) el.placeholder = translations[lang][key];
             });
             document.title = translations[lang].pageTitle;
             localStorage.setItem('snake_lang', lang);
@@ -532,21 +469,39 @@
             if (tabName === 'leaderboard') loadGlobalLeaderboard();
         }
 
-        function openModal() { document.getElementById('score-modal').classList.add('show'); }
-        
+        function openModal() {
+            document.getElementById('score-modal').classList.add('show');
+            const bot = document.getElementById('player-search-bot');
+            bot.classList.add('show');
+            document.getElementById('bot-result').innerHTML =
+                `<div style="color: #8899aa; font-size: 13px; padding: 8px 12px;">${translations[curLang()].botGreeting}</div>`;
+        }
         function closeModal() {
             document.getElementById('score-modal').classList.remove('show');
-            const bot = document.getElementById('player-search-bot');
-            bot.classList.remove('show');
+            document.getElementById('player-search-bot').classList.remove('show');
             document.getElementById('bot-result').innerHTML = '';
-            if (currentHighlightRow) {
-                currentHighlightRow.classList.remove('bot-highlight');
-                currentHighlightRow = null;
-            }
+            if (currentHighlightRow) { currentHighlightRow.classList.remove('bot-highlight'); currentHighlightRow = null; }
         }
-        
-        function closeModalOutside(event) { 
-            if (event.target === document.getElementById('score-modal')) closeModal(); 
+        function closeModalOutside(event) { if (event.target === document.getElementById('score-modal')) closeModal(); }
+
+        function deduplicateLegacy() {
+            const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
+            const map = new Map();
+            const out = [];
+            for (const e of data) {
+                if (e.playerId) { out.push(e); continue; }
+                const key = e.name.trim().toLowerCase();
+                if (map.has(key)) {
+                    const ex = map.get(key);
+                    ex.snakes += e.snakes;
+                    if (new Date(e.dateRaw) > new Date(ex.dateRaw)) { ex.dateRaw = e.dateRaw; ex.date = e.date; ex.game = e.game; }
+                } else {
+                    const copy = Object.assign({}, e, { name: e.name.trim(), playerId: 'legacy_' + key });
+                    map.set(key, copy);
+                    out.push(copy);
+                }
+            }
+            localStorage.setItem(GLOBAL_LB_KEY, JSON.stringify(out));
         }
 
         function levenshteinDistance(a, b) {
@@ -558,16 +513,11 @@
             for (let i = 1; i <= b.length; i++) {
                 for (let j = 1; j <= a.length; j++) {
                     if (b[i-1] === a[j-1]) matrix[i][j] = matrix[i-1][j-1];
-                    else matrix[i][j] = Math.min(
-                        matrix[i-1][j-1] + 1,
-                        matrix[i][j-1] + 1,
-                        matrix[i-1][j] + 1
-                    );
+                    else matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, matrix[i][j-1] + 1, matrix[i-1][j] + 1);
                 }
             }
             return matrix[b.length][a.length];
         }
-
         function getThreshold(length) {
             if (length <= 4) return 1;
             if (length <= 8) return 2;
@@ -577,133 +527,115 @@
 
         function searchPlayer(query) {
             clearTimeout(searchTimeout);
-
-            if (currentHighlightRow) {
-                currentHighlightRow.classList.remove('bot-highlight');
-                currentHighlightRow = null;
-            }
+            if (currentHighlightRow) { currentHighlightRow.classList.remove('bot-highlight'); currentHighlightRow = null; }
 
             const bot = document.getElementById('player-search-bot');
             const result = document.getElementById('bot-result');
-
             query = query.trim();
 
-            if (query.length < 2) {
-                bot.classList.remove('show');
-                result.innerHTML = '';
-                return;
-            }
+            if (query.length < 2) { bot.classList.remove('show'); result.innerHTML = ''; return; }
 
             bot.classList.add('show');
-            result.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 12px; color: #88ddff; padding: 8px;">
-                    <span class="search-loader"></span>
-                    <span>${translations[curLang()].botSearching}</span>
-                </div>
-            `;
+            result.innerHTML = `<div style="display: flex; align-items: center; gap: 12px; color: #88ddff; padding: 8px;">
+                <span class="search-loader"></span><span>${translations[curLang()].botSearching}</span></div>`;
 
             searchTimeout = setTimeout(() => {
-                const lang = curLang();
-                const t = translations[lang];
+                const t = translations[curLang()];
                 const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
 
-                const exact = data.find(e => e.name.toLowerCase() === query.toLowerCase());
+                const nameMatches = data.filter(e => e.name.toLowerCase() === query.toLowerCase());
+                const myMatch = nameMatches.find(e => e.playerId === MY_ID);
+                const otherMatch = nameMatches.find(e => e.playerId !== MY_ID);
+
                 const startsWith = data.filter(e =>
                     e.name.toLowerCase().startsWith(query.toLowerCase()) &&
                     e.name.toLowerCase() !== query.toLowerCase()
-                ).slice(0, 3);
+                ).slice(0, 5);
 
                 let typoMatches = [];
-                if (startsWith.length === 0 && query.length >= 2) {
+                if (startsWith.length === 0 && nameMatches.length === 0 && query.length >= 2) {
                     const threshold = getThreshold(query.length);
                     typoMatches = data
-                        .map(e => ({
-                            entry: e,
-                            dist: levenshteinDistance(query.toLowerCase(), e.name.toLowerCase())
-                        }))
+                        .map(e => ({ entry: e, dist: levenshteinDistance(query.toLowerCase(), e.name.toLowerCase()) }))
                         .filter(x => x.dist > 0 && x.dist <= threshold)
                         .sort((a, b) => a.dist - b.dist)
                         .slice(0, 3)
                         .map(x => x.entry);
                 }
 
-                if (exact) {
+                if (myMatch) {
                     const sortedData = [...data].sort((a, b) => {
                         if (b.snakes !== a.snakes) return b.snakes - a.snakes;
                         return new Date(b.dateRaw) - new Date(a.dateRaw);
                     });
-                    const rank = sortedData.findIndex(e => e.name.toLowerCase() === query.toLowerCase()) + 1;
+                    const rank = sortedData.findIndex(e => e.playerId === MY_ID) + 1;
                     const medals = { 1: '🥇', 2: '🥈', 3: '🥉' };
                     const medal = medals[rank] || '';
-
                     result.innerHTML = `
-                        <div class="player-name">${medal} ${escapeHtml(exact.name)}</div>
-                        <div class="player-game">${escapeHtml(exact.game)}</div>
-                        <div class="player-score">${exact.snakes} 🐍</div>
+                        <div class="player-name">${medal} ${escapeHtml(myMatch.name)}</div>
+                        <div class="player-game">${escapeHtml(myMatch.game)}</div>
+                        <div class="player-score">${myMatch.snakes} 🐍</div>
                         <div class="bot-hint">${t.botYou}</div>
-                        <a href="#" class="btn-find-in-table" onclick="highlightInTable('${escapeHtml(exact.name).replace(/'/g, "\\'")}'); return false;">
-                            ${t.botShowInTable}
-                        </a>
-                    `;
-
+                        <a href="#" class="btn-find-in-table" onclick="highlightInTable('${escapeHtml(myMatch.name).replace(/'/g, "\\'")}', '${MY_ID}'); return false;">${t.botShowInTable}</a>`;
+                } else if (otherMatch) {
+                    result.innerHTML = `
+                        <div class="player-name">${escapeHtml(otherMatch.name)}</div>
+                        <div class="player-game">${escapeHtml(otherMatch.game)}</div>
+                        <div class="player-score">${otherMatch.snakes} 🐍</div>
+                        <div class="bot-hint" style="color: #ffcc00;">${t.botAnother}</div>
+                        <div class="bot-hint">${t.botHint}</div>`;
                 } else if (startsWith.length > 0) {
-                    const list = startsWith.map(p =>
-                        `<div class="similar-player">
-                            <strong>${escapeHtml(p.name)}</strong> — <span style="color: #ff8866; font-weight: 700;">${p.snakes} 🐍</span>
-                        </div>`
-                    ).join('');
-
-                    result.innerHTML = `
-                        <div style="color: #88ddff; font-size: 13px; margin-bottom: 8px;">${t.botSimilar}</div>
-                        ${list}
-                        <div class="bot-hint" style="margin-top: 10px;">${t.botHint}</div>
-                    `;
-
+                    result.innerHTML = `<div style="color: #88ddff; font-size: 13px; margin-bottom: 8px;">${t.botSimilar}</div>` +
+                        startsWith.map(p => {
+                            const isMine = p.playerId === MY_ID;
+                            return `<div class="similar-player" style="${isMine ? 'background: rgba(76,255,128,0.1); padding: 6px 8px; border-radius: 6px;' : ''}">
+                                ${isMine ? '✅ ' : ''}<strong>${escapeHtml(p.name)}</strong> — <span style="color: #ff8866; font-weight: 700;">${p.snakes} 🐍</span>
+                            </div>`;
+                        }).join('') +
+                        `<div class="bot-hint" style="margin-top: 10px;">${t.botHint}</div>`;
                 } else if (typoMatches.length > 0) {
-                    const list = typoMatches.map(p =>
-                        `<div class="similar-player">
-                            <strong>${escapeHtml(p.name)}</strong> — <span style="color: #ff8866; font-weight: 700;">${p.snakes} 🐍</span>
-                        </div>`
-                    ).join('');
-
-                    result.innerHTML = `
-                        <div style="color: #ffcc00; font-size: 13px; margin-bottom: 8px;">${t.botTypo}</div>
-                        ${list}
-                        <div class="bot-hint" style="margin-top: 10px;">${t.botTypoHint}</div>
-                    `;
-
+                    result.innerHTML = `<div style="color: #ffcc00; font-size: 13px; margin-bottom: 8px;">${t.botTypo}</div>` +
+                        typoMatches.map(p => `<div class="similar-player"><strong>${escapeHtml(p.name)}</strong> — <span style="color: #ff8866; font-weight: 700;">${p.snakes} 🐍</span></div>`).join('') +
+                        `<div class="bot-hint" style="margin-top: 10px;">${t.botTypoHint}</div>`;
                 } else {
-                    result.innerHTML = `
-                        <div class="bot-not-found">
-                            ${t.botNotFound}
-                            <div class="welcome">${t.botWelcome}</div>
-                        </div>
-                    `;
+                    result.innerHTML = `<div class="bot-not-found">${t.botNotFound}<div class="welcome">${t.botWelcome}</div></div>`;
                 }
             }, 300);
         }
 
-        function highlightInTable(name) {
-            if (currentHighlightRow) {
-                currentHighlightRow.classList.remove('bot-highlight');
-            }
-
+        function highlightInTable(name, playerId) {
+            if (currentHighlightRow) currentHighlightRow.classList.remove('bot-highlight');
             const rows = document.querySelectorAll('#global-leaderboard-body tr');
             for (let row of rows) {
                 const cells = row.querySelectorAll('td');
-                if (cells[1] && cells[1].textContent.includes(name)) {
+                if (cells[1] && cells[1].textContent.includes(name) && row.dataset.playerId === playerId) {
                     row.classList.add('bot-highlight');
                     currentHighlightRow = row;
                     row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    setTimeout(() => {
-                        if (row.classList.contains('bot-highlight')) {
-                            row.classList.remove('bot-highlight');
-                        }
-                    }, 5000);
+                    setTimeout(() => row.classList.remove('bot-highlight'), 5000);
                     break;
                 }
             }
             closeModal();
+        }
+
+        function findMe() {
+            const t = translations[curLang()];
+            const name = document.getElementById('find-me-input').value.trim().toLowerCase();
+            if (!name) { showToastCustom(t.findMePlaceholder); return; }
+            const rows = Array.from(document.querySelectorAll('#global-leaderboard-body tr'));
+            const matches = rows.filter(row => {
+                const cells = row.querySelectorAll('td');
+                return cells[1] && cells[1].textContent.toLowerCase().includes(name);
+            });
+            if (matches.length === 0) { showToastCustom(t.findMeNotFound); return; }
+            const mine = matches.find(r => r.dataset.playerId === MY_ID) || matches[0];
+            if (currentHighlightRow) currentHighlightRow.classList.remove('bot-highlight');
+            mine.classList.add('bot-highlight');
+            currentHighlightRow = mine;
+            mine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showToastCustom(t.findMeFound.replace('{count}', matches.length));
+            setTimeout(() => { mine.classList.remove('bot-highlight'); if (currentHighlightRow === mine) currentHighlightRow = null; }, 5000);
         }
 
         function decodeToken(str) {
@@ -717,11 +649,7 @@
                 return data;
             } catch (e) { return null; }
         }
-        
-        function isTokenUsed(nonce) {
-            return (JSON.parse(localStorage.getItem(USED_TOKENS_KEY) || '[]')).includes(nonce);
-        }
-        
+        function isTokenUsed(nonce) { return (JSON.parse(localStorage.getItem(USED_TOKENS_KEY) || '[]')).includes(nonce); }
         function markTokenUsed(nonce) {
             const used = JSON.parse(localStorage.getItem(USED_TOKENS_KEY) || '[]');
             used.push(nonce);
@@ -731,64 +659,51 @@
         function submitScore() {
             const lang = curLang();
             const t = translations[lang];
-
             if (!pendingToken) { alert(t.errorInvalid); return; }
-            if (isTokenUsed(pendingToken.n)) {
-                alert(t.errorUsed);
-                pendingToken = null; closeModal(); return;
+
+            if (pendingToken.n) {
+                if (isTokenUsed(pendingToken.n)) { alert(t.errorUsed); pendingToken = null; closeModal(); return; }
+            } else {
+                const last = parseInt(localStorage.getItem(COOLDOWN_KEY) || '0');
+                const elapsed = Date.now() - last;
+                if (elapsed < COOLDOWN_MS) {
+                    alert(t.waitCooldown.replace('{minutes}', Math.ceil((COOLDOWN_MS - elapsed) / 60000)));
+                    return;
+                }
             }
 
             const name = document.getElementById('player-name').value.trim();
             if (!name) { alert(t.errorName); return; }
 
             const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
-            const exact = data.find(e => e.name.toLowerCase() === name.toLowerCase());
+            const myEntry = data.find(e => e.name.toLowerCase() === name.toLowerCase() && e.playerId === MY_ID);
+            const otherEntry = data.find(e => e.name.toLowerCase() === name.toLowerCase() && e.playerId !== MY_ID);
 
-            if (!exact) {
-                const threshold = 1;
-                const similar = data
-                    .map(e => ({ entry: e, dist: levenshteinDistance(name.toLowerCase(), e.name.toLowerCase()) }))
-                    .filter(x => x.dist > 0 && x.dist <= threshold)
-                    .sort((a, b) => a.dist - b.dist);
-
-                if (similar.length > 0) {
-                    const s = similar[0];
-                    const msg = t.confirmSimilar
-                        .replace('{name}', name)
-                        .replace('{similar}', s.entry.name)
-                        .replace('{dist}', s.dist);
-                    if (!confirm(msg)) {
-                        return;
-                    }
-                }
+            if (otherEntry && !myEntry) {
+                if (!confirm(t.confirmAnother.replace('{name}', name))) return;
             }
 
-            const game = pendingToken.g;
-            const add = pendingToken.s;
-            const existing = data.find(e => e.name.toLowerCase() === name.toLowerCase());
-            let newRowKey;
-            let isUpdate = false;
-
-            if (existing) {
-                existing.snakes += add;
-                existing.date = new Date().toLocaleDateString();
-                existing.dateRaw = new Date().toISOString();
-                newRowKey = existing.dateRaw;
+            let newRowKey, isUpdate = false;
+            if (myEntry) {
+                myEntry.snakes += pendingToken.s;
+                myEntry.date = new Date().toLocaleDateString();
+                myEntry.dateRaw = new Date().toISOString();
+                myEntry.game = pendingToken.g;
+                newRowKey = myEntry.dateRaw + '_' + MY_ID;
                 isUpdate = true;
             } else {
                 const entry = {
-                    name: name,
-                    game: game,
-                    snakes: add,
-                    date: new Date().toLocaleDateString(),
-                    dateRaw: new Date().toISOString()
+                    name: name, game: pendingToken.g, snakes: pendingToken.s,
+                    date: new Date().toLocaleDateString(), dateRaw: new Date().toISOString(),
+                    playerId: MY_ID
                 };
                 data.push(entry);
-                newRowKey = entry.dateRaw;
+                newRowKey = entry.dateRaw + '_' + MY_ID;
             }
 
             localStorage.setItem(GLOBAL_LB_KEY, JSON.stringify(data));
-            markTokenUsed(pendingToken.n);
+            if (pendingToken.n) markTokenUsed(pendingToken.n);
+            else localStorage.setItem(COOLDOWN_KEY, String(Date.now()));
             pendingToken = null;
             lastAddedDateRaw = newRowKey;
 
@@ -811,16 +726,20 @@
             let newRow = null;
             data.slice(0, 50).forEach((entry, index) => {
                 const tr = document.createElement('tr');
+                tr.dataset.playerId = entry.playerId || '';
+                const isMe = entry.playerId === MY_ID;
                 const rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : 'rank-other'));
                 const medal = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : ''));
+                const meBadge = isMe ? ' <span style="background: #4cff80; color: #000; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 800; margin-left: 6px;">ВЫ</span>' : '';
                 tr.innerHTML = `
                     <td><span class="rank-badge ${rankClass}">${index + 1}</span></td>
-                    <td>${medal} ${escapeHtml(entry.name)}</td>
+                    <td>${medal} ${escapeHtml(entry.name)}${meBadge}</td>
                     <td><span class="game-tag">${escapeHtml(entry.game)}</span></td>
                     <td class="score-cell">${entry.snakes} 🐍</td>
-                    <td style="text-align: right; color: #8899aa; font-size: 14px;">${entry.date}</td>
-                `;
-                if (entry.dateRaw === lastAddedDateRaw) { tr.classList.add('highlight-row'); newRow = tr; }
+                    <td style="text-align: right; color: #8899aa; font-size: 14px;">${entry.date}</td>`;
+                const rowKey = entry.dateRaw + '_' + (entry.playerId || '');
+                if (rowKey === lastAddedDateRaw) { tr.classList.add('highlight-row'); newRow = tr; }
+                if (isMe) tr.style.background = 'rgba(76, 255, 128, 0.05)';
                 tbody.appendChild(tr);
             });
             if (newRow) {
@@ -833,72 +752,68 @@
             if (confirm(translations[curLang()].confirmClear)) {
                 localStorage.removeItem(GLOBAL_LB_KEY);
                 localStorage.removeItem(USED_TOKENS_KEY);
+                localStorage.removeItem(COOLDOWN_KEY);
+                localStorage.removeItem(PLAYER_ID_KEY);
                 loadGlobalLeaderboard();
             }
         }
 
         function copyPhone() {
             navigator.clipboard.writeText("89202275676").then(() => showToast()).catch(() => {
-                const textArea = document.createElement("textarea");
-                textArea.value = "89202275676"; 
-                document.body.appendChild(textArea); 
-                textArea.select();
-                document.execCommand("copy"); 
-                document.body.removeChild(textArea); 
-                showToast();
+                const ta = document.createElement("textarea");
+                ta.value = "89202275676"; document.body.appendChild(ta); ta.select();
+                document.execCommand("copy"); document.body.removeChild(ta); showToast();
             });
         }
-
         function showToast() {
             const toast = document.getElementById('copy-toast');
             toast.classList.add('show');
-            setTimeout(() => { 
-                toast.classList.remove('show'); 
-                setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300); 
-            }, 2500);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300); }, 2500);
         }
-        
         function showToastCustom(msg) {
             const toast = document.getElementById('copy-toast');
             toast.textContent = msg;
             toast.classList.add('show');
-            setTimeout(() => { 
-                toast.classList.remove('show'); 
-                setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300); 
-            }, 2500);
+            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300); }, 2500);
         }
-        
-        function escapeHtml(text) { 
-            const div = document.createElement('div'); 
-            div.textContent = text; 
-            return div.innerHTML; 
-        }
+        function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 
-        switchLang(curLang());
-        loadGlobalLeaderboard();
+        function openWinForm(game, score) {
+            setTimeout(() => {
+                document.getElementById('game-display').textContent = game;
+                document.getElementById('score-display').textContent = '+' + score + ' 🐍';
+                document.getElementById('player-name').value = '';
+                openModal();
+                setTimeout(() => document.getElementById('player-name').focus(), 300);
+            }, 400);
+        }
 
         function handleParamsFromGame() {
-            const reward = new URLSearchParams(window.location.search).get('reward');
-            if (!reward) return;
+            const params = new URLSearchParams(window.location.search);
+            const reward = params.get('reward');
+            const gameParam = params.get('game');
+            if (!reward && !gameParam) return;
             window.history.replaceState({}, document.title, window.location.pathname);
 
             setTimeout(() => {
                 switchTab('leaderboard', null);
-                const data = decodeToken(reward);
-
-                if (!data) { showToastCustom(translations[curLang()].errorInvalid); return; }
-                if (isTokenUsed(data.n)) { showToastCustom(translations[curLang()].errorUsed); return; }
-
-                pendingToken = data;
-                setTimeout(() => {
-                    document.getElementById('game-display').textContent = data.g;
-                    document.getElementById('score-display').textContent = '+' + data.s + ' 🐍';
-                    document.getElementById('player-name').value = '';
-                    openModal();
-                    setTimeout(() => document.getElementById('player-name').focus(), 300);
-                }, 400);
+                if (reward) {
+                    const data = decodeToken(reward);
+                    if (!data) { showToastCustom(translations[curLang()].errorInvalid); return; }
+                    if (isTokenUsed(data.n)) { showToastCustom(translations[curLang()].errorUsed); return; }
+                    pendingToken = data;
+                    openWinForm(data.g, data.s);
+                } else {
+                    const s = parseInt(params.get('score')) || 1;
+                    pendingToken = { g: gameParam, s: s, n: null };
+                    openWinForm(gameParam, s);
+                }
             }, 500);
         }
+
+        deduplicateLegacy();
+        switchLang(curLang());
+        loadGlobalLeaderboard();
         handleParamsFromGame();
     </script>
 </body>
