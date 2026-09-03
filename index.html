@@ -612,7 +612,7 @@
         function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 
         // ============================================================
-        // 🔗 ОБРАБОТКА URL: ?reward=TOKEN  (АВТОМАТИЧЕСКАЯ ЗАПИСЬ, ЕСЛИ ЕСТЬ ИМЯ)
+        // 🔗 ОБРАБОТКА URL: ?reward=TOKEN (автоматическая запись)
         // ============================================================
         function handleParamsFromGame() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -631,7 +631,7 @@
                     const savedName = localStorage.getItem(LAST_NAME_KEY);
 
                     if (savedName) {
-                        // === АВТОМАТИЧЕСКАЯ ЗАПИСЬ (имя есть) ===
+                        // === АВТОМАТИЧЕСКАЯ ЗАПИСЬ ===
                         const newEntry = {
                             name: savedName,
                             game: decoded.game,
@@ -650,7 +650,6 @@
                                 loadGlobalLeaderboard();
                                 showRewardBanner(`${translations[lang].rewardReceived} +${decoded.snakes} 🐍 (${decoded.game})`);
                                 showToastCustom(translations[lang].autoAddSuccess);
-                                // прокрутка к новой записи
                                 setTimeout(() => {
                                     const rows = document.querySelectorAll('#global-leaderboard-body tr');
                                     rows.forEach(row => {
@@ -667,7 +666,7 @@
                             switchTab('leaderboard', null);
                             setTimeout(() => {
                                 openModal(decoded.game, decoded.snakes);
-                                showRewardBanner(`${translations[lang].rewardReceived} +${decoded.snakes} 🐍 – введите имя, чтобы сохранить`);
+                                showRewardBanner(`${translations[lang].rewardReceived} +${decoded.snakes} 🐍 – введите имя`);
                             }, 400);
                         }, 500);
                     }
