@@ -189,7 +189,6 @@
                 <div class="lb-header">
                     <div class="lb-title" data-i18n="hallOfFame">🐍 Зал славы Красных Змей</div>
                     <div class="lb-actions">
-                        <!-- КНОПКА ПОЯВЛЯЕТСЯ ТОЛЬКО ПОСЛЕ ПОБЕДЫ В ИГРЕ -->
                         <button class="add-victory-btn" id="add-victory-btn" style="display:none;">➕ <span data-i18n="addVictory">Добавить победу</span></button>
                         <button class="menu-btn" id="to-games-btn">🎮 <span data-i18n="toGames">В меню игр</span></button>
                         <button class="clear-btn" id="clear-btn">🗑 <span data-i18n="clearAll">Очистить</span></button>
@@ -295,11 +294,11 @@
     const GAMES = [
         { icon: '🕷️', url: 'https://anti-ai-snake-and-spider.vercel.app/', boardName: '🐍 - 🕷️ Змея и Паук',
           title: { ru: 'Змея и Паук', en: 'Snake & Spider' },
-          desc: { ru: '🐍️ Вырвись из паутины, убеги от паука за 3 минуты!', en: '🐍🕷️ Escape the spider in 3 minutes!' } },
-        { icon: '🐉', url: 'https://anti-ai-snake-and-dragon.vercel.app/', boardName: '🐍 -  Змея и Дракон',
+          desc: { ru: '🐍🕷️ Вырвись из паутины, убеги от паука за 3 минуты!', en: '🐍🕷️ Escape the spider in 3 minutes!' } },
+        { icon: '🐉', url: 'https://anti-ai-snake-and-dragon.vercel.app/', boardName: '🐍 - 🐉 Змея и Дракон',
           title: { ru: 'Змея и Дракон', en: 'Snake & Dragon' },
           desc: { ru: '🐍🐉 3D браузерная игра. Сражайтесь с драконом!', en: '🐍🐉 3D browser game. Fight a dragon!' } },
-        { icon: '🐜', url: 'https://anti-ai-snake-ant.vercel.app/', boardName: '🐍 -  Змея и Муравей',
+        { icon: '🐜', url: 'https://anti-ai-snake-ant.vercel.app/', boardName: '🐍 - 🐜 Змея и Муравей',
           title: { ru: 'Змея и Муравей', en: 'Snake & Ant' },
           desc: { ru: '🐍 Пересеките муравьиную тропу, не разбудив стражу.', en: '🐍 Cross the ant trail without waking the guard.' } },
         { icon: '🎵', url: 'https://anti-ai-snake-melody-night.vercel.app/', boardName: '🐍 - 🎵 Змея и Мелодия',
@@ -314,7 +313,7 @@
         { icon: '🐭', url: 'https://anti-a-i-snake-and-mouse.vercel.app/', boardName: '🐍 - 🐭 Змея и Мышка',
           title: { ru: 'Змея и Мышка', en: 'Snake & Mouse' },
           desc: { ru: '🐍🐭 Поймай мышку 3 раза. Мышка прячется в норки!', en: '🐍🐭 Catch the mouse 3 times. It hides in holes!' } },
-        { icon: '🍎', url: 'https://anti-ai-snake-apples.vercel.app/', boardName: '🐍 -  Змея и Яблоки',
+        { icon: '🍎', url: 'https://anti-ai-snake-apples.vercel.app/', boardName: '🐍 - 🍎 Змея и Яблоки',
           title: { ru: 'Змея и Яблоки', en: 'Snake & Apples' },
           desc: { ru: '🐍 Стеклянная змея собирает яблоки за 3 минуты.', en: '🐍 A glass snake collects apples in 3 minutes.' } }
     ];
@@ -347,6 +346,7 @@
             invalidToken: "⚠️ Токен недействителен.",
             tokenUsed: "⚠️ Эта победа уже была записана.",
             tokenExpired: "⚠️ Время токена истекло.",
+            sigWarning: "⚠️ Подпись не проверена — запишу без ✅.",
             botTitle: "БОТ-ПОМОЩНИК", botSubtitle: "Твоя статистика",
             botEmpty: "👋 Привет! Я бот-помощник.<br>Победи в любой игре — и я запомню твоё имя и покажу твою статистику здесь.",
             botWinPrompt: "🏆 ТЫ ПОБЕДИЛ! Нажми зелёную кнопку «➕ Добавить победу» вверху, впиши своё имя — и я запишу тебя в Зал славы!",
@@ -383,6 +383,7 @@
             successMsg: "✅ Victory recorded for «{{name}}»! Returning to games…",
             invalidToken: "⚠️ Invalid token.", tokenUsed: "⚠️ This victory was already recorded.",
             tokenExpired: "⚠️ Token expired.",
+            sigWarning: "⚠️ Signature not verified — saving without ✅.",
             botTitle: "ASSISTANT BOT", botSubtitle: "Your statistics",
             botEmpty: "👋 Hi! I'm your assistant bot.<br>Win any game — and I'll remember your name and show your stats here.",
             botWinPrompt: "🏆 YOU WON! Press the green «➕ Add victory» button above, enter your name — and I'll write you into the Hall of Fame!",
@@ -418,34 +419,44 @@
     function saveLB(d) { localStorage.setItem(GLOBAL_LB_KEY, JSON.stringify(d)); }
 
     // ============================================================
-    //  ТОКЕН ПОБЕДЫ
+    //  ИСПРАВЛЕННАЯ ФУНКЦИЯ ТОКЕНА: "+" → пробел
     // ============================================================
     function handleRewardToken() {
         const params = new URLSearchParams(location.search);
-        const token = params.get('reward');
+        let token = params.get('reward');
         const legacyGame = params.get('game');
         if (token || legacyGame) history.replaceState({}, document.title, location.pathname);
 
         if (token) {
+            // ГЛАВНОЕ ИСПРАВЛЕНИЕ: пробелы в ссылке → обратно "+"
+            token = token.replace(/ /g, '+');
+
             let data = null;
             try { data = JSON.parse(decodeURIComponent(escape(atob(token)))); } catch {}
-            if (!data || !data.sig) { showToast(t('invalidToken'), true); return; }
+            if (!data || !data.g || !data.s) { showToast(t('invalidToken'), true); return; }
+
+            if (data.t && Date.now() - data.t > TOKEN_MAX_AGE_MS) { showToast(t('tokenExpired'), true); return; }
+
+            if (data.n) {
+                const used = JSON.parse(localStorage.getItem(USED_TOKENS_KEY) || '[]');
+                if (used.includes(data.n)) { showToast(t('tokenUsed'), true); return; }
+            }
 
             const expected = btoa(unescape(encodeURIComponent(
                 data.g + '|' + data.s + '|' + data.t + '|' + data.n + '|' + GAME_SECRET
             )));
-            if (data.sig !== expected) { showToast(t('invalidToken'), true); return; }
-            if (Date.now() - data.t > TOKEN_MAX_AGE_MS) { showToast(t('tokenExpired'), true); return; }
-            const used = JSON.parse(localStorage.getItem(USED_TOKENS_KEY) || '[]');
-            if (used.includes(data.n)) { showToast(t('tokenUsed'), true); return; }
+            const okSig = data.sig === expected;
 
-            victorySession = { game: data.g, snakes: data.s, verified: true, nonce: data.n };
+            victorySession = { game: data.g, snakes: data.s, verified: okSig, nonce: data.n || null };
+            if (!okSig) showToast(t('sigWarning'), true);
             return;
         }
+
         if (legacyGame) {
             victorySession = { game: legacyGame, snakes: parseInt(params.get('score'), 10) || 1, verified: false, nonce: null };
         }
     }
+
     function markTokenUsed(nonce) {
         const used = JSON.parse(localStorage.getItem(USED_TOKENS_KEY) || '[]');
         used.push(nonce);
@@ -453,7 +464,7 @@
     }
 
     // ============================================================
-    //  РЕЖИМ: ПОБЕДА vs ПРОСМОТР (баннер + кнопка)
+    //  РЕЖИМ: ПОБЕДА vs ПРОСМОТР
     // ============================================================
     function applyMode() {
         const banner = $('#mode-banner');
@@ -484,7 +495,6 @@
         if (!container) return;
 
         if (!name) {
-            // Если только что победил — бот подсказывает, что делать!
             const msg = victorySession ? t('botWinPrompt') : t('botEmpty');
             container.innerHTML = `<div class="bot-empty ${victorySession ? 'win' : ''}">${msg}</div>`;
             return;
@@ -780,7 +790,6 @@
             catch { showToast(t('copyFailMsg'), true); }
         });
 
-        // Пришли с победой — модалка открывается сама
         if (victorySession) setTimeout(openVictoryModal, 600);
     }
 
