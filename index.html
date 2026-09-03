@@ -52,14 +52,8 @@
         .game-desc { font-size: 14px; color: var(--c-muted); line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
         .play-btn { display: block; width: 100%; padding: 16px; text-align: center; background: linear-gradient(135deg, var(--c-green), var(--c-green-dark)); color: #000; font-weight: 800; text-decoration: none; border-radius: 12px; transition: all 0.3s; text-transform: uppercase; margin-top: auto; }
 
-        /* === БОТ-ПОМОЩНИК === */
-        .bot-assistant {
-            background: linear-gradient(135deg, rgba(20,30,50,0.8), rgba(10,20,35,0.9));
-            backdrop-filter: blur(20px);
-            border: 2px solid rgba(136,221,255,0.3);
-            border-radius: 20px; padding: 20px 24px; margin-bottom: 20px;
-            animation: botGlow 3s ease-in-out infinite; position: relative; overflow: hidden;
-        }
+        /* === БОТ === */
+        .bot-assistant { background: linear-gradient(135deg, rgba(20,30,50,0.8), rgba(10,20,35,0.9)); backdrop-filter: blur(20px); border: 2px solid rgba(136,221,255,0.3); border-radius: 20px; padding: 20px 24px; margin-bottom: 20px; animation: botGlow 3s ease-in-out infinite; }
         .bot-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
         .bot-avatar { width: 48px; height: 48px; border-radius: 14px; background: linear-gradient(135deg, #4cff80, #22aa55); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; box-shadow: 0 4px 20px rgba(76,255,128,0.4); }
         .bot-title { font-size: 18px; font-weight: 800; color: #88ddff; letter-spacing: 1px; }
@@ -76,14 +70,18 @@
         .bot-btn:hover { background: rgba(136,221,255,0.2); transform: translateY(-1px); }
         .bot-btn.danger { background: rgba(255,80,80,0.1); border-color: rgba(255,80,80,0.3); color: #ff8888; }
         .bot-empty { font-size: 14px; color: var(--c-muted); line-height: 1.6; }
+        .bot-empty.win { color: var(--c-green); font-weight: 700; }
         .bot-highlight-row { background: rgba(136,221,255,0.1) !important; box-shadow: inset 0 0 0 2px rgba(136,221,255,0.6); }
 
         /* === Доска === */
         .leaderboard-container { background: linear-gradient(135deg, rgba(0,0,0,0.4), rgba(0,0,0,0.2)); backdrop-filter: blur(20px); border: 1px solid rgba(255,100,100,0.2); border-radius: 24px; padding: 24px; overflow-x: auto; }
         .view-banner { display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-radius: 14px; margin-bottom: 20px; font-size: 14px; font-weight: 600; background: rgba(136,221,255,0.06); border: 1px solid rgba(136,221,255,0.2); color: #aaccdd; }
+        .view-banner.victory { background: rgba(76,255,128,0.1); border-color: rgba(76,255,128,0.5); color: var(--c-green); animation: winPulse 2s ease-in-out infinite; }
         .lb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
         .lb-title { font-size: 24px; font-weight: 800; color: #ff8888; }
         .lb-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .add-victory-btn { padding: 12px 22px; background: linear-gradient(135deg, rgba(76,255,128,0.3), rgba(34,170,255,0.2)); border: 2px solid rgba(76,255,128,0.7); color: var(--c-green); border-radius: 12px; cursor: pointer; font-weight: 800; font-size: 13px; text-transform: uppercase; animation: winPulse 2s ease-in-out infinite; }
+        .add-victory-btn:hover { transform: translateY(-2px) scale(1.03); }
         .menu-btn { padding: 12px 22px; background: rgba(76,255,128,0.1); border: 1px solid rgba(76,255,128,0.3); color: var(--c-green); border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px; text-transform: uppercase; }
         .clear-btn { padding: 12px 22px; background: rgba(255,50,50,0.1); border: 1px solid rgba(255,50,50,0.3); color: #ff6666; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px; text-transform: uppercase; }
 
@@ -164,15 +162,13 @@
             <div class="main-subtitle" data-i18n="subtitle">Доска почета</div>
         </header>
 
-        <!-- КНОПКА ПЕРЕИМЕНОВАНА: «Доска почета» -->
         <nav class="tabs">
             <button class="tab-btn active" data-tab="leaderboard">🏆 <span data-i18n="tabLeaderboard">Доска почета</span></button>
             <button class="tab-btn" data-tab="games">🎮 <span data-i18n="tabGames">Игры</span></button>
         </nav>
 
-        <!-- ========== ВКЛАДКА ДОСКА ПОЧЕТА (открыта по умолчанию) ========== -->
+        <!-- ========== ДОСКА ПОЧЕТА ========== -->
         <section id="tab-leaderboard" class="section active">
-            <!-- БОТ-ПОМОЩНИК -->
             <div class="bot-assistant">
                 <div class="bot-header">
                     <div class="bot-avatar">🤖</div>
@@ -185,14 +181,16 @@
             </div>
 
             <div class="leaderboard-container">
-                <div class="view-banner">
-                    <span>👀</span>
-                    <span data-i18n="viewNote">Режим просмотра. Добавить победу можно только после победы в игре.</span>
+                <div id="mode-banner" class="view-banner">
+                    <span id="mode-banner-icon">👀</span>
+                    <span id="mode-banner-text"></span>
                 </div>
 
                 <div class="lb-header">
                     <div class="lb-title" data-i18n="hallOfFame">🐍 Зал славы Красных Змей</div>
                     <div class="lb-actions">
+                        <!-- КНОПКА ПОЯВЛЯЕТСЯ ТОЛЬКО ПОСЛЕ ПОБЕДЫ В ИГРЕ -->
+                        <button class="add-victory-btn" id="add-victory-btn" style="display:none;">➕ <span data-i18n="addVictory">Добавить победу</span></button>
                         <button class="menu-btn" id="to-games-btn">🎮 <span data-i18n="toGames">В меню игр</span></button>
                         <button class="clear-btn" id="clear-btn">🗑 <span data-i18n="clearAll">Очистить</span></button>
                     </div>
@@ -221,7 +219,7 @@
             </div>
         </section>
 
-        <!-- ========== ВКЛАДКА ИГРЫ ========== -->
+        <!-- ========== ИГРЫ ========== -->
         <section id="tab-games" class="section">
             <div class="games-grid" id="games-grid"></div>
         </section>
@@ -236,7 +234,7 @@
         <div id="copy-toast" class="copy-toast">✅</div>
     </div>
 
-    <!-- Модалка победы (открывается ТОЛЬКО автоматически из игры) -->
+    <!-- Модалка победы -->
     <div id="score-modal" class="modal-overlay" role="dialog" aria-modal="true">
         <div class="modal-content">
             <div class="modal-header">
@@ -284,9 +282,6 @@
     <script>
     'use strict';
 
-    // ============================================================
-    //  КОНСТАНТЫ (секрет ТОТ ЖЕ, что в играх!)
-    // ============================================================
     const GAME_SECRET = 'AntonKuznetsovSnakeProject2026';
     const TOKEN_MAX_AGE_MS = 10 * 60 * 1000;
     const USED_TOKENS_KEY = 'snake_used_tokens_v1';
@@ -298,13 +293,13 @@
     const PHONE_NUMBER = '89202275676';
 
     const GAMES = [
-        { icon: '🕷️', url: 'https://anti-ai-snake-and-spider.vercel.app/', boardName: '🐍 - ️ Змея и Паук',
+        { icon: '🕷️', url: 'https://anti-ai-snake-and-spider.vercel.app/', boardName: '🐍 - 🕷️ Змея и Паук',
           title: { ru: 'Змея и Паук', en: 'Snake & Spider' },
-          desc: { ru: '🐍🕷️ Вырвись из паутины, убеги от паука за 3 минуты!', en: '🐍🕷️ Escape the spider in 3 minutes!' } },
+          desc: { ru: '🐍️ Вырвись из паутины, убеги от паука за 3 минуты!', en: '🐍🕷️ Escape the spider in 3 minutes!' } },
         { icon: '🐉', url: 'https://anti-ai-snake-and-dragon.vercel.app/', boardName: '🐍 -  Змея и Дракон',
           title: { ru: 'Змея и Дракон', en: 'Snake & Dragon' },
           desc: { ru: '🐍🐉 3D браузерная игра. Сражайтесь с драконом!', en: '🐍🐉 3D browser game. Fight a dragon!' } },
-        { icon: '🐜', url: 'https://anti-ai-snake-ant.vercel.app/', boardName: '🐍 - 🐜 Змея и Муравей',
+        { icon: '🐜', url: 'https://anti-ai-snake-ant.vercel.app/', boardName: '🐍 -  Змея и Муравей',
           title: { ru: 'Змея и Муравей', en: 'Snake & Ant' },
           desc: { ru: '🐍 Пересеките муравьиную тропу, не разбудив стражу.', en: '🐍 Cross the ant trail without waking the guard.' } },
         { icon: '🎵', url: 'https://anti-ai-snake-melody-night.vercel.app/', boardName: '🐍 - 🎵 Змея и Мелодия',
@@ -316,7 +311,7 @@
         { icon: '🪰', url: 'https://anti-ii-snake-and-dragonfly.vercel.app/', boardName: '🐍 - 🪰 Змея и Стрекоза',
           title: { ru: 'Змея и Стрекоза', en: 'Snake & Dragonfly' },
           desc: { ru: '🐍 Поймай проворную стрекозу 3 раза за 3 минуты!', en: '🐍 Catch the dragonfly 3 times in 3 minutes!' } },
-        { icon: '🐭', url: 'https://anti-a-i-snake-and-mouse.vercel.app/', boardName: '🐍 -  Змея и Мышка',
+        { icon: '🐭', url: 'https://anti-a-i-snake-and-mouse.vercel.app/', boardName: '🐍 - 🐭 Змея и Мышка',
           title: { ru: 'Змея и Мышка', en: 'Snake & Mouse' },
           desc: { ru: '🐍🐭 Поймай мышку 3 раза. Мышка прячется в норки!', en: '🐍🐭 Catch the mouse 3 times. It hides in holes!' } },
         { icon: '🍎', url: 'https://anti-ai-snake-apples.vercel.app/', boardName: '🐍 -  Змея и Яблоки',
@@ -330,6 +325,7 @@
             tabGames: "Игры", tabLeaderboard: "Доска почета", play: "▶ Играть",
             hallOfFame: "🐍 Зал славы Красных Змей",
             clearAll: "Очистить", toGames: "В меню игр", findMe: "Найти меня",
+            addVictory: "Добавить победу",
             thPlayer: "Игрок", thGame: "Игра", thSnakes: "Змеи", thDate: "Дата",
             emptyState: "Пока нет записей. Станьте первым героем!",
             modalTitle: "🏆 Добавить победу", labelName: "Ваше имя", labelGame: "Игра",
@@ -344,6 +340,7 @@
             copiedMsg: "✅ Номер скопирован!", copyFailMsg: "❌ Скопируйте вручную.",
             searchFound: "🔍 Найдено: {{count}}", searchNotFound: "❌ Ничего не найдено",
             viewNote: "Режим просмотра. Добавить победу можно только после победы в игре.",
+            victoryNote: "🏆 ПОБЕДА ПОДТВЕРЖДЕНА! Нажми «➕ Добавить победу» — и +1 🐍 запишется на твоё имя!",
             hintFound: "🔎 Имя найдено на доске! Победа добавится к вашей строке (сейчас: {{snakes}} 🐍)",
             hintNew: "✨ Новое имя — для вас создастся строка на доске.",
             successMsg: "✅ Победа записана на имя «{{name}}»! Возвращаем к играм…",
@@ -352,6 +349,7 @@
             tokenExpired: "⚠️ Время токена истекло.",
             botTitle: "БОТ-ПОМОЩНИК", botSubtitle: "Твоя статистика",
             botEmpty: "👋 Привет! Я бот-помощник.<br>Победи в любой игре — и я запомню твоё имя и покажу твою статистику здесь.",
+            botWinPrompt: "🏆 ТЫ ПОБЕДИЛ! Нажми зелёную кнопку «➕ Добавить победу» вверху, впиши своё имя — и я запишу тебя в Зал славы!",
             botName: "Имя", botWins: "Побед всего", botLastGame: "Последняя игра", botLastDate: "Последняя победа",
             botNotFound: "❌ Тебя нет на доске",
             botRename: "✏️ Сменить имя", botFindMe: "🔍 Найти мою строку", botForget: "🗑 Забыть меня",
@@ -365,6 +363,7 @@
             tabGames: "Games", tabLeaderboard: "Hall of Fame", play: "▶ Play",
             hallOfFame: "🐍 Red Snakes Hall of Fame",
             clearAll: "Clear", toGames: "Games menu", findMe: "Find me",
+            addVictory: "Add victory",
             thPlayer: "Player", thGame: "Game", thSnakes: "Snakes", thDate: "Date",
             emptyState: "No records yet. Be the first hero!",
             modalTitle: "🏆 Add Victory", labelName: "Your name", labelGame: "Game",
@@ -378,6 +377,7 @@
             copiedMsg: "✅ Number copied!", copyFailMsg: "❌ Copy manually.",
             searchFound: "🔍 Found: {{count}}", searchNotFound: "❌ Nothing found",
             viewNote: "View mode. You can add a victory only after winning a game.",
+            victoryNote: "🏆 VICTORY CONFIRMED! Press «➕ Add victory» — and +1 🐍 will be recorded to your name!",
             hintFound: "🔎 Name found! The victory will be added to your row (now: {{snakes}} 🐍)",
             hintNew: "✨ New name — a row will be created for you.",
             successMsg: "✅ Victory recorded for «{{name}}»! Returning to games…",
@@ -385,6 +385,7 @@
             tokenExpired: "⚠️ Token expired.",
             botTitle: "ASSISTANT BOT", botSubtitle: "Your statistics",
             botEmpty: "👋 Hi! I'm your assistant bot.<br>Win any game — and I'll remember your name and show your stats here.",
+            botWinPrompt: "🏆 YOU WON! Press the green «➕ Add victory» button above, enter your name — and I'll write you into the Hall of Fame!",
             botName: "Name", botWins: "Total wins", botLastGame: "Last game", botLastDate: "Last victory",
             botNotFound: "❌ You're not on the board",
             botRename: "✏️ Change name", botFindMe: "🔍 Find my row", botForget: "🗑 Forget me",
@@ -395,9 +396,6 @@
         }
     };
 
-    // ============================================================
-    //  УТИЛИТЫ
-    // ============================================================
     const $ = s => document.querySelector(s);
     const $$ = s => Array.from(document.querySelectorAll(s));
     let currentLang = localStorage.getItem('snake_lang') || 'ru';
@@ -420,7 +418,7 @@
     function saveLB(d) { localStorage.setItem(GLOBAL_LB_KEY, JSON.stringify(d)); }
 
     // ============================================================
-    //  ТОКЕН ПОБЕДЫ ИЗ ИГРЫ
+    //  ТОКЕН ПОБЕДЫ
     // ============================================================
     function handleRewardToken() {
         const params = new URLSearchParams(location.search);
@@ -455,14 +453,40 @@
     }
 
     // ============================================================
-    //  БОТ-ПОМОЩНИК
+    //  РЕЖИМ: ПОБЕДА vs ПРОСМОТР (баннер + кнопка)
+    // ============================================================
+    function applyMode() {
+        const banner = $('#mode-banner');
+        const icon = $('#mode-banner-icon');
+        const text = $('#mode-banner-text');
+        const addBtn = $('#add-victory-btn');
+        if (!banner || !addBtn) return;
+
+        if (victorySession) {
+            banner.classList.add('victory');
+            icon.textContent = '🏆';
+            text.textContent = t('victoryNote');
+            addBtn.style.display = 'inline-block';
+        } else {
+            banner.classList.remove('victory');
+            icon.textContent = '👀';
+            text.textContent = t('viewNote');
+            addBtn.style.display = 'none';
+        }
+    }
+
+    // ============================================================
+    //  БОТ
     // ============================================================
     function renderBot() {
         const name = localStorage.getItem(LAST_NAME_KEY);
         const container = $('#bot-content');
+        if (!container) return;
 
         if (!name) {
-            container.innerHTML = `<div class="bot-empty">${t('botEmpty')}</div>`;
+            // Если только что победил — бот подсказывает, что делать!
+            const msg = victorySession ? t('botWinPrompt') : t('botEmpty');
+            container.innerHTML = `<div class="bot-empty ${victorySession ? 'win' : ''}">${msg}</div>`;
             return;
         }
 
@@ -524,7 +548,7 @@
         $('#rename-modal').classList.add('show');
         setTimeout(() => input.focus(), 100);
     };
-    function closeRenameModal() { $('#rename-modal').classList.remove('show'); }
+    function closeRenameModal() { $('#rename-modal')?.classList.remove('show'); }
 
     function submitRename(e) {
         e.preventDefault();
@@ -590,7 +614,7 @@
 
         if (newRow) setTimeout(() => newRow.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
         renderBot();
-        if ($('#search-player').value.trim()) filterLeaderboard();
+        if ($('#search-player')?.value.trim()) filterLeaderboard();
     }
 
     function filterLeaderboard() {
@@ -628,7 +652,7 @@
     }
 
     function openVictoryModal() {
-        if (!victorySession) return; // без токена из игры модалка НЕ открывается
+        if (!victorySession) return;
 
         const sel = $('#game-select');
         if (!Array.from(sel.options).find(o => o.value === victorySession.game)) {
@@ -667,7 +691,7 @@
     }
 
     // ============================================================
-    //  ДОБАВЛЕНИЕ ПОБЕДЫ (одна строка на игрока!)
+    //  ДОБАВЛЕНИЕ ПОБЕДЫ
     // ============================================================
     function submitScore(e) {
         e.preventDefault();
@@ -707,10 +731,10 @@
 
         victorySession = null;
         closeVictoryModal();
+        applyMode();
         renderLeaderboard();
         showToast(t('successMsg', { name }));
 
-        // Переброс на страницу с играми
         setTimeout(() => { lastAddedDateRaw = null; switchTab('games'); }, 2200);
     }
 
@@ -724,8 +748,8 @@
         $$('[data-i18n]').forEach(el => { if (translations[lang][el.dataset.i18n]) el.textContent = translations[lang][el.dataset.i18n]; });
         $$('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
         document.title = t('pageTitle');
-        $('#search-player').placeholder = '🔍 ' + (lang === 'ru' ? 'Найти игрока...' : 'Search player...');
-        renderGames(); renderGameSelect(); renderLeaderboard();
+        if ($('#search-player')) $('#search-player').placeholder = '🔍 ' + (lang === 'ru' ? 'Найти игрока...' : 'Search player...');
+        renderGames(); renderGameSelect(); renderLeaderboard(); applyMode();
     }
 
     function init() {
@@ -734,28 +758,29 @@
 
         $$('.lang-btn').forEach(b => b.addEventListener('click', () => applyLang(b.dataset.lang)));
         $$('.tab-btn[data-tab]').forEach(b => b.addEventListener('click', () => switchTab(b.dataset.tab)));
-        $('#to-games-btn').addEventListener('click', () => switchTab('games'));
-        $('#modal-close-btn').addEventListener('click', closeVictoryModal);
-        $('#score-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeVictoryModal(); });
-        $('#score-form').addEventListener('submit', submitScore);
-        $('#player-name').addEventListener('input', () => { updateNameHint(); $('#name-count').textContent = $('#player-name').value.length; });
-        $('#clear-btn').addEventListener('click', () => { if (confirm(t('confirmClear'))) { localStorage.removeItem(GLOBAL_LB_KEY); renderLeaderboard(); } });
-        $('#search-player').addEventListener('input', filterLeaderboard);
-        $('#search-myself-btn').addEventListener('click', searchMyself);
-        $('#clear-search-btn').addEventListener('click', () => { $('#search-player').value = ''; filterLeaderboard(); });
+        $('#add-victory-btn')?.addEventListener('click', openVictoryModal);
+        $('#to-games-btn')?.addEventListener('click', () => switchTab('games'));
+        $('#modal-close-btn')?.addEventListener('click', closeVictoryModal);
+        $('#score-modal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeVictoryModal(); });
+        $('#score-form')?.addEventListener('submit', submitScore);
+        $('#player-name')?.addEventListener('input', () => { updateNameHint(); $('#name-count').textContent = $('#player-name').value.length; });
+        $('#clear-btn')?.addEventListener('click', () => { if (confirm(t('confirmClear'))) { localStorage.removeItem(GLOBAL_LB_KEY); renderLeaderboard(); } });
+        $('#search-player')?.addEventListener('input', filterLeaderboard);
+        $('#search-myself-btn')?.addEventListener('click', searchMyself);
+        $('#clear-search-btn')?.addEventListener('click', () => { $('#search-player').value = ''; filterLeaderboard(); });
         document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeVictoryModal(); closeRenameModal(); } });
 
-        $('#rename-close-btn').addEventListener('click', closeRenameModal);
-        $('#rename-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeRenameModal(); });
-        $('#rename-form').addEventListener('submit', submitRename);
-        $('#rename-input').addEventListener('input', () => { $('#rename-count').textContent = $('#rename-input').value.length; });
+        $('#rename-close-btn')?.addEventListener('click', closeRenameModal);
+        $('#rename-modal')?.addEventListener('click', e => { if (e.target === e.currentTarget) closeRenameModal(); });
+        $('#rename-form')?.addEventListener('submit', submitRename);
+        $('#rename-input')?.addEventListener('input', () => { $('#rename-count').textContent = $('#rename-input').value.length; });
 
-        $('#copy-phone-btn').addEventListener('click', async () => {
+        $('#copy-phone-btn')?.addEventListener('click', async () => {
             try { await navigator.clipboard.writeText(PHONE_NUMBER); showToast(t('copiedMsg')); }
             catch { showToast(t('copyFailMsg'), true); }
         });
 
-        // Пришли с победой из игры — автоматически открываем модалку
+        // Пришли с победой — модалка открывается сама
         if (victorySession) setTimeout(openVictoryModal, 600);
     }
 
