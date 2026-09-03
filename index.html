@@ -42,7 +42,11 @@
         .title-icon { height: 0.85em; width: auto; vertical-align: middle; filter: drop-shadow(0 0 15px rgba(76, 255, 128, 0.6)); }
         @keyframes titlePulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.2); } }
         .main-subtitle { font-size: 18px; color: #aaccbb; letter-spacing: 2px; text-transform: uppercase; }
-        .games-counter { display: inline-block; padding: 4px 12px; background: rgba(76, 255, 128, 0.15); border: 1px solid rgba(76, 255, 128, 0.3); border-radius: 20px; font-size: 13px; color: #4cff80; margin-left: 10px; font-weight: 700; }
+        .game-counter {
+            display: inline-block; margin-top: 12px; padding: 6px 18px;
+            background: rgba(76, 255, 128, 0.1); border: 1px solid rgba(76, 255, 128, 0.3);
+            border-radius: 20px; font-size: 13px; color: #4cff80; font-weight: 700; letter-spacing: 1px;
+        }
         .tabs { display: flex; justify-content: center; gap: 16px; margin-bottom: 30px; flex-wrap: wrap; }
         .tab-btn {
             padding: 16px 36px; font-size: 15px; font-weight: 800; color: #8899aa;
@@ -69,6 +73,13 @@
         }
         .game-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #4cff80, #2288ff, #ff4cff); opacity: 0.7; }
         .game-card:hover { transform: translateY(-8px); border-color: rgba(76, 255, 128, 0.4); box-shadow: 0 20px 60px rgba(76, 255, 128, 0.15); }
+        .game-card.new-game::before { background: linear-gradient(90deg, #ff4cff, #ff8800, #ffdd00); animation: newGamePulse 2s ease-in-out infinite; }
+        .game-card.dragon-game::before { background: linear-gradient(90deg, #ff3333, #ff8800, #ffdd00); animation: dragonPulse 2.5s ease-in-out infinite; }
+        @keyframes newGamePulse { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+        @keyframes dragonPulse { 0%, 100% { opacity: 0.8; box-shadow: 0 0 10px rgba(255, 50, 50, 0.5); } 50% { opacity: 1; box-shadow: 0 0 25px rgba(255, 50, 50, 0.9); } }
+        .new-badge { position: absolute; top: 16px; right: 16px; background: linear-gradient(135deg, #ff4cff, #ff8800); color: #fff; padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(255, 136, 0, 0.4); }
+        .dragon-badge { position: absolute; top: 16px; right: 16px; background: linear-gradient(135deg, #ff3333, #ff6600); color: #fff; padding: 4px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(255, 50, 50, 0.5); animation: dragonBadge 1.5s ease-in-out infinite; }
+        @keyframes dragonBadge { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         .game-icon { font-size: 52px; margin-bottom: 16px; }
         .game-title { font-size: 22px; font-weight: 800; margin-bottom: 10px; color: #ffffff; }
         .game-desc { font-size: 14px; color: #8899aa; line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
@@ -79,6 +90,11 @@
             box-shadow: 0 6px 20px rgba(76, 255, 128, 0.3); margin-top: auto;
         }
         .play-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 30px rgba(76, 255, 128, 0.5); }
+        .game-card.dragon-game .play-btn {
+            background: linear-gradient(135deg, #ff6644, #ff3322);
+            box-shadow: 0 6px 20px rgba(255, 50, 50, 0.3);
+        }
+        .game-card.dragon-game .play-btn:hover { box-shadow: 0 10px 30px rgba(255, 50, 50, 0.5); }
 
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -91,7 +107,6 @@
             border: 1px solid rgba(76, 255, 128, 0.3); border-radius: 24px; padding: 32px;
             width: 90%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            max-height: 90vh; overflow-y: auto;
         }
         .modal-overlay.show .modal-content { transform: scale(1); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
@@ -100,17 +115,21 @@
         .modal-close:hover { color: #ff4444; }
         .form-group { margin-bottom: 16px; }
         .form-label { display: block; font-size: 13px; color: #aaccbb; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-input {
+        .form-input, .form-select {
             width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
             color: #ffffff; font-size: 16px; font-family: 'Inter', sans-serif; transition: all 0.3s; outline: none;
         }
-        .form-input:focus { border-color: #4cff80; box-shadow: 0 0 0 3px rgba(76, 255, 128, 0.15); }
-        .readonly-box {
-            width: 100%; padding: 14px; background: rgba(76, 255, 128, 0.06);
-            border: 1px solid rgba(76, 255, 128, 0.25); border-radius: 12px;
-            color: #88ffaa; font-size: 16px; font-weight: 600;
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234cff80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 18px;
+            padding-right: 40px;
         }
+        .form-select option { background: #15152a; color: #ffffff; padding: 10px; }
+        .form-input:focus, .form-select:focus { border-color: #4cff80; box-shadow: 0 0 0 3px rgba(76, 255, 128, 0.15); }
         .submit-btn {
             width: 100%; padding: 16px; margin-top: 10px;
             background: linear-gradient(135deg, #4cff80, #22aa55); color: #000;
@@ -120,47 +139,6 @@
         }
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(76, 255, 128, 0.5); }
 
-        #player-search-bot {
-            display: none;
-            background: linear-gradient(135deg, rgba(76, 255, 128, 0.08), rgba(34, 170, 255, 0.05));
-            border: 1px solid rgba(76, 255, 128, 0.3);
-            border-radius: 12px; padding: 14px; margin-top: 10px;
-        }
-        #player-search-bot.show { display: block; animation: botSlideIn 0.3s ease; }
-        @keyframes botSlideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .bot-header {
-            display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
-            font-size: 13px; color: #88ffaa; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        .bot-icon { font-size: 18px; animation: botPulse 1.5s ease-in-out infinite; }
-        @keyframes botPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
-        .bot-result {
-            background: rgba(0, 0, 0, 0.3); border-radius: 8px; padding: 12px;
-            font-size: 14px; line-height: 1.6; min-height: 50px;
-        }
-        .bot-result .player-name { color: #ffffff; font-weight: 800; font-size: 16px; }
-        .bot-result .player-game { color: #88ddff; font-size: 13px; margin: 4px 0; }
-        .bot-result .player-score { color: #ff8866; font-weight: 800; font-size: 17px; margin-top: 4px; }
-        .bot-result .bot-hint { color: #88ffaa; font-size: 12px; margin-top: 8px; font-style: italic; opacity: 0.9; }
-        .bot-result .btn-find-in-table {
-            display: inline-block; margin-top: 10px; padding: 6px 14px;
-            background: rgba(76, 255, 128, 0.15); border: 1px solid rgba(76, 255, 128, 0.4);
-            color: #88ffaa; border-radius: 8px; font-size: 12px; font-weight: 700;
-            cursor: pointer; transition: all 0.2s; text-decoration: none;
-        }
-        .bot-result .btn-find-in-table:hover { background: rgba(76, 255, 128, 0.25); transform: translateY(-1px); }
-        .bot-not-found { color: #88ddff; font-size: 13px; padding: 8px 12px; background: rgba(34, 170, 255, 0.08); border-radius: 8px; }
-        .bot-not-found .welcome { color: #88ffaa; font-weight: 700; margin-top: 4px; }
-        .similar-player { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; }
-        .similar-player:last-child { border-bottom: none; }
-        .search-loader {
-            display: inline-block; width: 16px; height: 16px;
-            border: 2px solid rgba(255,255,255,0.2); border-radius: 50%;
-            border-top-color: #88ffaa; animation: spin 0.8s linear infinite;
-            margin-right: 8px; vertical-align: middle;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
         .leaderboard-container {
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
             backdrop-filter: blur(20px); border: 1px solid rgba(255, 100, 100, 0.2);
@@ -168,27 +146,19 @@
         }
         .lb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
         .lb-title { font-size: 24px; font-weight: 800; color: #ff8888; display: flex; align-items: center; gap: 10px; }
-        .lb-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .lb-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .add-result-btn {
+            padding: 12px 22px; background: linear-gradient(135deg, rgba(76, 255, 128, 0.2), rgba(34, 170, 255, 0.15));
+            border: 1px solid rgba(76, 255, 128, 0.4); color: #4cff80; border-radius: 12px;
+            cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase;
+        }
+        .add-result-btn:hover { background: linear-gradient(135deg, rgba(76, 255, 128, 0.3), rgba(34, 170, 255, 0.25)); transform: translateY(-2px); }
         .clear-btn {
             padding: 12px 22px; background: linear-gradient(135deg, rgba(255, 50, 50, 0.15), rgba(255, 50, 50, 0.05));
             border: 1px solid rgba(255, 50, 50, 0.3); color: #ff6666; border-radius: 12px;
             cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase;
         }
         .clear-btn:hover { background: linear-gradient(135deg, rgba(255, 50, 50, 0.25), rgba(255, 50, 50, 0.1)); transform: translateY(-2px); }
-        .find-me-btn {
-            padding: 12px 22px; background: linear-gradient(135deg, rgba(76, 255, 128, 0.2), rgba(34, 170, 255, 0.15));
-            border: 1px solid rgba(76, 255, 128, 0.4); color: #4cff80; border-radius: 12px;
-            cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase;
-        }
-        .find-me-btn:hover { background: rgba(76, 255, 128, 0.25); transform: translateY(-2px); }
-        .find-me-input {
-            padding: 12px 16px; background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
-            color: #ffffff; font-size: 14px; outline: none; width: 150px;
-        }
-        .find-me-input:focus { border-color: #4cff80; }
-        .find-me-group { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-
         table { width: 100%; border-collapse: collapse; min-width: 500px; }
         th { text-align: left; padding: 16px; color: #8899aa; font-size: 13px; text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
         td { padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 16px; }
@@ -206,13 +176,10 @@
             box-shadow: inset 0 0 0 1px rgba(76, 255, 128, 0.5);
             animation: rowPulse 1.5s ease-in-out 3;
         }
-        @keyframes rowPulse { 0%, 100% { background: rgba(76,255,128,0.15); } 50% { background: rgba(76,255,128,0.35); } }
-        tr.bot-highlight td {
-            background: rgba(76, 255, 128, 0.25) !important;
-            box-shadow: inset 0 0 0 2px rgba(76, 255, 128, 0.7);
-            animation: botRowPulse 1s ease-in-out 3;
+        @keyframes rowPulse {
+            0%, 100% { background: rgba(76,255,128,0.15); }
+            50% { background: rgba(76,255,128,0.35); }
         }
-        @keyframes botRowPulse { 0%, 100% { background: rgba(76, 255, 128, 0.15); } 50% { background: rgba(76, 255, 128, 0.4); } }
 
         .support-footer {
             background: linear-gradient(135deg, rgba(76, 255, 128, 0.05), rgba(34, 136, 255, 0.05));
@@ -234,6 +201,16 @@
             font-weight: 800; font-size: 15px; opacity: 0; transition: all 0.4s; pointer-events: none; z-index: 3000;
         }
         .copy-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        
+        .reward-banner {
+            position: fixed; top: 80px; left: 50%; transform: translateX(-50%);
+            background: linear-gradient(135deg, rgba(255, 50, 50, 0.95), rgba(255, 100, 50, 0.95));
+            color: #fff; padding: 16px 32px; border-radius: 16px; font-weight: 800; font-size: 16px;
+            box-shadow: 0 8px 32px rgba(255, 50, 50, 0.5); z-index: 1500; opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none;
+        }
+        .reward-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
         @media (max-width: 600px) {
             .container { padding: 20px 16px; } .games-grid { grid-template-columns: 1fr; }
             .tab-btn { padding: 12px 20px; font-size: 14px; flex: 1; text-align: center; }
@@ -255,10 +232,8 @@
                 <img src="favicon.ico" alt="icon" class="title-icon">
                 <span data-i18n="title">ЗМЕЯ</span>
             </div>
-            <div class="main-subtitle">
-                <span data-i18n="subtitle">Архив игр и Доска почета</span>
-                <span class="games-counter" id="games-counter">0 игр</span>
-            </div>
+            <div class="main-subtitle" data-i18n="subtitle">Архив игр и Доска почета</div>
+            <div class="game-counter">🎮 <span data-i18n="gamesCount">8 уникальных 3D-игр</span></div>
         </header>
 
         <div class="tabs">
@@ -267,8 +242,72 @@
         </div>
 
         <div id="tab-games" class="section active">
-            <div class="games-grid" id="games-grid">
-                <!-- Карточки генерируются автоматически из массива GAMES -->
+            <div class="games-grid">
+                <!-- 🆕 1. ЗМЕЯ И ПАУК (NEW!) -->
+                <div class="game-card new-game">
+                    <div class="new-badge">NEW!</div>
+                    <div class="game-icon">🕷️</div>
+                    <div class="game-title" data-i18n="game1Title">Змея и Паук</div>
+                    <div class="game-desc" data-i18n="game1Desc">🐍🕷️ 3D-игра «Змея и Паук». Вырвись из паутины, убеги от паука за 3 минуты!</div>
+                    <a href="https://anti-ai-snake-and-spider.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
+
+                <!-- 🐉 2. ЗМЕЯ И ДРАКОН -->
+                <div class="game-card dragon-game">
+                    <div class="dragon-badge">🔥 BOSS</div>
+                    <div class="game-icon">🐉</div>
+                    <div class="game-title" data-i18n="game2Title">Змея и Дракон</div>
+                    <div class="game-desc" data-i18n="game2Desc">🐍🐉 3D браузерная игра "Змея и Дракон". Управляйте змеёй и сражайтесь с драконом!</div>
+                    <a href="https://anti-ai-snake-and-dragon.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
+
+                <!-- 🐜 3. ЗМЕЯ И МУРАВЕЙ -->
+                <div class="game-card">
+                    <div class="game-icon">🐜</div>
+                    <div class="game-title" data-i18n="game3Title">Змея и Муравей</div>
+                    <div class="game-desc" data-i18n="game3Desc">🐍 Анти-ИИ Змея и Муравей. Управляйте змеёй, которая должна аккуратно переползти через муравьиную тропу и муравейник, не разбудив стражу.</div>
+                    <a href="https://anti-ai-snake-ant.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
+
+                <!-- 🎵 4. ЗМЕЯ И МЕЛОДИЯ -->
+                <div class="game-card">
+                    <div class="game-icon">🎵</div>
+                    <div class="game-title" data-i18n="game4Title">Змея и Мелодия</div>
+                    <div class="game-desc" data-i18n="game4Desc">🐍 Анти-ИИ: Змея и Мелодия (Ночная версия). Музыкальная 3D-игра, где вы управляете змеёй, повторяя мелодии на светящихся плитках.</div>
+                    <a href="https://anti-ai-snake-melody-night.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
+
+                <!-- 🫧 5. ЗМЕЯ И ПУЗЫРИ -->
+                <div class="game-card">
+                    <div class="game-icon">🫧</div>
+                    <div class="game-title" data-i18n="game5Title">Змея и Пузыри</div>
+                    <div class="game-desc" data-i18n="game5Desc">🐍 3D игра "Змея и Мыльные пузыри". Ломай пузыри хвостом змеи!</div>
+                    <a href="https://anti-ai-snake-and-bubbles.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
+
+                <!-- 🪰 6. ЗМЕЯ И СТРЕКОЗА -->
+                <div class="game-card">
+                    <div class="game-icon">🪰</div>
+                    <div class="game-title" data-i18n="game6Title">Змея и Стрекоза</div>
+                    <div class="game-desc" data-i18n="game6Desc">🐍 Анти ИИ Змея и Стрекоза. Управляйте змеей в 3D-мире и охотитесь на проворную стрекозу! Цель – поймать её 3 раза за 3 минуты.</div>
+                    <a href="https://anti-ii-snake-and-dragonfly.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
+
+                <!-- 🐭 7. ЗМЕЯ И МЫШКА -->
+                <div class="game-card">
+                    <div class="game-icon">🐭</div>
+                    <div class="game-title" data-i18n="game7Title">Змея и Мышка</div>
+                    <div class="game-desc" data-i18n="game7Desc">🐍🐭 Змея и Мышка — 3D-игра. Управляйте змеёй, которая должна поймать мышку 3 раза за 3 минуты. Мышка убегает, прячется в норки.</div>
+                    <a href="https://anti-a-i-snake-and-mouse.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
+
+                <!-- 🍎 8. ЗМЕЯ И ЯБЛОКИ -->
+                <div class="game-card">
+                    <div class="game-icon">🍎</div>
+                    <div class="game-title" data-i18n="game8Title">Змея и Яблоки</div>
+                    <div class="game-desc" data-i18n="game8Desc">🐍 Anti‑AI Змея и Яблоки. 3D‑игра, где змея из стекла с подсветкой собирает яблоки за 3 минуты.</div>
+                    <a href="https://anti-ai-snake-apples.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
+                </div>
             </div>
         </div>
 
@@ -277,10 +316,7 @@
                 <div class="lb-header">
                     <div class="lb-title" data-i18n="hallOfFame">🐍 Зал славы Красных Змей</div>
                     <div class="lb-actions">
-                        <div class="find-me-group">
-                            <input type="text" id="find-me-input" class="find-me-input" placeholder="Ваше имя" maxlength="20" data-i18n-placeholder="findMePlaceholder">
-                            <button class="find-me-btn" onclick="findMe()" data-i18n="findMeBtn">🔍 Найти меня</button>
-                        </div>
+                        <button class="add-result-btn" onclick="openModal()" data-i18n="addResult">➕ Добавить результат</button>
                         <button class="clear-btn" onclick="clearGlobalLeaderboard()" data-i18n="clearAll">🗑 Очистить</button>
                     </div>
                 </div>
@@ -301,647 +337,383 @@
         </div>
 
         <footer class="support-footer">
-            <div class="support-line-1">🤝 <strong>ПОДДЕРЖАТЬ ПРОЕКТ</strong> 💙 Приложение бесплатное. Было и останется.<br>Если проект помог вам или вашим близким — можете поддержать разработку добровольным переводом.</div>
-            <div class="support-line-2" onclick="copyPhone()" title="Нажмите, чтобы скопировать номер">📱 ПЕРЕВОД ПО НОМЕРУ ТЕЛЕФОНА: <span class="phone-highlight">8-920-227-56-76</span> 📋 <u>Копировать номер</u><span class="support-badges">✅ Деньги придут мгновенно. Без комиссии. Безопасно.</span></div>
+            <div class="support-line-1">
+                🤝 <strong>ПОДДЕРЖАТЬ ПРОЕКТ</strong> 💙 Приложение бесплатное. Было и останется.<br>
+                Если проект помог вам или вашим близким — можете поддержать разработку добровольным переводом.
+            </div>
+            <div class="support-line-2" onclick="copyPhone()" title="Нажмите, чтобы скопировать номер">
+                📱 ПЕРЕВОД ПО НОМЕРУ ТЕЛЕФОНА: <span class="phone-highlight">8-920-227-56-76</span> 📋 <u>Копировать номер</u>
+                <span class="support-badges">✅ Деньги придут мгновенно. Без комиссии. Безопасно.</span>
+            </div>
         </footer>
         <div id="copy-toast" class="copy-toast">✅ Номер скопирован в буфер обмена!</div>
     </div>
 
+    <!-- Форма добавления результата (8 игр!) -->
     <div id="score-modal" class="modal-overlay" onclick="closeModalOutside(event)">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="modal-title" data-i18n="modalTitle">🏆 Засчитать победу</div>
+                <div class="modal-title" data-i18n="modalTitle">🏆 Добавить результат</div>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
 
             <div class="form-group">
                 <label class="form-label" data-i18n="labelName">Ваше имя или никнейм</label>
-                <input type="text" id="player-name" class="form-input" maxlength="20"
-                       placeholder="Например: Антон_123"
-                       oninput="searchPlayer(this.value)" autocomplete="off">
-                <div id="player-search-bot">
-                    <div class="bot-header">
-                        <span class="bot-icon">🤖</span>
-                        <span class="bot-label">Бот-поисковик</span>
-                    </div>
-                    <div class="bot-result" id="bot-result"></div>
-                </div>
+                <input type="text" id="player-name" class="form-input" maxlength="20" placeholder="Например: Змейка_Мастер">
             </div>
 
             <div class="form-group">
                 <label class="form-label" data-i18n="labelGame">Игра</label>
-                <div class="readonly-box" id="game-display">—</div>
+                <select id="game-select" class="form-select">
+                    <option value="🐍 - 🕷️ Змея и Паук">🐍 - 🕷️ Змея и Паук</option>
+                    <option value="🐍 - 🐉 Змея и Дракон">🐍 - 🐉 Змея и Дракон</option>
+                    <option value="🐍 - 🐜 Змея и Муравей">🐍 - 🐜 Змея и Муравей</option>
+                    <option value="🐍 - 🎵 Змея и Мелодия">🐍 - 🎵 Змея и Мелодия</option>
+                    <option value="🐍 - 🫧 Змея и Пузыри">🐍 - 🫧 Змея и Пузыри</option>
+                    <option value="🐍 - 🪰 Змея и Стрекоза">🐍 - 🪰 Змея и Стрекоза</option>
+                    <option value="🐍 - 🐭 Змея и Мышка">🐍 - 🐭 Змея и Мышка</option>
+                    <option value="🐍 - 🍎 Змея и Яблоки">🐍 - 🍎 Змея и Яблоки</option>
+                </select>
             </div>
 
             <div class="form-group">
-                <label class="form-label" data-i18n="labelScore">Награда за эту победу</label>
-                <div class="readonly-box" id="score-display">+1 🐍</div>
+                <label class="form-label" data-i18n="labelScore">Красных змей 🐍</label>
+                <input type="number" id="score-input" class="form-input" min="1" max="999" value="1">
             </div>
 
             <button id="submit-btn" class="submit-btn" onclick="submitScore()" data-i18n="submitBtn">Отправить на доску</button>
         </div>
     </div>
 
+    <div id="reward-banner" class="reward-banner"></div>
+
     <script>
-        // ============================================================
-        // 🎮 МАССИВ ИГР — добавляй новые игры сюда!
-        // ============================================================
-        const GAMES = [
-            {
-                id: 'ant',
-                icon: '🐜',
-                url: 'https://anti-ai-snake-ant.vercel.app/',
-                name: { ru: 'Змея и Муравей', en: 'Snake & Ant' },
-                desc: { 
-                    ru: '🐍 - 🐜 Анти-ИИ Змея и Муравей. Управляйте змеёй, которая должна аккуратно переползти через муравьиную тропу и муравейник, не разбудив стражу.',
-                    en: '🐍 - 🐜 Anti-AI Snake and Ant. Control a snake that must carefully crawl through the ant trail and anthill without waking the guard.'
-                }
-            },
-            {
-                id: 'melody',
-                icon: '🎵',
-                url: 'https://anti-ai-snake-melody-night.vercel.app/',
-                name: { ru: 'Змея и Мелодия', en: 'Snake & Melody' },
-                desc: {
-                    ru: '🐍 - 🎵 Анти-ИИ: Змея и Мелодия (Ночная версия). Музыкальная 3D-игра, где вы управляете змеёй, повторяя мелодии на светящихся плитках.',
-                    en: '🐍 - 🎵 Anti-AI: Snake and Melody (Night Version). Musical 3D game where you control a snake, repeating melodies on glowing tiles.'
-                }
-            },
-            {
-                id: 'bubbles',
-                icon: '🫧',
-                url: 'https://anti-ai-snake-and-bubbles.vercel.app/',
-                name: { ru: 'Змея и Пузыри', en: 'Snake & Bubbles' },
-                desc: {
-                    ru: '🐍 - 🫧 3D игра "Змея и Мыльные пузыри". Ломай пузыри хвостом змеи! Динамичная аркада с красивыми визуальными эффектами.',
-                    en: '🐍 - 🫧 3D game "Snake and Soap Bubbles". Break bubbles with the snake\'s tail! Dynamic arcade with beautiful visual effects.'
-                }
-            },
-            {
-                id: 'dragonfly',
-                icon: '🪰',
-                url: 'https://anti-ii-snake-and-dragonfly.vercel.app/',
-                name: { ru: 'Змея и Стрекоза', en: 'Snake & Dragonfly' },
-                desc: {
-                    ru: '🐍 - 🪰 Анти ИИ Змея и Стрекоза. Управляйте змеей в 3D-мире и охотитесь на проворную стрекозу! Поймайте её 3 раза за 3 минуты.',
-                    en: '🐍 - 🪰 Anti-AI Snake and Dragonfly. Control a snake in a 3D world and hunt an agile dragonfly! Catch it 3 times in 3 minutes.'
-                }
-            },
-            {
-                id: 'mouse',
-                icon: '🐭',
-                url: 'https://anti-a-i-snake-and-mouse.vercel.app/',
-                name: { ru: 'Змея и Мышка', en: 'Snake & Mouse' },
-                desc: {
-                    ru: '🐍 - 🐭 Змея и Мышка — 3D-игра. Управляйте змеёй, которая должна поймать мышку 3 раза за 3 минуты. Мышка убегает, прячется в норки.',
-                    en: '🐍 - 🐭 Snake and Mouse - 3D game. Control a snake that must catch a mouse 3 times in 3 minutes. The mouse runs away, hides in holes.'
-                }
-            },
-            {
-                id: 'apples',
-                icon: '🍎',
-                url: 'https://anti-ai-snake-apples.vercel.app/',
-                name: { ru: 'Змея и Яблоки', en: 'Snake & Apples' },
-                desc: {
-                    ru: '🐍 - 🍎 Anti‑AI Змея и Яблоки. 3D‑игра, где змея из стекла с подсветкой собирает яблоки за 3 минуты.',
-                    en: '🐍 - 🍎 Anti-AI Snake and Apples. 3D game where a glass snake with backlight collects apples in 3 minutes.'
-                }
-            },
-            // ⬇️ ДОБАВЛЯЙ НОВЫЕ ИГРЫ СЮДА! Пример:
-            // {
-            //     id: 'scorpion',
-            //     icon: '🦂',
-            //     url: 'https://ваша-новая-игра.vercel.app/',
-            //     name: { ru: 'Змея и Скорпион', en: 'Snake & Scorpion' },
-            //     desc: { ru: '🐍 - 🦂 Описание...', en: '🐍 - 🦂 Description...' }
-            // },
-        ];
-        // ============================================================
-
         const GLOBAL_LB_KEY = 'snake_global_leaderboard_v1';
-        const USED_TOKENS_KEY = 'snake_used_tokens_v1';
-        const COOLDOWN_KEY = 'snake_last_add_time';
-        const PLAYER_ID_KEY = 'snake_player_id';
-        const SECRET_SALT = 'AntonKuznetsovSnakeProject2026';
-        const COOLDOWN_MS = 30 * 1000;
         let lastAddedDateRaw = null;
-        let pendingToken = null;
-        let searchTimeout = null;
-        let currentHighlightRow = null;
-
-        function getPlayerId() {
-            let id = localStorage.getItem(PLAYER_ID_KEY);
-            if (!id) {
-                id = 'p_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 10);
-                localStorage.setItem(PLAYER_ID_KEY, id);
-            }
-            return id;
-        }
-        const MY_ID = getPlayerId();
 
         const translations = {
             ru: {
-                title: "ЗМЕЯ", subtitle: "Архив игр и Доска почета",
-                tabGames: "🎮 Игры", tabLeaderboard: "🏆 Результаты",
-                play: "▶ Играть", hallOfFame: "🐍 Зал славы Красных Змей", clearAll: "🗑 Очистить",
-                thPlayer: "Игрок", thGame: "Игра", thSnakes: "Змеи", thDate: "Дата",
-                gamesCount: "{n} игр",
-                gamesCountSingular: "{n} игра", gamesCountPlural: "{n} игры",
+                title: "ЗМЕЯ",
+                subtitle: "Архив игр и Доска почета",
+                gamesCount: "8 уникальных 3D-игр",
+                tabGames: "🎮 Игры",
+                tabLeaderboard: "🏆 Результаты",
+                game1Title: "Змея и Паук",
+                game1Desc: "🐍🕷️ 3D-игра «Змея и Паук». Вырвись из паутины, убеги от паука за 3 минуты!",
+                game2Title: "Змея и Дракон",
+                game2Desc: "🐍🐉 3D браузерная игра \"Змея и Дракон\". Управляйте змеёй и сражайтесь с драконом!",
+                game3Title: "Змея и Муравей",
+                game3Desc: "🐍 Анти-ИИ Змея и Муравей. Управляйте змеёй, которая должна аккуратно переползти через муравьиную тропу и муравейник, не разбудив стражу.",
+                game4Title: "Змея и Мелодия",
+                game4Desc: "🐍 Анти-ИИ: Змея и Мелодия (Ночная версия). Музыкальная 3D-игра, где вы управляете змеёй, повторяя мелодии на светящихся плитках.",
+                game5Title: "Змея и Пузыри",
+                game5Desc: "🐍 3D игра \"Змея и Мыльные пузыри\". Ломай пузыри хвостом змеи!",
+                game6Title: "Змея и Стрекоза",
+                game6Desc: "🐍 Анти ИИ Змея и Стрекоза. Управляйте змеей в 3D-мире и охотитесь на проворную стрекозу! Цель – поймать её 3 раза за 3 минуты.",
+                game7Title: "Змея и Мышка",
+                game7Desc: "🐍🐭 Змея и Мышка — 3D-игра. Управляйте змеёй, которая должна поймать мышку 3 раза за 3 минуты. Мышка убегает, прячется в норки.",
+                game8Title: "Змея и Яблоки",
+                game8Desc: "🐍 Anti‑AI Змея и Яблоки. 3D‑игра, где змея из стекла с подсветкой собирает яблоки за 3 минуты.",
+                play: "▶ Играть",
+                hallOfFame: "🐍 Зал славы Красных Змей",
+                addResult: "➕ Добавить результат",
+                clearAll: "🗑 Очистить",
+                thPlayer: "Игрок",
+                thGame: "Игра",
+                thSnakes: "Змеи",
+                thDate: "Дата",
                 emptyState: "Пока нет записанных результатов. Станьте первым героем!",
-                modalTitle: "🏆 Засчитать победу", labelName: "Ваше имя или никнейм",
-                labelGame: "Игра", labelScore: "Награда за эту победу",
+                modalTitle: "🏆 Добавить результат",
+                labelName: "Ваше имя или никнейм",
+                labelGame: "Игра",
+                labelScore: "Красных змей 🐍",
                 submitBtn: "Отправить на доску",
-                confirmClear: "Вы уверены, что хотите стереть ВСЕ результаты на этом устройстве?",
-                successMsg: "✅ Победа засчитана! Ваше имя в Зале славы!",
-                successUpdated: "✅ Добавлено к вашему результату!",
+                confirmClear: "Вы уверены, что хотите стереть ВСЕ результаты? Это действие нельзя отменить.",
+                successMsg: "✅ Результат добавлен! Ваше имя в Зале славы!",
                 errorName: "Пожалуйста, введите имя",
-                errorInvalid: "❌ Нет действительной победы. Сначала пройдите игру!",
-                errorUsed: "⚠️ Эта победа уже записана. Одна победа = одна змея!",
-                waitCooldown: "⏳ Слишком быстро! Подождите {seconds} сек.",
-                findMeBtn: "🔍 Найти меня", findMePlaceholder: "Ваше имя",
-                findMeNotFound: "🤖 Игрок не найден. Сначала пройдите игру!",
-                findMeFound: "🔍 Найдено: {count}. Ваша строка подсвечена!",
-                botGreeting: "✍️ Введите имя — я найду вас среди всех игроков",
-                botYou: "✨ Это ВЫ! Новая победа добавится к вашему счёту.",
-                botAnother: "⚠️ Это другой игрок с таким же именем (не вы).",
-                botSimilar: "🔎 Похожие игроки:",
-                botTypo: "✍️ Возможно, вы имели в виду:",
-                botTypoHint: "💡 Проверьте написание или создайте новый ник",
-                botNotFound: "🤖 Такого игрока ещё нет",
-                botWelcome: "✨ Вы станете первым с таким именем!",
-                botHint: "💡 Если это не вы — добавьте номер или символ к имени",
-                botShowInTable: "🔍 Показать в таблице",
-                botSearching: "🔍 Поиск...",
-                confirmAnother: "⚠️ \"{name}\" — имя другого игрока (не ваше).\nДобавить как нового игрока?",
-                unknownGame: "Неизвестная игра"
+                errorScore: "Введите корректное количество змей (1-999)",
+                pageTitle: "ЗМЕЯ — Архив 8 игр и Доска почета",
+                rewardReceived: "🎁 Награда получена! Вы в Зале славы!"
             },
             en: {
-                title: "SNAKE", subtitle: "Game Archive & Hall of Fame",
-                tabGames: "🎮 Games", tabLeaderboard: "🏆 Results",
-                play: "▶ Play", hallOfFame: "🐍 Red Snakes Hall of Fame", clearAll: "🗑 Clear",
-                thPlayer: "Player", thGame: "Game", thSnakes: "Snakes", thDate: "Date",
-                gamesCount: "{n} games",
-                gamesCountSingular: "{n} game", gamesCountPlural: "{n} games",
+                title: "SNAKE",
+                subtitle: "Game Archive & Hall of Fame",
+                gamesCount: "8 unique 3D games",
+                tabGames: "🎮 Games",
+                tabLeaderboard: "🏆 Results",
+                game1Title: "Snake & Spider",
+                game1Desc: "🐍🕷️ 3D game \"Snake and Spider\". Break free from the web, escape the spider in 3 minutes!",
+                game2Title: "Snake & Dragon",
+                game2Desc: "🐍🐉 3D browser game \"Snake and Dragon\". Control a snake and battle the dragon!",
+                game3Title: "Snake & Ant",
+                game3Desc: "🐍 Anti-AI Snake and Ant. Control a snake that must carefully crawl through the ant trail and anthill without waking the guard.",
+                game4Title: "Snake & Melody",
+                game4Desc: "🐍 Anti-AI: Snake and Melody (Night Version). Musical 3D game where you control a snake, repeating melodies on glowing tiles.",
+                game5Title: "Snake & Bubbles",
+                game5Desc: "🐍 3D game \"Snake and Soap Bubbles\". Break bubbles with the snake's tail!",
+                game6Title: "Snake & Dragonfly",
+                game6Desc: "🐍 Anti-AI Snake and Dragonfly. Control a snake in a 3D world and hunt an agile dragonfly! Catch it 3 times in 3 minutes.",
+                game7Title: "Snake & Mouse",
+                game7Desc: "🐍🐭 Snake and Mouse - 3D game. Control a snake that must catch a mouse 3 times in 3 minutes. The mouse runs away, hides in holes.",
+                game8Title: "Snake & Apples",
+                game8Desc: "🐍 Anti-AI Snake and Apples. 3D game where a glass snake with backlight collects apples in 3 minutes.",
+                play: "▶ Play",
+                hallOfFame: "🐍 Red Snakes Hall of Fame",
+                addResult: "➕ Add Result",
+                clearAll: "🗑 Clear",
+                thPlayer: "Player",
+                thGame: "Game",
+                thSnakes: "Snakes",
+                thDate: "Date",
                 emptyState: "No recorded results yet. Be the first hero!",
-                modalTitle: "🏆 Count Victory", labelName: "Your name or nickname",
-                labelGame: "Game", labelScore: "Reward for this victory",
+                modalTitle: "🏆 Add Result",
+                labelName: "Your name or nickname",
+                labelGame: "Game",
+                labelScore: "Red snakes 🐍",
                 submitBtn: "Submit to board",
-                confirmClear: "Are you sure you want to erase ALL results on this device?",
-                successMsg: "✅ Victory counted! Your name is in the Hall of Fame!",
-                successUpdated: "✅ Added to your total!",
+                confirmClear: "Are you sure you want to erase ALL results? This action cannot be undone.",
+                successMsg: "✅ Result added! Your name is in the Hall of Fame!",
                 errorName: "Please enter a name",
-                errorInvalid: "❌ No valid victory. Please finish the game first!",
-                errorUsed: "⚠️ This victory is already recorded. One victory = one snake!",
-                waitCooldown: "⏳ Too fast! Wait {seconds} sec.",
-                findMeBtn: "🔍 Find me", findMePlaceholder: "Your name",
-                findMeNotFound: "🤖 Player not found. Finish a game first!",
-                findMeFound: "🔍 Found: {count}. Your row is highlighted!",
-                botGreeting: "✍️ Type your name — I'll find you among all players",
-                botYou: "✨ That's YOU! New victory will be added to your total.",
-                botAnother: "⚠️ That's another player with the same name (not you).",
-                botSimilar: "🔎 Similar players:",
-                botTypo: "✍️ Maybe you meant:",
-                botTypoHint: "💡 Check spelling or create a new nickname",
-                botNotFound: "🤖 No such player yet",
-                botWelcome: "✨ You will be the first with this name!",
-                botHint: "💡 If this is not you — add a number or symbol to the name",
-                botShowInTable: "🔍 Show in table",
-                botSearching: "🔍 Searching...",
-                confirmAnother: "⚠️ \"{name}\" is another player's name (not yours).\nAdd as a new player?",
-                unknownGame: "Unknown game"
+                errorScore: "Enter a valid number of snakes (1-999)",
+                pageTitle: "SNAKE — 8 Games Archive & Hall of Fame",
+                rewardReceived: "🎁 Reward received! You're in the Hall of Fame!"
             }
         };
 
-        function curLang() { return localStorage.getItem('snake_lang') || 'ru'; }
-
         // ============================================================
-        // 🎮 ГЕНЕРАЦИЯ КАРТОЧЕК ИГР ИЗ МАССИВА GAMES
+        // 🔐 ДЕКОДЕР ТОКЕНА ИЗ ИГРЫ
         // ============================================================
-        function renderGames() {
-            const lang = curLang();
-            const grid = document.getElementById('games-grid');
-            grid.innerHTML = '';
-            
-            GAMES.forEach(game => {
-                const card = document.createElement('div');
-                card.className = 'game-card';
-                card.innerHTML = `
-                    <div class="game-icon">${game.icon}</div>
-                    <div class="game-title">${escapeHtml(game.name[lang] || game.name.ru)}</div>
-                    <div class="game-desc">${escapeHtml(game.desc[lang] || game.desc.ru || '')}</div>
-                    <a href="${game.url}" class="play-btn" target="_blank" data-i18n="play">${translations[lang].play}</a>
-                `;
-                grid.appendChild(card);
-            });
+        const SIGNING_SECRET = 'AntonKuznetsovSnakeProject2026';
 
-            // Обновляем счётчик игр
-            const counter = document.getElementById('games-counter');
-            const n = GAMES.length;
-            if (lang === 'ru') {
-                if (n === 1) counter.textContent = `${n} игра`;
-                else if (n >= 2 && n <= 4) counter.textContent = `${n} игры`;
-                else counter.textContent = `${n} игр`;
-            } else {
-                counter.textContent = n === 1 ? `${n} game` : `${n} games`;
+        function decodeRewardToken(token) {
+            try {
+                const decoded = JSON.parse(decodeURIComponent(escape(atob(token))));
+                const expectedSig = btoa(unescape(encodeURIComponent(
+                    decoded.g + '|' + decoded.s + '|' + decoded.t + '|' + decoded.n + '|' + SIGNING_SECRET
+                )));
+                if (decoded.sig !== expectedSig) return null;
+                if (Date.now() - decoded.t > 24 * 60 * 60 * 1000) return null;
+                return { game: decoded.g, snakes: decoded.s };
+            } catch (e) {
+                return null;
             }
         }
 
-        // Найти название игры по ID (для отображения в таблице и форме)
-        function getGameNameById(id) {
-            const lang = curLang();
-            const game = GAMES.find(g => g.id === id);
-            if (game) return game.name[lang] || game.name.ru;
-            // Если ID — это полное название (старый формат), возвращаем как есть
-            return id || translations[lang].unknownGame;
-        }
-
-        // Нормализация имени игры: превращает "Змея и Муравей" → id "ant" если возможно
-        function normalizeGameName(name) {
-            const lang = curLang();
-            for (const game of GAMES) {
-                if (game.name.ru === name || game.name.en === name || game.id === name) {
-                    return game.name[lang] || game.name.ru;
-                }
-            }
-            return name;
-        }
-
-        function switchLang(lang) {
+        // ============================================================
+        // 🌐 ПЕРЕВОДЫ
+        // ============================================================
+        window.switchLang = function(lang) {
             document.documentElement.lang = lang;
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.dataset.i18n;
                 if (translations[lang][key]) el.textContent = translations[lang][key];
             });
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.dataset.i18nPlaceholder;
-                if (translations[lang][key]) el.placeholder = translations[lang][key];
-            });
-            document.title = `${translations[lang].title} — ${translations[lang].subtitle}`;
+            document.title = translations[lang].pageTitle;
             localStorage.setItem('snake_lang', lang);
-            renderGames();
             if (document.getElementById('tab-leaderboard').classList.contains('active')) loadGlobalLeaderboard();
-        }
+        };
+        const savedLang = localStorage.getItem('snake_lang') || 'ru';
+        switchLang(savedLang);
 
-        function switchTab(tabName, event) {
+        // ============================================================
+        // 🗂️ ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК
+        // ============================================================
+        window.switchTab = function(tabName, event) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`tab-${tabName}`).classList.add('active');
-            if (event && event.target) { event.target.classList.add('active'); }
-            else {
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
                 document.querySelectorAll('.tab-btn').forEach(b => {
-                    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${tabName}'`)) b.classList.add('active');
+                    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${tabName}'`)) {
+                        b.classList.add('active');
+                    }
                 });
             }
             if (tabName === 'leaderboard') loadGlobalLeaderboard();
-        }
+        };
 
-        function openModal() {
+        // ============================================================
+        // 📝 МОДАЛЬНОЕ ОКНО
+        // ============================================================
+        window.openModal = function(prefillGame, prefillScore) {
             document.getElementById('score-modal').classList.add('show');
-            const bot = document.getElementById('player-search-bot');
-            bot.classList.add('show');
-            document.getElementById('bot-result').innerHTML =
-                `<div style="color: #8899aa; font-size: 13px; padding: 8px 12px;">${translations[curLang()].botGreeting}</div>`;
-        }
-        function closeModal() {
-            document.getElementById('score-modal').classList.remove('show');
-            document.getElementById('player-search-bot').classList.remove('show');
-            document.getElementById('bot-result').innerHTML = '';
-            if (currentHighlightRow) { currentHighlightRow.classList.remove('bot-highlight'); currentHighlightRow = null; }
-        }
-        function closeModalOutside(event) { if (event.target === document.getElementById('score-modal')) closeModal(); }
-
-        function deduplicateLegacy() {
-            const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
-            const map = new Map();
-            const out = [];
-            for (const e of data) {
-                if (e.playerId) { out.push(e); continue; }
-                const key = e.name.trim().toLowerCase();
-                if (map.has(key)) {
-                    const ex = map.get(key);
-                    ex.snakes += e.snakes;
-                    if (new Date(e.dateRaw) > new Date(ex.dateRaw)) { ex.dateRaw = e.dateRaw; ex.date = e.date; ex.game = e.game; }
-                } else {
-                    const copy = Object.assign({}, e, { name: e.name.trim(), playerId: 'legacy_' + key });
-                    map.set(key, copy);
-                    out.push(copy);
-                }
+            document.getElementById('player-name').value = '';
+            document.getElementById('score-input').value = prefillScore || 1;
+            
+            if (prefillGame) {
+                const gameSelect = document.getElementById('game-select');
+                const match = Array.from(gameSelect.options).find(opt => opt.value === prefillGame);
+                if (match) gameSelect.value = prefillGame;
             }
-            localStorage.setItem(GLOBAL_LB_KEY, JSON.stringify(out));
-        }
+            document.getElementById('player-name').focus();
+        };
+        window.closeModal = function() { document.getElementById('score-modal').classList.remove('show'); };
+        window.closeModalOutside = function(event) { if (event.target === document.getElementById('score-modal')) closeModal(); };
 
-        function levenshteinDistance(a, b) {
-            if (a.length === 0) return b.length;
-            if (b.length === 0) return a.length;
-            const matrix = [];
-            for (let i = 0; i <= b.length; i++) matrix[i] = [i];
-            for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
-            for (let i = 1; i <= b.length; i++) {
-                for (let j = 1; j <= a.length; j++) {
-                    if (b[i-1] === a[j-1]) matrix[i][j] = matrix[i-1][j-1];
-                    else matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, matrix[i][j-1] + 1, matrix[i-1][j] + 1);
-                }
-            }
-            return matrix[b.length][a.length];
-        }
-        function getThreshold(length) {
-            if (length <= 4) return 1;
-            if (length <= 8) return 2;
-            if (length <= 12) return 3;
-            return 4;
-        }
-
-        function searchPlayer(query) {
-            clearTimeout(searchTimeout);
-            if (currentHighlightRow) { currentHighlightRow.classList.remove('bot-highlight'); currentHighlightRow = null; }
-
-            const bot = document.getElementById('player-search-bot');
-            const result = document.getElementById('bot-result');
-            query = query.trim();
-
-            if (query.length < 2) { bot.classList.remove('show'); result.innerHTML = ''; return; }
-
-            bot.classList.add('show');
-            result.innerHTML = `<div style="display: flex; align-items: center; gap: 12px; color: #88ddff; padding: 8px;">
-                <span class="search-loader"></span><span>${translations[curLang()].botSearching}</span></div>`;
-
-            searchTimeout = setTimeout(() => {
-                const t = translations[curLang()];
-                const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
-
-                const nameMatches = data.filter(e => e.name.toLowerCase() === query.toLowerCase());
-                const myMatch = nameMatches.find(e => e.playerId === MY_ID);
-                const otherMatch = nameMatches.find(e => e.playerId !== MY_ID);
-
-                const startsWith = data.filter(e =>
-                    e.name.toLowerCase().startsWith(query.toLowerCase()) &&
-                    e.name.toLowerCase() !== query.toLowerCase()
-                ).slice(0, 5);
-
-                let typoMatches = [];
-                if (startsWith.length === 0 && nameMatches.length === 0 && query.length >= 2) {
-                    const threshold = getThreshold(query.length);
-                    typoMatches = data
-                        .map(e => ({ entry: e, dist: levenshteinDistance(query.toLowerCase(), e.name.toLowerCase()) }))
-                        .filter(x => x.dist > 0 && x.dist <= threshold)
-                        .sort((a, b) => a.dist - b.dist)
-                        .slice(0, 3)
-                        .map(x => x.entry);
-                }
-
-                if (myMatch) {
-                    const sortedData = [...data].sort((a, b) => {
-                        if (b.snakes !== a.snakes) return b.snakes - a.snakes;
-                        return new Date(b.dateRaw) - new Date(a.dateRaw);
-                    });
-                    const rank = sortedData.findIndex(e => e.playerId === MY_ID) + 1;
-                    const medals = { 1: '🥇', 2: '🥈', 3: '🥉' };
-                    const medal = medals[rank] || '';
-                    result.innerHTML = `
-                        <div class="player-name">${medal} ${escapeHtml(myMatch.name)}</div>
-                        <div class="player-game">${escapeHtml(normalizeGameName(myMatch.game))}</div>
-                        <div class="player-score">${myMatch.snakes} 🐍</div>
-                        <div class="bot-hint">${t.botYou}</div>
-                        <a href="#" class="btn-find-in-table" onclick="highlightInTable('${escapeHtml(myMatch.name).replace(/'/g, "\\'")}', '${MY_ID}'); return false;">${t.botShowInTable}</a>`;
-                } else if (otherMatch) {
-                    result.innerHTML = `
-                        <div class="player-name">${escapeHtml(otherMatch.name)}</div>
-                        <div class="player-game">${escapeHtml(normalizeGameName(otherMatch.game))}</div>
-                        <div class="player-score">${otherMatch.snakes} 🐍</div>
-                        <div class="bot-hint" style="color: #ffcc00;">${t.botAnother}</div>
-                        <div class="bot-hint">${t.botHint}</div>`;
-                } else if (startsWith.length > 0) {
-                    result.innerHTML = `<div style="color: #88ddff; font-size: 13px; margin-bottom: 8px;">${t.botSimilar}</div>` +
-                        startsWith.map(p => {
-                            const isMine = p.playerId === MY_ID;
-                            return `<div class="similar-player" style="${isMine ? 'background: rgba(76,255,128,0.1); padding: 6px 8px; border-radius: 6px;' : ''}">
-                                ${isMine ? '✅ ' : ''}<strong>${escapeHtml(p.name)}</strong> — <span style="color: #ff8866; font-weight: 700;">${p.snakes} 🐍</span>
-                            </div>`;
-                        }).join('') +
-                        `<div class="bot-hint" style="margin-top: 10px;">${t.botHint}</div>`;
-                } else if (typoMatches.length > 0) {
-                    result.innerHTML = `<div style="color: #ffcc00; font-size: 13px; margin-bottom: 8px;">${t.botTypo}</div>` +
-                        typoMatches.map(p => `<div class="similar-player"><strong>${escapeHtml(p.name)}</strong> — <span style="color: #ff8866; font-weight: 700;">${p.snakes} 🐍</span></div>`).join('') +
-                        `<div class="bot-hint" style="margin-top: 10px;">${t.botTypoHint}</div>`;
-                } else {
-                    result.innerHTML = `<div class="bot-not-found">${t.botNotFound}<div class="welcome">${t.botWelcome}</div></div>`;
-                }
-            }, 300);
-        }
-
-        function highlightInTable(name, playerId) {
-            if (currentHighlightRow) currentHighlightRow.classList.remove('bot-highlight');
-            const rows = document.querySelectorAll('#global-leaderboard-body tr');
-            for (let row of rows) {
-                const cells = row.querySelectorAll('td');
-                if (cells[1] && cells[1].textContent.includes(name) && row.dataset.playerId === playerId) {
-                    row.classList.add('bot-highlight');
-                    currentHighlightRow = row;
-                    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    setTimeout(() => row.classList.remove('bot-highlight'), 5000);
-                    break;
-                }
-            }
-            closeModal();
-        }
-
-        function findMe() {
-            const t = translations[curLang()];
-            const name = document.getElementById('find-me-input').value.trim().toLowerCase();
-            if (!name) { showToastCustom(t.findMePlaceholder); return; }
-            const rows = Array.from(document.querySelectorAll('#global-leaderboard-body tr'));
-            const matches = rows.filter(row => {
-                const cells = row.querySelectorAll('td');
-                return cells[1] && cells[1].textContent.toLowerCase().includes(name);
-            });
-            if (matches.length === 0) { showToastCustom(t.findMeNotFound); return; }
-            const mine = matches.find(r => r.dataset.playerId === MY_ID) || matches[0];
-            if (currentHighlightRow) currentHighlightRow.classList.remove('bot-highlight');
-            mine.classList.add('bot-highlight');
-            currentHighlightRow = mine;
-            mine.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            showToastCustom(t.findMeFound.replace('{count}', matches.length));
-            setTimeout(() => { mine.classList.remove('bot-highlight'); if (currentHighlightRow === mine) currentHighlightRow = null; }, 5000);
-        }
-
-        function decodeToken(str) {
-            try {
-                const data = JSON.parse(decodeURIComponent(escape(atob(str))));
-                const expected = btoa(unescape(encodeURIComponent(
-                    data.g + '|' + data.s + '|' + data.t + '|' + data.n + '|' + SECRET_SALT
-                )));
-                if (data.sig !== expected) return null;
-                if (Date.now() - data.t > 86400000) return null;
-                return data;
-            } catch (e) { return null; }
-        }
-        function isTokenUsed(nonce) { return (JSON.parse(localStorage.getItem(USED_TOKENS_KEY) || '[]')).includes(nonce); }
-        function markTokenUsed(nonce) {
-            const used = JSON.parse(localStorage.getItem(USED_TOKENS_KEY) || '[]');
-            used.push(nonce);
-            localStorage.setItem(USED_TOKENS_KEY, JSON.stringify(used));
-        }
-
-        function submitScore() {
-            const lang = curLang();
-            const t = translations[lang];
-            if (!pendingToken) { alert(t.errorInvalid); return; }
-
-            if (pendingToken.n) {
-                if (isTokenUsed(pendingToken.n)) { alert(t.errorUsed); pendingToken = null; closeModal(); return; }
-            } else {
-                const last = parseInt(localStorage.getItem(COOLDOWN_KEY) || '0');
-                const elapsed = Date.now() - last;
-                if (elapsed < COOLDOWN_MS) {
-                    alert(t.waitCooldown.replace('{seconds}', Math.ceil((COOLDOWN_MS - elapsed) / 1000)));
-                    return;
-                }
-            }
-
+        // ============================================================
+        // ✅ ОТПРАВКА РЕЗУЛЬТАТА
+        // ============================================================
+        window.submitScore = function() {
+            const lang = localStorage.getItem('snake_lang') || 'ru';
             const name = document.getElementById('player-name').value.trim();
-            if (!name) { alert(t.errorName); return; }
+            const game = document.getElementById('game-select').value;
+            const score = parseInt(document.getElementById('score-input').value);
+
+            if (!name) { alert(translations[lang].errorName); return; }
+            if (!score || score < 1 || score > 999) { alert(translations[lang].errorScore); return; }
+
+            const newEntry = {
+                name: name,
+                game: game,
+                snakes: score,
+                date: new Date().toLocaleDateString(),
+                dateRaw: new Date().toISOString()
+            };
+            lastAddedDateRaw = newEntry.dateRaw;
 
             const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
-            const myEntry = data.find(e => e.name.toLowerCase() === name.toLowerCase() && e.playerId === MY_ID);
-            const otherEntry = data.find(e => e.name.toLowerCase() === name.toLowerCase() && e.playerId !== MY_ID);
-
-            if (otherEntry && !myEntry) {
-                if (!confirm(t.confirmAnother.replace('{name}', name))) return;
-            }
-
-            let newRowKey, isUpdate = false;
-            if (myEntry) {
-                myEntry.snakes += pendingToken.s;
-                myEntry.date = new Date().toLocaleDateString();
-                myEntry.dateRaw = new Date().toISOString();
-                myEntry.game = pendingToken.g;
-                newRowKey = myEntry.dateRaw + '_' + MY_ID;
-                isUpdate = true;
-            } else {
-                const entry = {
-                    name: name, game: pendingToken.g, snakes: pendingToken.s,
-                    date: new Date().toLocaleDateString(), dateRaw: new Date().toISOString(),
-                    playerId: MY_ID
-                };
-                data.push(entry);
-                newRowKey = entry.dateRaw + '_' + MY_ID;
-            }
-
+            data.push(newEntry);
             localStorage.setItem(GLOBAL_LB_KEY, JSON.stringify(data));
-            if (pendingToken.n) markTokenUsed(pendingToken.n);
-            else localStorage.setItem(COOLDOWN_KEY, String(Date.now()));
-            pendingToken = null;
-            lastAddedDateRaw = newRowKey;
 
             closeModal();
-            showToastCustom(isUpdate ? t.successUpdated : t.successMsg);
+            showToastCustom(translations[lang].successMsg);
             loadGlobalLeaderboard();
-        }
+        };
 
-        function loadGlobalLeaderboard() {
+        // ============================================================
+        // 📊 ЗАГРУЗКА ТАБЛИЦЫ
+        // ============================================================
+        window.loadGlobalLeaderboard = function() {
             const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
             const tbody = document.getElementById('global-leaderboard-body');
             const emptyState = document.getElementById('empty-state');
             tbody.innerHTML = '';
+
             if (data.length === 0) { emptyState.style.display = 'block'; return; }
             emptyState.style.display = 'none';
+
             data.sort((a, b) => {
                 if (b.snakes !== a.snakes) return b.snakes - a.snakes;
                 return new Date(b.dateRaw) - new Date(a.dateRaw);
             });
+
             let newRow = null;
             data.slice(0, 50).forEach((entry, index) => {
                 const tr = document.createElement('tr');
-                tr.dataset.playerId = entry.playerId || '';
-                const isMe = entry.playerId === MY_ID;
                 const rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : 'rank-other'));
                 const medal = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : ''));
-                const meBadge = isMe ? ' <span style="background: #4cff80; color: #000; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 800; margin-left: 6px;">ВЫ</span>' : '';
                 tr.innerHTML = `
                     <td><span class="rank-badge ${rankClass}">${index + 1}</span></td>
-                    <td>${medal} ${escapeHtml(entry.name)}${meBadge}</td>
-                    <td><span class="game-tag">${escapeHtml(normalizeGameName(entry.game))}</span></td>
+                    <td>${medal} ${escapeHtml(entry.name)}</td>
+                    <td><span class="game-tag">${escapeHtml(entry.game)}</span></td>
                     <td class="score-cell">${entry.snakes} 🐍</td>
-                    <td style="text-align: right; color: #8899aa; font-size: 14px;">${entry.date}</td>`;
-                const rowKey = entry.dateRaw + '_' + (entry.playerId || '');
-                if (rowKey === lastAddedDateRaw) { tr.classList.add('highlight-row'); newRow = tr; }
-                if (isMe) tr.style.background = 'rgba(76, 255, 128, 0.05)';
+                    <td style="text-align: right; color: #8899aa; font-size: 14px;">${entry.date}</td>
+                `;
+                if (entry.dateRaw === lastAddedDateRaw) {
+                    tr.classList.add('highlight-row');
+                    newRow = tr;
+                }
                 tbody.appendChild(tr);
             });
+
             if (newRow) {
                 setTimeout(() => newRow.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
                 lastAddedDateRaw = null;
             }
-        }
+        };
 
-        function clearGlobalLeaderboard() {
-            if (confirm(translations[curLang()].confirmClear)) {
+        window.clearGlobalLeaderboard = function() {
+            const lang = localStorage.getItem('snake_lang') || 'ru';
+            if (confirm(translations[lang].confirmClear)) {
                 localStorage.removeItem(GLOBAL_LB_KEY);
-                localStorage.removeItem(USED_TOKENS_KEY);
-                localStorage.removeItem(COOLDOWN_KEY);
-                localStorage.removeItem(PLAYER_ID_KEY);
                 loadGlobalLeaderboard();
             }
-        }
+        };
 
-        function copyPhone() {
+        // ============================================================
+        // 📱 КОПИРОВАНИЕ НОМЕРА
+        // ============================================================
+        window.copyPhone = function() {
             navigator.clipboard.writeText("89202275676").then(() => showToast()).catch(() => {
-                const ta = document.createElement("textarea");
-                ta.value = "89202275676"; document.body.appendChild(ta); ta.select();
-                document.execCommand("copy"); document.body.removeChild(ta); showToast();
+                const textArea = document.createElement("textarea");
+                textArea.value = "89202275676"; document.body.appendChild(textArea); textArea.select();
+                document.execCommand("copy"); document.body.removeChild(textArea); showToast();
             });
-        }
+        };
+
         function showToast() {
             const toast = document.getElementById('copy-toast');
             toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300); }, 2500);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300);
+            }, 2500);
         }
+
         function showToastCustom(msg) {
             const toast = document.getElementById('copy-toast');
             toast.textContent = msg;
             toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300); }, 2500);
-        }
-        function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
-
-        function openWinForm(game, score) {
             setTimeout(() => {
-                document.getElementById('game-display').textContent = normalizeGameName(game);
-                document.getElementById('score-display').textContent = '+' + score + ' 🐍';
-                document.getElementById('player-name').value = '';
-                openModal();
-                setTimeout(() => document.getElementById('player-name').focus(), 300);
-            }, 400);
+                toast.classList.remove('show');
+                setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300);
+            }, 2500);
         }
 
-        function handleParamsFromGame() {
-            const params = new URLSearchParams(window.location.search);
-            const reward = params.get('reward');
-            const gameParam = params.get('game');
-            if (!reward && !gameParam) return;
-            window.history.replaceState({}, document.title, window.location.pathname);
-
-            setTimeout(() => {
-                switchTab('leaderboard', null);
-                if (reward) {
-                    const data = decodeToken(reward);
-                    if (!data) { showToastCustom(translations[curLang()].errorInvalid); return; }
-                    if (isTokenUsed(data.n)) { showToastCustom(translations[curLang()].errorUsed); return; }
-                    pendingToken = data;
-                    openWinForm(data.g, data.s);
-                } else {
-                    const s = parseInt(params.get('score')) || 1;
-                    pendingToken = { g: gameParam, s: s, n: null };
-                    openWinForm(gameParam, s);
-                }
-            }, 500);
+        function showRewardBanner(msg) {
+            const banner = document.getElementById('reward-banner');
+            banner.textContent = msg;
+            banner.classList.add('show');
+            setTimeout(() => banner.classList.remove('show'), 4000);
         }
 
-        // Инициализация
-        deduplicateLegacy();
-        switchLang(curLang());
+        function escapeHtml(text) {
+            const div = document.createElement('div'); div.textContent = text; return div.innerHTML;
+        }
+
         loadGlobalLeaderboard();
+
+        // ============================================================
+        // 🔗 ОБРАБОТКА ПАРАМЕТРОВ ИЗ ИГР
+        // Поддержка ?reward=TOKEN и ?game=...&score=...
+        // ============================================================
+        function handleParamsFromGame() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const rewardToken = urlParams.get('reward');
+            const gameFromUrl = urlParams.get('game');
+            const scoreFromUrl = urlParams.get('score');
+
+            if (rewardToken || gameFromUrl) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            if (rewardToken) {
+                const decoded = decodeRewardToken(rewardToken);
+                if (decoded) {
+                    const lang = localStorage.getItem('snake_lang') || 'ru';
+                    setTimeout(() => {
+                        switchTab('leaderboard', null);
+                        setTimeout(() => {
+                            openModal(decoded.game, decoded.snakes);
+                            showRewardBanner(translations[lang].rewardReceived + ` +${decoded.snakes} 🐍 (${decoded.game})`);
+                        }, 400);
+                    }, 500);
+                    return;
+                }
+            }
+
+            if (gameFromUrl) {
+                setTimeout(() => {
+                    switchTab('leaderboard', null);
+                    setTimeout(() => {
+                        openModal(gameFromUrl, scoreFromUrl ? parseInt(scoreFromUrl) : 1);
+                    }, 400);
+                }, 500);
+            }
+        }
         handleParamsFromGame();
     </script>
 </body>
