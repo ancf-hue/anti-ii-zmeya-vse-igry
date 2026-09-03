@@ -8,36 +8,91 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { margin: 0; min-height: 100vh; background: #050510; background-image: radial-gradient(circle at 20% 30%, rgba(76, 255, 128, 0.08) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgba(255, 50, 50, 0.08) 0%, transparent 40%); font-family: 'Inter', sans-serif; color: #ffffff; overflow-x: hidden; }
-        .lang-switcher { position: fixed; top: 24px; right: 24px; z-index: 1000; display: flex; background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px; padding: 4px; box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.15); }
-        .lang-btn { padding: 10px 18px; font-size: 13px; font-weight: 800; color: #8899aa; background: transparent; border: none; border-radius: 10px; cursor: pointer; transition: all 0.3s; letter-spacing: 1.5px; text-transform: uppercase; }
-        .lang-btn.active { color: #ffffff; background: linear-gradient(135deg, rgba(76, 255, 128, 0.25), rgba(34, 170, 255, 0.2)); box-shadow: 0 4px 16px rgba(76, 255, 128, 0.35), inset 0 1px 2px rgba(255,255,255,0.3); transform: translateY(-1px); }
+        body {
+            margin: 0; min-height: 100vh; background: #050510;
+            background-image: radial-gradient(circle at 20% 30%, rgba(76, 255, 128, 0.08) 0%, transparent 40%),
+                              radial-gradient(circle at 80% 70%, rgba(255, 50, 50, 0.08) 0%, transparent 40%);
+            font-family: 'Inter', sans-serif; color: #ffffff; overflow-x: hidden;
+        }
+        .lang-switcher {
+            position: fixed; top: 24px; right: 24px; z-index: 1000; display: flex;
+            background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px; padding: 4px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.15);
+        }
+        .lang-btn {
+            padding: 10px 18px; font-size: 13px; font-weight: 800; color: #8899aa;
+            background: transparent; border: none; border-radius: 10px; cursor: pointer;
+            transition: all 0.3s; letter-spacing: 1.5px; text-transform: uppercase;
+        }
+        .lang-btn.active {
+            color: #ffffff; background: linear-gradient(135deg, rgba(76, 255, 128, 0.25), rgba(34, 170, 255, 0.2));
+            box-shadow: 0 4px 16px rgba(76, 255, 128, 0.35), inset 0 1px 2px rgba(255,255,255,0.3); transform: translateY(-1px);
+        }
         .lang-btn:hover:not(.active) { color: #ffffff; background: rgba(255, 255, 255, 0.05); }
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
         .main-header { text-align: center; margin-bottom: 50px; margin-top: 30px; }
-        .main-title { font-size: clamp(48px, 10vw, 80px); font-weight: 900; background: linear-gradient(135deg, #ff3333 0%, #ff8800 50%, #ffdd00 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 60px rgba(255, 50, 50, 0.4); letter-spacing: 4px; margin-bottom: 10px; animation: titlePulse 4s ease-in-out infinite; display: flex; align-items: center; justify-content: center; gap: 0.15em; }
+        .main-title {
+            font-size: clamp(48px, 10vw, 80px); font-weight: 900;
+            background: linear-gradient(135deg, #ff3333 0%, #ff8800 50%, #ffdd00 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 60px rgba(255, 50, 50, 0.4); letter-spacing: 4px; margin-bottom: 10px;
+            animation: titlePulse 4s ease-in-out infinite; display: flex; align-items: center; justify-content: center; gap: 0.15em;
+        }
         .title-icon { height: 0.85em; width: auto; vertical-align: middle; filter: drop-shadow(0 0 15px rgba(76, 255, 128, 0.6)); }
         @keyframes titlePulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.2); } }
         .main-subtitle { font-size: 18px; color: #aaccbb; letter-spacing: 2px; text-transform: uppercase; }
         .tabs { display: flex; justify-content: center; gap: 16px; margin-bottom: 30px; flex-wrap: wrap; }
-        .tab-btn { padding: 16px 36px; font-size: 15px; font-weight: 800; color: #8899aa; background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px; cursor: pointer; transition: all 0.4s; text-transform: uppercase; letter-spacing: 1.5px; box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.12); }
-        .tab-btn.active { color: #ffffff; background: linear-gradient(135deg, rgba(76, 255, 128, 0.2), rgba(34, 170, 255, 0.15)); border-color: rgba(76, 255, 128, 0.5); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(76, 255, 128, 0.3), inset 0 1px 2px rgba(255,255,255,0.3); }
+        .tab-btn {
+            padding: 16px 36px; font-size: 15px; font-weight: 800; color: #8899aa;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 16px;
+            cursor: pointer; transition: all 0.4s; text-transform: uppercase; letter-spacing: 1.5px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.12);
+        }
+        .tab-btn.active {
+            color: #ffffff; background: linear-gradient(135deg, rgba(76, 255, 128, 0.2), rgba(34, 170, 255, 0.15));
+            border-color: rgba(76, 255, 128, 0.5); transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(76, 255, 128, 0.3), inset 0 1px 2px rgba(255,255,255,0.3);
+        }
         .tab-btn:hover:not(.active) { background: rgba(255, 255, 255, 0.08); color: #ffffff; transform: translateY(-2px); }
+        .tab-btn.external { background: rgba(255, 200, 50, 0.08); border-color: rgba(255, 200, 50, 0.2); }
+        .tab-btn.external:hover { background: rgba(255, 200, 50, 0.15); border-color: rgba(255, 200, 50, 0.4); }
         .section { display: none; animation: fadeIn 0.4s ease; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
-        .game-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 28px; transition: all 0.4s; position: relative; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.3); display: flex; flex-direction: column; }
+        .game-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px;
+            padding: 28px; transition: all 0.4s; position: relative; overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3); display: flex; flex-direction: column;
+        }
         .game-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #4cff80, #2288ff, #ff4cff); opacity: 0.7; }
         .game-card:hover { transform: translateY(-8px); border-color: rgba(76, 255, 128, 0.4); box-shadow: 0 20px 60px rgba(76, 255, 128, 0.15); }
         .game-icon { font-size: 52px; margin-bottom: 16px; }
         .game-title { font-size: 22px; font-weight: 800; margin-bottom: 10px; color: #ffffff; }
         .game-desc { font-size: 14px; color: #8899aa; line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
-        .play-btn { display: block; width: 100%; padding: 16px; text-align: center; background: linear-gradient(135deg, #4cff80, #22aa55); color: #000; font-weight: 800; text-decoration: none; border-radius: 12px; transition: all 0.3s; text-transform: uppercase; box-shadow: 0 6px 20px rgba(76, 255, 128, 0.3); margin-top: auto; }
+        .play-btn {
+            display: block; width: 100%; padding: 16px; text-align: center;
+            background: linear-gradient(135deg, #4cff80, #22aa55); color: #000; font-weight: 800;
+            text-decoration: none; border-radius: 12px; transition: all 0.3s; text-transform: uppercase;
+            box-shadow: 0 6px 20px rgba(76, 255, 128, 0.3); margin-top: auto;
+        }
         .play-btn:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 10px 30px rgba(76, 255, 128, 0.5); }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px); z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
+            z-index: 2000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;
+        }
         .modal-overlay.show { display: flex; opacity: 1; }
-        .modal-content { background: linear-gradient(135deg, rgba(20, 20, 40, 0.95), rgba(10, 10, 20, 0.98)); border: 1px solid rgba(76, 255, 128, 0.3); border-radius: 24px; padding: 32px; width: 90%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .modal-content {
+            background: linear-gradient(135deg, rgba(20, 20, 40, 0.95), rgba(10, 10, 20, 0.98));
+            border: 1px solid rgba(76, 255, 128, 0.3); border-radius: 24px; padding: 32px;
+            width: 90%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
         .modal-overlay.show .modal-content { transform: scale(1); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
         .modal-title { font-size: 22px; font-weight: 800; color: #4cff80; }
@@ -45,35 +100,54 @@
         .modal-close:hover { color: #ff4444; }
         .form-group { margin-bottom: 16px; }
         .form-label { display: block; font-size: 13px; color: #aaccbb; margin-bottom: 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-input, .form-select { width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: #ffffff; font-size: 16px; font-family: 'Inter', sans-serif; transition: all 0.3s; outline: none; }
-        .form-select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234cff80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 14px center; background-size: 18px; padding-right: 40px; }
+        .form-input, .form-select {
+            width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px;
+            color: #ffffff; font-size: 16px; font-family: 'Inter', sans-serif; transition: all 0.3s; outline: none;
+        }
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234cff80' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 18px;
+            padding-right: 40px;
+        }
         .form-select option { background: #15152a; color: #ffffff; padding: 10px; }
         .form-input:focus, .form-select:focus { border-color: #4cff80; box-shadow: 0 0 0 3px rgba(76, 255, 128, 0.15); }
-        .submit-btn { width: 100%; padding: 16px; margin-top: 10px; background: linear-gradient(135deg, #4cff80, #22aa55); color: #000; font-weight: 800; font-size: 16px; border: none; border-radius: 12px; cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 6px 20px rgba(76, 255, 128, 0.3); }
+        .submit-btn {
+            width: 100%; padding: 16px; margin-top: 10px;
+            background: linear-gradient(135deg, #4cff80, #22aa55); color: #000;
+            font-weight: 800; font-size: 16px; border: none; border-radius: 12px;
+            cursor: pointer; transition: all 0.3s; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 6px 20px rgba(76, 255, 128, 0.3);
+        }
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(76, 255, 128, 0.5); }
-        .clear-name-btn { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #8899aa; padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600; transition: 0.3s; margin-top: 4px; }
-        .clear-name-btn:hover { background: rgba(255, 50, 50, 0.15); color: #ff6666; border-color: rgba(255, 50, 50, 0.3); }
-        .leaderboard-container { background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2)); backdrop-filter: blur(20px); border: 1px solid rgba(255, 100, 100, 0.2); border-radius: 24px; padding: 24px; overflow-x: auto; }
-        .lb-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+
+        .leaderboard-container {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
+            backdrop-filter: blur(20px); border: 1px solid rgba(255, 100, 100, 0.2);
+            border-radius: 24px; padding: 24px; overflow-x: auto;
+        }
+        .lb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
         .lb-title { font-size: 24px; font-weight: 800; color: #ff8888; display: flex; align-items: center; gap: 10px; }
-        .lb-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; flex: 1; justify-content: flex-end; }
-        .add-result-btn { padding: 12px 22px; background: linear-gradient(135deg, rgba(76, 255, 128, 0.2), rgba(34, 170, 255, 0.15)); border: 1px solid rgba(76, 255, 128, 0.4); color: #4cff80; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase; white-space: nowrap; }
+        .lb-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .add-result-btn {
+            padding: 12px 22px; background: linear-gradient(135deg, rgba(76, 255, 128, 0.2), rgba(34, 170, 255, 0.15));
+            border: 1px solid rgba(76, 255, 128, 0.4); color: #4cff80; border-radius: 12px;
+            cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase;
+        }
         .add-result-btn:hover { background: linear-gradient(135deg, rgba(76, 255, 128, 0.3), rgba(34, 170, 255, 0.25)); transform: translateY(-2px); }
-        .filter-btn { padding: 12px 22px; background: linear-gradient(135deg, rgba(255, 170, 0, 0.15), rgba(255, 136, 0, 0.05)); border: 1px solid rgba(255, 170, 0, 0.4); color: #ffaa44; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase; white-space: nowrap; }
-        .filter-btn:hover { background: linear-gradient(135deg, rgba(255, 170, 0, 0.3), rgba(255, 136, 0, 0.15)); transform: translateY(-2px); }
-        .filter-btn.active { background: linear-gradient(135deg, rgba(255, 170, 0, 0.4), rgba(255, 136, 0, 0.25)); color: #fff; box-shadow: 0 0 15px rgba(255, 170, 0, 0.4); border-color: rgba(255, 170, 0, 0.8); }
-        .search-input { padding: 12px 18px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 12px; color: #fff; font-size: 14px; font-family: 'Inter', sans-serif; outline: none; transition: all 0.3s; min-width: 180px; flex: 1; }
-        .search-input:focus { border-color: #4cff80; box-shadow: 0 0 0 3px rgba(76, 255, 128, 0.15); }
-        .search-input::placeholder { color: #667788; }
-        .clear-btn { padding: 12px 22px; background: linear-gradient(135deg, rgba(255, 50, 50, 0.15), rgba(255, 50, 50, 0.05)); border: 1px solid rgba(255, 50, 50, 0.3); color: #ff6666; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase; white-space: nowrap; }
+        .clear-btn {
+            padding: 12px 22px; background: linear-gradient(135deg, rgba(255, 50, 50, 0.15), rgba(255, 50, 50, 0.05));
+            border: 1px solid rgba(255, 50, 50, 0.3); color: #ff6666; border-radius: 12px;
+            cursor: pointer; font-weight: 700; font-size: 13px; transition: all 0.3s; text-transform: uppercase;
+        }
         .clear-btn:hover { background: linear-gradient(135deg, rgba(255, 50, 50, 0.25), rgba(255, 50, 50, 0.1)); transform: translateY(-2px); }
-        .stats-bar { display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; margin-bottom: 16px; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 12px; font-size: 13px; color: #8899aa; font-weight: 600; flex-wrap: wrap; gap: 8px; }
-        .stats-bar strong { color: #4cff80; }
         table { width: 100%; border-collapse: collapse; min-width: 500px; }
         th { text-align: left; padding: 16px; color: #8899aa; font-size: 13px; text-transform: uppercase; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
         td { padding: 16px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); font-size: 16px; }
         tr:first-child td { color: #ffdd88; font-weight: 800; font-size: 18px; background: rgba(255, 221, 136, 0.03); }
-        tr.my-row:first-child td { background: rgba(255, 170, 0, 0.12) !important; }
         .rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; font-weight: 800; font-size: 14px; }
         .rank-1 { background: linear-gradient(135deg, #ffd700, #ffaa00); color: #000; }
         .rank-2 { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #000; }
@@ -82,36 +156,63 @@
         .game-tag { display: inline-block; padding: 4px 10px; background: rgba(76, 255, 128, 0.1); border: 1px solid rgba(76, 255, 128, 0.3); border-radius: 6px; font-size: 12px; color: #4cff80; font-weight: 600; }
         .score-cell { text-align: right; font-weight: 800; color: #ff6666; font-size: 18px; }
         .empty-state { text-align: center; padding: 40px; color: #667788; font-size: 16px; }
-        tr.highlight-row td { background: rgba(76, 255, 128, 0.15) !important; box-shadow: inset 0 0 0 1px rgba(76, 255, 128, 0.5); animation: rowPulse 1.5s ease-in-out 3; }
-        tr.my-row td { background: rgba(255, 170, 0, 0.04) !important; }
-        @keyframes rowPulse { 0%, 100% { background: rgba(76,255,128,0.15); } 50% { background: rgba(76,255,128,0.35); } }
-        .me-badge { display: inline-block; margin-left: 8px; padding: 2px 8px; background: linear-gradient(135deg, #4cff80, #22aa55); color: #000; font-size: 10px; font-weight: 900; border-radius: 6px; letter-spacing: 0.5px; text-transform: uppercase; vertical-align: middle; box-shadow: 0 2px 8px rgba(76, 255, 128, 0.4); }
-        .delete-btn { background: rgba(255, 50, 50, 0.15); border: 1px solid rgba(255, 50, 50, 0.4); color: #ff6666; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 700; margin-left: 8px; transition: all 0.2s; }
-        .delete-btn:hover { background: rgba(255, 50, 50, 0.3); transform: scale(1.05); }
-        .support-footer { background: linear-gradient(135deg, rgba(76, 255, 128, 0.05), rgba(34, 136, 255, 0.05)); border: 1px solid rgba(76, 255, 128, 0.15); border-radius: 24px; padding: 28px 24px; margin-top: 60px; backdrop-filter: blur(10px); text-align: center; }
+        tr.highlight-row td {
+            background: rgba(76, 255, 128, 0.15) !important;
+            box-shadow: inset 0 0 0 1px rgba(76, 255, 128, 0.5);
+            animation: rowPulse 1.5s ease-in-out 3;
+        }
+        @keyframes rowPulse {
+            0%, 100% { background: rgba(76,255,128,0.15); }
+            50% { background: rgba(76,255,128,0.35); }
+        }
+
+        .search-container {
+            display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+            width: 100%; margin-top: 10px;
+        }
+        .search-container input {
+            flex: 1; padding: 10px 16px; background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+            color: #fff; font-size: 14px; outline: none; transition: 0.3s;
+            min-width: 150px;
+        }
+        .search-container input:focus { border-color: #4cff80; box-shadow: 0 0 0 3px rgba(76,255,128,0.15); }
+        .search-container button {
+            padding: 10px 20px; background: rgba(76,255,128,0.15);
+            border: 1px solid rgba(76,255,128,0.3); border-radius: 12px;
+            color: #4cff80; cursor: pointer; font-weight: 700; transition: 0.3s;
+            text-transform: uppercase; font-size: 13px;
+        }
+        .search-container button:hover { background: rgba(76,255,128,0.25); transform: translateY(-2px); }
+        .search-result-msg { text-align: center; padding: 20px; color: #8899aa; }
+
+        .support-footer {
+            background: linear-gradient(135deg, rgba(76, 255, 128, 0.05), rgba(34, 136, 255, 0.05));
+            border: 1px solid rgba(76, 255, 128, 0.15); border-radius: 24px; padding: 28px 24px; margin-top: 60px;
+            backdrop-filter: blur(10px); text-align: center;
+        }
         .support-line-1 { font-size: 15px; color: #aaccbb; margin-bottom: 18px; line-height: 1.6; }
         .support-line-1 strong { color: #ffffff; font-size: 17px; }
-        .support-line-2 { font-size: 16px; color: #ffffff; transition: all 0.3s; padding: 16px; border-radius: 16px; cursor: pointer; border: 1px dashed rgba(76, 255, 128, 0.3); background: rgba(0, 0, 0, 0.2); }
+        .support-line-2 {
+            font-size: 16px; color: #ffffff; transition: all 0.3s; padding: 16px; border-radius: 16px;
+            cursor: pointer; border: 1px dashed rgba(76, 255, 128, 0.3); background: rgba(0, 0, 0, 0.2);
+        }
         .support-line-2:hover { background: rgba(76, 255, 128, 0.08); border-color: rgba(76, 255, 128, 0.6); transform: translateY(-2px); }
         .phone-highlight { color: #4cff80; font-weight: 900; font-size: 20px; letter-spacing: 1px; display: inline-block; margin: 0 4px; }
         .support-badges { display: block; margin-top: 10px; font-size: 13px; color: #88ddff; font-weight: 600; }
-        .copy-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: rgba(76, 255, 128, 0.95); color: #000; padding: 14px 28px; border-radius: 30px; font-weight: 800; font-size: 15px; opacity: 0; transition: all 0.4s; pointer-events: none; z-index: 3000; }
+        .copy-toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+            background: rgba(76, 255, 128, 0.95); color: #000; padding: 14px 28px; border-radius: 30px;
+            font-weight: 800; font-size: 15px; opacity: 0; transition: all 0.4s; pointer-events: none; z-index: 3000;
+        }
         .copy-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-        .reward-banner { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-150px); background: linear-gradient(135deg, rgba(255, 50, 50, 0.95), rgba(255, 100, 50, 0.95)); color: #fff; padding: 16px 32px; border-radius: 16px; font-weight: 800; font-size: 16px; box-shadow: 0 8px 32px rgba(255, 50, 50, 0.5); z-index: 1500; opacity: 0; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; text-align: center; }
-        .reward-banner.show { opacity: 1; transform: translateX(-50%) translateY(0); }
         @media (max-width: 600px) {
-            .container { padding: 20px 16px; }
-            .games-grid { grid-template-columns: 1fr; }
+            .container { padding: 20px 16px; } .games-grid { grid-template-columns: 1fr; }
             .tab-btn { padding: 12px 20px; font-size: 14px; flex: 1; text-align: center; }
-            th, td { padding: 12px 8px; font-size: 14px; }
-            .lang-switcher { top: 12px; right: 12px; }
-            .lang-btn { padding: 8px 14px; font-size: 12px; }
-            .phone-highlight { font-size: 18px; }
-            .lb-header { flex-direction: column; align-items: stretch; }
-            .lb-actions { flex-direction: column; align-items: stretch; }
-            .lb-actions > * { width: 100%; }
-            .search-input { width: 100%; min-width: 0; }
-            .stats-bar { flex-direction: column; align-items: flex-start; font-size: 12px; }
+            th, td { padding: 12px 8px; font-size: 14px; } .lang-switcher { top: 12px; right: 12px; }
+            .lang-btn { padding: 8px 14px; font-size: 12px; } .phone-highlight { font-size: 18px; }
+            .lb-header { flex-direction: column; align-items: stretch; } .lb-actions { justify-content: space-between; }
+            .search-container input { font-size: 14px; }
         }
     </style>
 </head>
@@ -133,56 +234,57 @@
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('games', event)" data-i18n="tabGames">🎮 Игры</button>
             <button class="tab-btn" onclick="switchTab('leaderboard', event)" data-i18n="tabLeaderboard">🏆 Результаты</button>
+            <button class="tab-btn external" onclick="window.open('https://anti-ii-zmeya-vse-igry.vercel.app/', '_blank')" data-i18n="tabExternalBoard">📋 Доска Змея</button>
         </div>
 
         <div id="tab-games" class="section active">
             <div class="games-grid">
                 <div class="game-card">
                     <div class="game-icon">🕷️</div>
-                    <div class="game-title" data-i18n="game1Title">Змея и Паук</div>
-                    <div class="game-desc" data-i18n="game1Desc">🐍🕷️ 3D-игра «Змея и Паук». Вырвись из паутины, убеги от паука за 3 минуты!</div>
+                    <div class="game-title" data-i18n="game7Title">Змея и Паук</div>
+                    <div class="game-desc" data-i18n="game7Desc">🐍🕷️ 3D-игра «Змея и Паук». Вырвись из паутины, убеги от паука за 3 минуты!</div>
                     <a href="https://anti-ai-snake-and-spider.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🐉</div>
-                    <div class="game-title" data-i18n="game2Title">Змея и Дракон</div>
-                    <div class="game-desc" data-i18n="game2Desc">🐍🐉 3D браузерная игра «Змея и Дракон». Управляйте змеей и сражайтесь с драконом.</div>
+                    <div class="game-title" data-i18n="game8Title">Змея и Дракон</div>
+                    <div class="game-desc" data-i18n="game8Desc">🐍🐉 3D браузерная игра "Змея и Дракон". Управляйте змеей и сражайтесь с драконом.</div>
                     <a href="https://anti-ai-snake-and-dragon.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🐜</div>
-                    <div class="game-title" data-i18n="game3Title">Змея и Муравей</div>
-                    <div class="game-desc" data-i18n="game3Desc">🐍 Анти-ИИ Змея и Муравей. Переползите через муравьиную тропу и муравейник, не разбудив стражу.</div>
+                    <div class="game-title" data-i18n="game1Title">Змея и Муравей</div>
+                    <div class="game-desc" data-i18n="game1Desc">🐍 Анти-ИИ Змея и Муравей. Переползи через муравейник, не разбудив стражу.</div>
                     <a href="https://anti-ai-snake-ant.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🎵</div>
-                    <div class="game-title" data-i18n="game4Title">Змея и Мелодия</div>
-                    <div class="game-desc" data-i18n="game4Desc">🐍 Анти-ИИ: Змея и Мелодия (Ночная версия). Повторяйте мелодии на светящихся плитках.</div>
+                    <div class="game-title" data-i18n="game2Title">Змея и Мелодия</div>
+                    <div class="game-desc" data-i18n="game2Desc">🐍 Музыкальная 3D-игра, повторяйте мелодии на светящихся плитках.</div>
                     <a href="https://anti-ai-snake-melody-night.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🫧</div>
-                    <div class="game-title" data-i18n="game5Title">Змея и Пузыри</div>
-                    <div class="game-desc" data-i18n="game5Desc">🐍 3D игра «Змея и Мыльные пузыри». Ломай пузыри хвостом змеи!</div>
+                    <div class="game-title" data-i18n="game3Title">Змея и Пузыри</div>
+                    <div class="game-desc" data-i18n="game3Desc">🐍 3D игра "Змея и Мыльные пузыри". Ломай пузыри хвостом змеи!</div>
                     <a href="https://anti-ai-snake-and-bubbles.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🪰</div>
-                    <div class="game-title" data-i18n="game6Title">Змея и Стрекоза</div>
-                    <div class="game-desc" data-i18n="game6Desc">🐍 Анти ИИ Змея и Стрекоза. Поймайте стрекозу 3 раза за 3 минуты, уворачиваясь от деревьев.</div>
+                    <div class="game-title" data-i18n="game4Title">Змея и Стрекоза</div>
+                    <div class="game-desc" data-i18n="game4Desc">🐍 Охотьтесь на проворную стрекозу! Поймайте её 3 раза за 3 минуты.</div>
                     <a href="https://anti-ii-snake-and-dragonfly.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🐭</div>
-                    <div class="game-title" data-i18n="game7Title">Змея и Мышка</div>
-                    <div class="game-desc" data-i18n="game7Desc">🐍🐭 Змея и Мышка — 3D-игра. Поймайте мышку 3 раза за 3 минуты. Мышка прячется в норки.</div>
+                    <div class="game-title" data-i18n="game5Title">Змея и Мышка</div>
+                    <div class="game-desc" data-i18n="game5Desc">🐍🐭 Поймайте мышку 3 раза за 3 минуты. Остерегайтесь деревьев!</div>
                     <a href="https://anti-a-i-snake-and-mouse.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
                 <div class="game-card">
                     <div class="game-icon">🍎</div>
-                    <div class="game-title" data-i18n="game8Title">Змея и Яблоки</div>
-                    <div class="game-desc" data-i18n="game8Desc">🐍 Anti‑AI Змея и Яблоки. Стеклянная змея с подсветкой собирает яблоки за 3 минуты.</div>
+                    <div class="game-title" data-i18n="game6Title">Змея и Яблоки</div>
+                    <div class="game-desc" data-i18n="game6Desc">🐍 Стеклянная змея с подсветкой собирает яблоки за 3 минуты.</div>
                     <a href="https://anti-ai-snake-apples.vercel.app/" class="play-btn" target="_blank" data-i18n="play">▶ Играть</a>
                 </div>
             </div>
@@ -193,20 +295,21 @@
                 <div class="lb-header">
                     <div class="lb-title" data-i18n="hallOfFame">🐍 Зал славы Красных Змей</div>
                     <div class="lb-actions">
-                        <button class="add-result-btn" onclick="openModal()" data-i18n="addResult">➕ Добавить</button>
-                        <button class="filter-btn" id="filter-my-btn" onclick="toggleMyFilter()" data-i18n="filterMine">👤 Только мои</button>
-                        <input type="text" id="search-input" class="search-input" placeholder="🔍 Найти по имени..." oninput="filterLeaderboard()">
-                        <button class="clear-btn" onclick="clearGlobalLeaderboard()" data-i18n="clearAll">🗑 Очистить всё</button>
+                        <button class="add-result-btn" onclick="openModal()" data-i18n="addResult">➕ Добавить результат</button>
+                        <button class="clear-btn" onclick="clearGlobalLeaderboard()" data-i18n="clearAll">🗑 Очистить</button>
                     </div>
                 </div>
-                <div class="stats-bar">
-                    <span id="stats-text">📊 Загрузка...</span>
+                <div class="search-container">
+                    <input type="text" id="search-player" placeholder="🔍 Найти игрока..." oninput="filterLeaderboard()">
+                    <button onclick="filterLeaderboard()" data-i18n="searchBtn">Найти</button>
+                    <button onclick="document.getElementById('search-player').value=''; filterLeaderboard();" style="background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.1); color:#8899aa;">✕</button>
                 </div>
+                <div id="search-result-msg" class="search-result-msg" style="display: none;"></div>
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 8%;">#</th>
-                            <th style="width: 32%;" data-i18n="thPlayer">Игрок</th>
+                            <th style="width: 10%;">#</th>
+                            <th style="width: 30%;" data-i18n="thPlayer">Игрок</th>
                             <th style="width: 25%;" data-i18n="thGame">Игра</th>
                             <th style="width: 15%; text-align: right;" data-i18n="thSnakes">Змеи</th>
                             <th style="width: 20%; text-align: right;" data-i18n="thDate">Дата</th>
@@ -231,6 +334,7 @@
         <div id="copy-toast" class="copy-toast">✅ Номер скопирован в буфер обмена!</div>
     </div>
 
+    <!-- Модальное окно -->
     <div id="score-modal" class="modal-overlay" onclick="closeModalOutside(event)">
         <div class="modal-content">
             <div class="modal-header">
@@ -240,22 +344,18 @@
             <div class="form-group">
                 <label class="form-label" data-i18n="labelName">Ваше имя или никнейм</label>
                 <input type="text" id="player-name" class="form-input" maxlength="20" placeholder="Например: Змейка_Мастер">
-                <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
-                    <button class="clear-name-btn" onclick="clearSavedName()">🗑 Сменить имя</button>
-                    <span style="font-size:12px; color:#667788;">(сохранённое имя будет очищено)</span>
-                </div>
             </div>
             <div class="form-group">
                 <label class="form-label" data-i18n="labelGame">Игра</label>
                 <select id="game-select" class="form-select">
-                    <option value="🐍🕷️ Змея и Паук">🐍🕷️ Змея и Паук</option>
-                    <option value="🐍🐉 Змея и Дракон">🐍🐉 Змея и Дракон</option>
-                    <option value="🐍🐜 Змея и Муравей">🐍🐜 Змея и Муравей</option>
-                    <option value="🐍🎵 Змея и Мелодия">🐍🎵 Змея и Мелодия</option>
-                    <option value="🐍🫧 Змея и Пузыри">🐍🫧 Змея и Пузыри</option>
-                    <option value="🐍🪰 Змея и Стрекоза">🐍🪰 Змея и Стрекоза</option>
-                    <option value="🐍🐭 Змея и Мышка">🐍🐭 Змея и Мышка</option>
-                    <option value="🐍🍎 Змея и Яблоки">🐍🍎 Змея и Яблоки</option>
+                    <option value="🐍 - 🕷️ Змея и Паук">🐍 - 🕷️ Змея и Паук</option>
+                    <option value="🐍 - 🐉 Змея и Дракон">🐍 - 🐉 Змея и Дракон</option>
+                    <option value="🐍 - 🐜 Змея и Муравей">🐍 - 🐜 Змея и Муравей</option>
+                    <option value="🐍 - 🎵 Змея и Мелодия">🐍 - 🎵 Змея и Мелодия</option>
+                    <option value="🐍 - 🫧 Змея и Пузыри">🐍 - 🫧 Змея и Пузыри</option>
+                    <option value="🐍 - 🪰 Змея и Стрекоза">🐍 - 🪰 Змея и Стрекоза</option>
+                    <option value="🐍 - 🐭 Змея и Мышка">🐍 - 🐭 Змея и Мышка</option>
+                    <option value="🐍 - 🍎 Змея и Яблоки">🐍 - 🍎 Змея и Яблоки</option>
                 </select>
             </div>
             <div class="form-group">
@@ -266,115 +366,62 @@
         </div>
     </div>
 
-    <div id="reward-banner" class="reward-banner"></div>
-
     <script>
-        // ============================================================
-        //  КОНСТАНТЫ И КЛЮЧИ
-        // ============================================================
         const GLOBAL_LB_KEY = 'snake_global_leaderboard_v1';
-        const USER_ID_KEY = 'snake_user_id';
-        const LAST_NAME_KEY = 'snake_last_name';
-        const SIGNING_SECRET = 'AntonKuznetsovSnakeProject2026';
-        let lastAddedDateRaw = null;
-        let filterOnlyMine = false;
-        let searchQuery = '';
 
-        // ============================================================
-        // 🆔 УНИКАЛЬНЫЙ ID УСТРОЙСТВА
-        // ============================================================
-        function getUserId() {
-            let id = localStorage.getItem(USER_ID_KEY);
-            if (!id) {
-                id = 'U-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
-                localStorage.setItem(USER_ID_KEY, id);
-            }
-            return id;
-        }
-        const MY_USER_ID = getUserId();
-
-        // ============================================================
-        // 🌐 ПЕРЕВОДЫ
-        // ============================================================
         const translations = {
             ru: {
-                title: "ЗМЕЯ", subtitle: "Архив игр и Доска почета",
-                tabGames: "🎮 Игры", tabLeaderboard: "🏆 Результаты",
-                game1Title: "Змея и Паук", game1Desc: "🐍🕷️ 3D-игра «Змея и Паук». Вырвись из паутины, убеги от паука за 3 минуты!",
-                game2Title: "Змея и Дракон", game2Desc: "🐍🐉 3D браузерная игра «Змея и Дракон». Управляйте змеей и сражайтесь с драконом.",
-                game3Title: "Змея и Муравей", game3Desc: "🐍 Анти-ИИ Змея и Муравей. Переползите через муравьиную тропу и муравейник, не разбудив стражу.",
-                game4Title: "Змея и Мелодия", game4Desc: "🐍 Анти-ИИ: Змея и Мелодия (Ночная версия). Повторяйте мелодии на светящихся плитках.",
-                game5Title: "Змея и Пузыри", game5Desc: "🐍 3D игра «Змея и Мыльные пузыри». Ломай пузыри хвостом змеи!",
-                game6Title: "Змея и Стрекоза", game6Desc: "🐍 Анти ИИ Змея и Стрекоза. Поймайте стрекозу 3 раза за 3 минуты, уворачиваясь от деревьев.",
-                game7Title: "Змея и Мышка", game7Desc: "🐍🐭 Змея и Мышка — 3D-игра. Поймайте мышку 3 раза за 3 минуты. Мышка прячется в норки.",
-                game8Title: "Змея и Яблоки", game8Desc: "🐍 Anti‑AI Змея и Яблоки. Стеклянная змея с подсветкой собирает яблоки за 3 минуты.",
-                play: "▶ Играть", hallOfFame: "🐍 Зал славы Красных Змей",
-                addResult: "➕ Добавить", clearAll: "🗑 Очистить всё", filterMine: "👤 Только мои", filterMineActive: "✓ Только мои",
-                searchPlaceholder: "🔍 Найти по имени...",
+                title: "ЗМЕЯ", subtitle: "Архив игр и Доска почета", tabGames: "🎮 Игры", tabLeaderboard: "🏆 Результаты", tabExternalBoard: "📋 Доска Змея",
+                game1Title: "Змея и Муравей", game1Desc: "🐍 Анти-ИИ Змея и Муравей. Переползи через муравейник, не разбудив стражу.",
+                game2Title: "Змея и Мелодия", game2Desc: "🐍 Музыкальная 3D-игра, повторяйте мелодии на светящихся плитках.",
+                game3Title: "Змея и Пузыри", game3Desc: "🐍 3D игра \"Змея и Мыльные пузыри\". Ломай пузыри хвостом змеи!",
+                game4Title: "Змея и Стрекоза", game4Desc: "🐍 Охотьтесь на проворную стрекозу! Поймайте её 3 раза за 3 минуты.",
+                game5Title: "Змея и Мышка", game5Desc: "🐍🐭 Поймайте мышку 3 раза за 3 минуты. Остерегайтесь деревьев!",
+                game6Title: "Змея и Яблоки", game6Desc: "🐍 Стеклянная змея с подсветкой собирает яблоки за 3 минуты.",
+                game7Title: "Змея и Паук", game7Desc: "🐍🕷️ 3D-игра «Змея и Паук». Вырвись из паутины, убеги от паука за 3 минуты!",
+                game8Title: "Змея и Дракон", game8Desc: "🐍🐉 3D браузерная игра \"Змея и Дракон\". Управляйте змеей и сражайтесь с драконом.",
+                play: "▶ Играть", hallOfFame: "🐍 Зал славы Красных Змей", addResult: "➕ Добавить результат", clearAll: "🗑 Очистить",
                 thPlayer: "Игрок", thGame: "Игра", thSnakes: "Змеи", thDate: "Дата",
                 emptyState: "Пока нет записанных результатов. Станьте первым героем!",
-                emptyMine: "У вас пока нет записей. Сыграйте и добавьте результат!",
-                emptySearch: "По запросу ничего не найдено",
-                modalTitle: "🏆 Добавить результат", labelName: "Ваше имя или никнейм", labelGame: "Игра", labelScore: "Красных змей 🐍",
-                submitBtn: "Отправить на доску", confirmClear: "Вы уверены, что хотите стереть ВСЕ результаты? Это действие нельзя отменить.",
+                modalTitle: "🏆 Добавить результат", labelName: "Ваше имя или никнейм",
+                labelGame: "Игра", labelScore: "Красных змей 🐍",
+                submitBtn: "Отправить на доску", searchBtn: "Найти",
+                confirmClear: "Вы уверены, что хотите стереть ВСЕ результаты? Это действие нельзя отменить.",
                 successMsg: "✅ Результат добавлен! Ваше имя в Зале славы!",
-                errorName: "Пожалуйста, введите имя", errorScore: "Введите корректное количество змей (1-999)",
-                pageTitle: "ЗМЕЯ — Архив игр и Доска почета",
-                rewardReceived: "🎁 Награда получена!",
-                statsTotal: "Всего", statsFound: "Найдено", statsMine: "Моих записей",
-                copyToast: "✅ Номер скопирован в буфер обмена!",
-                nameCleared: "Сохранённое имя очищено. Введите новое при следующей победе.",
-                autoAddSuccess: "✅ Победа автоматически зачислена на ваше имя!"
+                victoryMsg: "🎉 Победа обнаружена! Проверьте данные и сохраните результат.",
+                errorName: "Пожалуйста, введите имя",
+                errorScore: "Введите корректное количество змей (1-999)",
+                duplicateTitle: "⚠️ Внимание!",
+                duplicateMsg: (name, count) => `Имя "${name}" уже есть в таблице (${count} записей).\n\nХотите добавить ещё одну запись с этим именем?`,
+                pageTitle: "ЗМЕЯ — Архив игр и Доска почета"
             },
             en: {
-                title: "SNAKE", subtitle: "Game Archive & Hall of Fame",
-                tabGames: "🎮 Games", tabLeaderboard: "🏆 Results",
-                game1Title: "Snake & Spider", game1Desc: "🐍🕷️ 3D game 'Snake and Spider'. Break free from the web, escape the spider in 3 minutes!",
-                game2Title: "Snake & Dragon", game2Desc: "🐍🐉 3D browser game 'Snake and Dragon'. Control a snake and fight a dragon.",
-                game3Title: "Snake & Ant", game3Desc: "🐍 Anti-AI Snake and Ant. Crawl through the ant trail and anthill without waking the guard.",
-                game4Title: "Snake & Melody", game4Desc: "🐍 Anti-AI: Snake and Melody (Night Version). Repeat melodies on glowing tiles.",
-                game5Title: "Snake & Bubbles", game5Desc: "🐍 3D game 'Snake and Soap Bubbles'. Break bubbles with the snake's tail!",
-                game6Title: "Snake & Dragonfly", game6Desc: "🐍 Anti-AI Snake and Dragonfly. Catch the dragonfly 3 times in 3 minutes.",
-                game7Title: "Snake & Mouse", game7Desc: "🐍🐭 Snake and Mouse - 3D game. Catch a mouse 3 times in 3 minutes.",
-                game8Title: "Snake & Apples", game8Desc: "🐍 Anti-AI Snake and Apples. Glass snake with backlight collects apples in 3 minutes.",
-                play: "▶ Play", hallOfFame: "🐍 Red Snakes Hall of Fame",
-                addResult: "➕ Add", clearAll: "🗑 Clear all", filterMine: "👤 Mine only", filterMineActive: "✓ Mine only",
-                searchPlaceholder: "🔍 Search by name...",
+                title: "SNAKE", subtitle: "Game Archive & Hall of Fame", tabGames: "🎮 Games", tabLeaderboard: "🏆 Results", tabExternalBoard: "📋 Snake Board",
+                game1Title: "Snake & Ant", game1Desc: "🐍 Anti-AI Snake and Ant — crawl through the anthill without waking the guard.",
+                game2Title: "Snake & Melody", game2Desc: "🐍 Musical 3D game where you control a snake repeating melodies on glowing tiles.",
+                game3Title: "Snake & Bubbles", game3Desc: "🐍 3D game \"Snake and Soap Bubbles\". Break bubbles with the snake's tail!",
+                game4Title: "Snake & Dragonfly", game4Desc: "🐍 Hunt an agile dragonfly. Catch it 3 times in 3 minutes while dodging trees.",
+                game5Title: "Snake & Mouse", game5Desc: "🐍🐭 Catch a mouse 3 times in 3 minutes. Beware of trees — collision stuns!",
+                game6Title: "Snake & Apples", game6Desc: "🐍 3D game where a glass snake with backlight collects apples in 3 minutes.",
+                game7Title: "Snake & Spider", game7Desc: "🐍🕷️ 3D game 'Snake and Spider'. Break free from the web, escape the spider in 3 minutes!",
+                game8Title: "Snake & Dragon", game8Desc: "🐍🐉 3D browser game 'Snake and Dragon'. Control a snake and fight a dragon.",
+                play: "▶ Play", hallOfFame: "🐍 Red Snakes Hall of Fame", addResult: "➕ Add Result", clearAll: "🗑 Clear",
                 thPlayer: "Player", thGame: "Game", thSnakes: "Snakes", thDate: "Date",
                 emptyState: "No recorded results yet. Be the first hero!",
-                emptyMine: "You have no entries yet. Play and add a result!",
-                emptySearch: "Nothing found for your query",
-                modalTitle: "🏆 Add Result", labelName: "Your name or nickname", labelGame: "Game", labelScore: "Red snakes 🐍",
-                submitBtn: "Submit to board", confirmClear: "Are you sure you want to erase ALL results? This action cannot be undone.",
+                modalTitle: "🏆 Add Result", labelName: "Your name or nickname",
+                labelGame: "Game", labelScore: "Red snakes 🐍",
+                submitBtn: "Submit to board", searchBtn: "Search",
+                confirmClear: "Are you sure you want to erase ALL results? This action cannot be undone.",
                 successMsg: "✅ Result added! Your name is in the Hall of Fame!",
-                errorName: "Please enter a name", errorScore: "Enter a valid number of snakes (1-999)",
-                pageTitle: "SNAKE — Game Archive & Hall of Fame",
-                rewardReceived: "🎁 Reward received!",
-                statsTotal: "Total", statsFound: "Found", statsMine: "My entries",
-                copyToast: "✅ Phone copied to clipboard!",
-                nameCleared: "Saved name cleared. Enter a new one on next victory.",
-                autoAddSuccess: "✅ Victory automatically credited to your name!"
+                victoryMsg: "🎉 Victory detected! Check the data and save the result.",
+                errorName: "Please enter a name",
+                errorScore: "Enter a valid number of snakes (1-999)",
+                duplicateTitle: "⚠️ Attention!",
+                duplicateMsg: (name, count) => `The name "${name}" already exists in the table (${count} entries).\n\nDo you want to add another entry with this name?`,
+                pageTitle: "SNAKE — Game Archive & Hall of Fame"
             }
         };
 
-        // ============================================================
-        // 🔐 ДЕКОДЕР ТОКЕНА НАГРАДЫ
-        // ============================================================
-        function decodeRewardToken(token) {
-            try {
-                const decoded = JSON.parse(decodeURIComponent(escape(atob(token))));
-                const expectedSig = btoa(unescape(encodeURIComponent(
-                    decoded.g + '|' + decoded.s + '|' + decoded.t + '|' + decoded.n + '|' + SIGNING_SECRET
-                )));
-                if (decoded.sig !== expectedSig) return null;
-                if (Date.now() - decoded.t > 24 * 60 * 60 * 1000) return null;
-                return { game: decoded.g, snakes: decoded.s };
-            } catch (e) { return null; }
-        }
-
-        // ============================================================
-        // 🌐 ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА
-        // ============================================================
         window.switchLang = function(lang) {
             document.documentElement.lang = lang;
             document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
@@ -382,192 +429,149 @@
                 const key = el.dataset.i18n;
                 if (translations[lang][key]) el.textContent = translations[lang][key];
             });
-            const searchInput = document.getElementById('search-input');
-            if (searchInput) searchInput.placeholder = translations[lang].searchPlaceholder;
-            const filterBtn = document.getElementById('filter-my-btn');
-            if (filterBtn) filterBtn.textContent = filterOnlyMine ? translations[lang].filterMineActive : translations[lang].filterMine;
             document.title = translations[lang].pageTitle;
             localStorage.setItem('snake_lang', lang);
             if (document.getElementById('tab-leaderboard').classList.contains('active')) loadGlobalLeaderboard();
         };
-        switchLang(localStorage.getItem('snake_lang') || 'ru');
+        const savedLang = localStorage.getItem('snake_lang') || 'ru';
+        switchLang(savedLang);
 
-        // ============================================================
-        // 🗂️ ВКЛАДКИ
-        // ============================================================
         window.switchTab = function(tabName, event) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(`tab-${tabName}`).classList.add('active');
-            if (event && event.target) event.target.classList.add('active');
-            else document.querySelectorAll('.tab-btn').forEach(b => {
-                if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${tabName}'`)) b.classList.add('active');
-            });
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                document.querySelectorAll('.tab-btn').forEach(b => {
+                    if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${tabName}'`)) {
+                        b.classList.add('active');
+                    }
+                });
+            }
             if (tabName === 'leaderboard') loadGlobalLeaderboard();
         };
 
-        // ============================================================
-        // 📝 МОДАЛЬНОЕ ОКНО
-        // ============================================================
-        window.openModal = function(prefillGame, prefillScore) {
+        window.openModal = function() {
             document.getElementById('score-modal').classList.add('show');
-            document.getElementById('player-name').value = localStorage.getItem(LAST_NAME_KEY) || '';
-            document.getElementById('score-input').value = prefillScore || 1;
-            if (prefillGame) {
-                const gameSelect = document.getElementById('game-select');
-                const match = Array.from(gameSelect.options).find(opt =>
-                    opt.value.toLowerCase().includes(prefillGame.toLowerCase()) ||
-                    prefillGame.toLowerCase().includes(opt.value.toLowerCase())
-                );
-                if (match) gameSelect.value = match.value;
-                else {
-                    const newOption = document.createElement('option');
-                    newOption.value = prefillGame;
-                    newOption.textContent = prefillGame;
-                    gameSelect.appendChild(newOption);
-                    gameSelect.value = prefillGame;
-                }
+            const savedName = localStorage.getItem('snake_player_name');
+            if (savedName && !document.getElementById('player-name').value) {
+                document.getElementById('player-name').value = savedName;
             }
-            document.getElementById('player-name').focus();
+            if (!document.getElementById('score-input').value) {
+                document.getElementById('score-input').value = 1;
+            }
+            setTimeout(() => document.getElementById('player-name').focus(), 100);
         };
         window.closeModal = function() { document.getElementById('score-modal').classList.remove('show'); };
         window.closeModalOutside = function(event) { if (event.target === document.getElementById('score-modal')) closeModal(); };
 
-        // ============================================================
-        // ✅ ДОБАВЛЕНИЕ РЕЗУЛЬТАТА (ручное)
-        // ============================================================
         window.submitScore = function() {
             const lang = localStorage.getItem('snake_lang') || 'ru';
             const name = document.getElementById('player-name').value.trim();
             const game = document.getElementById('game-select').value;
             const score = parseInt(document.getElementById('score-input').value);
+
             if (!name) { alert(translations[lang].errorName); return; }
             if (!score || score < 1 || score > 999) { alert(translations[lang].errorScore); return; }
+
+            localStorage.setItem('snake_player_name', name);
+
+            const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
+            const existing = data.filter(entry => entry.name.toLowerCase() === name.toLowerCase());
+            if (existing.length > 0) {
+                if (!confirm(translations[lang].duplicateMsg(name, existing.length))) return;
+            }
+
             const newEntry = {
-                name: name, game: game, snakes: score,
-                userId: MY_USER_ID,
-                date: new Date().toLocaleDateString(),
+                name: name,
+                game: game,
+                snakes: score,
+                date: new Date().toLocaleString(),
                 dateRaw: new Date().toISOString()
             };
-            lastAddedDateRaw = newEntry.dateRaw;
-            localStorage.setItem(LAST_NAME_KEY, name);
-            const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
+
             data.push(newEntry);
             localStorage.setItem(GLOBAL_LB_KEY, JSON.stringify(data));
+            sessionStorage.setItem('snake_last_added', newEntry.dateRaw);
+
             closeModal();
             showToastCustom(translations[lang].successMsg);
             loadGlobalLeaderboard();
         };
 
-        // ============================================================
-        // 🗑️ ОЧИСТКА СОХРАНЁННОГО ИМЕНИ
-        // ============================================================
-        window.clearSavedName = function() {
-            localStorage.removeItem(LAST_NAME_KEY);
-            const lang = localStorage.getItem('snake_lang') || 'ru';
-            document.getElementById('player-name').value = '';
-            showToastCustom(translations[lang].nameCleared);
-        };
-
-        // ============================================================
-        // 🔍 ФИЛЬТРАЦИЯ ПО ИМЕНИ
-        // ============================================================
         window.filterLeaderboard = function() {
-            searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
-            loadGlobalLeaderboard();
+            const query = document.getElementById('search-player').value.toLowerCase().trim();
+            const rows = document.querySelectorAll('#global-leaderboard-body tr');
+            const msgDiv = document.getElementById('search-result-msg');
+            let found = 0;
+            rows.forEach(row => {
+                const nameCell = row.cells[1];
+                if (nameCell) {
+                    const name = nameCell.textContent.toLowerCase();
+                    if (name.includes(query) || query === '') {
+                        row.style.display = '';
+                        row.style.background = (query !== '' && name.includes(query)) ? 'rgba(76,255,128,0.12)' : '';
+                        found++;
+                    } else {
+                        row.style.display = 'none';
+                        row.style.background = '';
+                    }
+                }
+            });
+            if (query !== '') {
+                msgDiv.style.display = 'block';
+                msgDiv.textContent = found > 0 ? `🔍 Найдено записей: ${found}` : '❌ Ничего не найдено';
+            } else {
+                msgDiv.style.display = 'none';
+                msgDiv.textContent = '';
+            }
         };
 
-        // ============================================================
-        // 👤 ФИЛЬТР "ТОЛЬКО МОИ"
-        // ============================================================
-        window.toggleMyFilter = function() {
-            filterOnlyMine = !filterOnlyMine;
-            const lang = localStorage.getItem('snake_lang') || 'ru';
-            const btn = document.getElementById('filter-my-btn');
-            btn.classList.toggle('active', filterOnlyMine);
-            btn.textContent = filterOnlyMine ? translations[lang].filterMineActive : translations[lang].filterMine;
-            loadGlobalLeaderboard();
-        };
-
-        // ============================================================
-        // 🗑️ УДАЛЕНИЕ СВОЕЙ ЗАПИСИ
-        // ============================================================
-        window.deleteEntry = function(dateRaw) {
-            const lang = localStorage.getItem('snake_lang') || 'ru';
-            if (!confirm(translations[lang].confirmClear.replace('ВСЕ', 'эту'))) return;
-            const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
-            const filtered = data.filter(e => !(e.dateRaw === dateRaw && e.userId === MY_USER_ID));
-            localStorage.setItem(GLOBAL_LB_KEY, JSON.stringify(filtered));
-            loadGlobalLeaderboard();
-        };
-
-        // ============================================================
-        // 📊 ЗАГРУЗКА ДОСКИ ПОЧЁТА
-        // ============================================================
         window.loadGlobalLeaderboard = function() {
-            const lang = localStorage.getItem('snake_lang') || 'ru';
-            const allData = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
+            const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
             const tbody = document.getElementById('global-leaderboard-body');
             const emptyState = document.getElementById('empty-state');
             tbody.innerHTML = '';
 
-            let data = allData.filter(e => {
-                if (filterOnlyMine && e.userId !== MY_USER_ID) return false;
-                if (searchQuery && !e.name.toLowerCase().includes(searchQuery)) return false;
-                return true;
-            });
-
-            data.sort((a, b) => b.snakes !== a.snakes ? b.snakes - a.snakes : new Date(b.dateRaw) - new Date(a.dateRaw));
-
-            const myCount = allData.filter(e => e.userId === MY_USER_ID).length;
-            const statsEl = document.getElementById('stats-text');
-            statsEl.innerHTML = `📊 <strong>${translations[lang].statsTotal}:</strong> ${allData.length} | <strong>${translations[lang].statsFound}:</strong> ${data.length} | 🏷️ <strong>${translations[lang].statsMine}:</strong> ${myCount} | 🆔 <span style="color:#667788; font-size:11px;">${MY_USER_ID.slice(0, 12)}...</span>`;
-
-            if (data.length === 0) {
-                emptyState.style.display = 'block';
-                if (filterOnlyMine) emptyState.textContent = translations[lang].emptyMine;
-                else if (searchQuery) emptyState.textContent = `${translations[lang].emptySearch}: "${searchQuery}"`;
-                else emptyState.textContent = translations[lang].emptyState;
-                return;
-            }
+            if (data.length === 0) { emptyState.style.display = 'block'; return; }
             emptyState.style.display = 'none';
 
-            const showRanks = !filterOnlyMine && !searchQuery;
+            data.sort((a, b) => {
+                if (b.snakes !== a.snakes) return b.snakes - a.snakes;
+                return new Date(b.dateRaw) - new Date(a.dateRaw);
+            });
+
+            const lastAdded = sessionStorage.getItem('snake_last_added');
             let newRow = null;
 
-            data.slice(0, 100).forEach((entry, index) => {
+            data.slice(0, 50).forEach((entry, index) => {
                 const tr = document.createElement('tr');
-                const rankClass = showRanks ? (index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : 'rank-other'))) : 'rank-other';
-                const medal = showRanks ? (index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : ''))) : '';
-                const isMine = entry.userId === MY_USER_ID;
-
-                if (isMine) tr.classList.add('my-row');
-                if (entry.dateRaw === lastAddedDateRaw) tr.classList.add('highlight-row');
-
-                const meBadge = isMine ? '<span class="me-badge">ВЫ</span>' : '';
-                const deleteBtn = isMine ? `<button class="delete-btn" onclick="deleteEntry('${entry.dateRaw}')">🗑</button>` : '';
-
+                const rankClass = index === 0 ? 'rank-1' : (index === 1 ? 'rank-2' : (index === 2 ? 'rank-3' : 'rank-other'));
+                const medal = index === 0 ? '🥇' : (index === 1 ? '🥈' : (index === 2 ? '🥉' : ''));
                 tr.innerHTML = `
                     <td><span class="rank-badge ${rankClass}">${index + 1}</span></td>
-                    <td>${medal} ${escapeHtml(entry.name)}${meBadge}${deleteBtn}</td>
+                    <td>${medal} ${escapeHtml(entry.name)}</td>
                     <td><span class="game-tag">${escapeHtml(entry.game)}</span></td>
                     <td class="score-cell">${entry.snakes} 🐍</td>
                     <td style="text-align: right; color: #8899aa; font-size: 14px;">${entry.date}</td>
                 `;
-
-                if (entry.dateRaw === lastAddedDateRaw) newRow = tr;
+                if (entry.dateRaw === lastAdded) {
+                    tr.classList.add('highlight-row');
+                    newRow = tr;
+                }
                 tbody.appendChild(tr);
             });
 
             if (newRow) {
                 setTimeout(() => newRow.scrollIntoView({ behavior: 'smooth', block: 'center' }), 400);
-                lastAddedDateRaw = null;
+                sessionStorage.removeItem('snake_last_added');
             }
+
+            const searchInput = document.getElementById('search-player');
+            if (searchInput && searchInput.value) filterLeaderboard();
         };
 
-        // ============================================================
-        // 🗑️ ОЧИСТКА ВСЕХ РЕЗУЛЬТАТОВ
-        // ============================================================
         window.clearGlobalLeaderboard = function() {
             const lang = localStorage.getItem('snake_lang') || 'ru';
             if (confirm(translations[lang].confirmClear)) {
@@ -576,9 +580,6 @@
             }
         };
 
-        // ============================================================
-        // 📱 КОПИРОВАНИЕ НОМЕРА
-        // ============================================================
         window.copyPhone = function() {
             navigator.clipboard.writeText("89202275676").then(() => showToast()).catch(() => {
                 const textArea = document.createElement("textarea");
@@ -588,108 +589,121 @@
         };
 
         function showToast() {
-            const lang = localStorage.getItem('snake_lang') || 'ru';
             const toast = document.getElementById('copy-toast');
-            toast.textContent = translations[lang].copyToast;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300);
+            }, 2500);
         }
 
         function showToastCustom(msg) {
             const toast = document.getElementById('copy-toast');
             toast.textContent = msg;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2500);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.textContent = "✅ Номер скопирован в буфер обмена!", 300);
+            }, 2500);
         }
 
-        function showRewardBanner(msg) {
-            const banner = document.getElementById('reward-banner');
-            banner.textContent = msg;
-            banner.classList.add('show');
-            setTimeout(() => banner.classList.remove('show'), 4000);
+        function escapeHtml(text) {
+            const div = document.createElement('div'); div.textContent = text; return div.innerHTML;
         }
-
-        function escapeHtml(text) { const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 
         // ============================================================
-        // 🔗 ОБРАБОТКА URL: ?reward=TOKEN (автоматическая запись)
+        // 1. ПРИЁМ ПОБЕДЫ ЧЕРЕЗ postMessage (с проверкой источника)
+        // ============================================================
+        const ALLOWED_ORIGINS = [
+            'https://anti-ai-snake-and-spider.vercel.app',
+            'https://anti-ai-snake-and-dragon.vercel.app',
+            'https://anti-ai-snake-ant.vercel.app',
+            'https://anti-ai-snake-melody-night.vercel.app',
+            'https://anti-ai-snake-and-bubbles.vercel.app',
+            'https://anti-ii-snake-and-dragonfly.vercel.app',
+            'https://anti-a-i-snake-and-mouse.vercel.app',
+            'https://anti-ai-snake-apples.vercel.app'
+        ];
+
+        window.addEventListener('message', function(event) {
+            // Проверяем, что сообщение пришло с разрешённого домена
+            if (!ALLOWED_ORIGINS.includes(event.origin)) return;
+
+            if (event.data && event.data.type === 'SNAKE_VICTORY') {
+                const { game, score, player } = event.data;
+
+                // Заполняем форму
+                const gameSelect = document.getElementById('game-select');
+                let match = Array.from(gameSelect.options).find(opt => opt.value === game);
+                if (!match) {
+                    const newOption = document.createElement('option');
+                    newOption.value = game;
+                    newOption.textContent = game;
+                    gameSelect.appendChild(newOption);
+                }
+                gameSelect.value = game;
+                if (score && !isNaN(parseInt(score))) {
+                    document.getElementById('score-input').value = parseInt(score);
+                }
+                if (player) {
+                    document.getElementById('player-name').value = player;
+                    localStorage.setItem('snake_player_name', player);
+                }
+
+                // Переключаемся на вкладку "Результаты" и открываем модалку
+                switchTab('leaderboard', null);
+                setTimeout(() => {
+                    openModal();
+                    const lang = localStorage.getItem('snake_lang') || 'ru';
+                    showToastCustom(translations[lang].victoryMsg);
+                }, 300);
+            }
+        });
+
+        // ============================================================
+        // 2. ПРИЁМ ПОБЕДЫ ЧЕРЕЗ URL-ПАРАМЕТРЫ
         // ============================================================
         function handleParamsFromGame() {
             const urlParams = new URLSearchParams(window.location.search);
-            const rewardToken = urlParams.get('reward');
             const gameFromUrl = urlParams.get('game');
             const scoreFromUrl = urlParams.get('score');
+            const playerFromUrl = urlParams.get('player');
 
-            if (rewardToken || gameFromUrl) {
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
+            if (!gameFromUrl) return;
 
-            if (rewardToken) {
-                const decoded = decodeRewardToken(rewardToken);
-                if (decoded) {
-                    const lang = localStorage.getItem('snake_lang') || 'ru';
-                    const savedName = localStorage.getItem(LAST_NAME_KEY);
+            window.history.replaceState({}, document.title, window.location.pathname);
 
-                    if (savedName) {
-                        // === АВТОМАТИЧЕСКАЯ ЗАПИСЬ ===
-                        const newEntry = {
-                            name: savedName,
-                            game: decoded.game,
-                            snakes: decoded.snakes,
-                            userId: MY_USER_ID,
-                            date: new Date().toLocaleDateString(),
-                            dateRaw: new Date().toISOString()
-                        };
-                        const data = JSON.parse(localStorage.getItem(GLOBAL_LB_KEY) || '[]');
-                        data.push(newEntry);
-                        localStorage.setItem(GLOBAL_LB_KEY, JSON.stringify(data));
-                        lastAddedDateRaw = newEntry.dateRaw;
-                        setTimeout(() => {
-                            switchTab('leaderboard', null);
-                            setTimeout(() => {
-                                loadGlobalLeaderboard();
-                                showRewardBanner(`${translations[lang].rewardReceived} +${decoded.snakes} 🐍 (${decoded.game})`);
-                                showToastCustom(translations[lang].autoAddSuccess);
-                                setTimeout(() => {
-                                    const rows = document.querySelectorAll('#global-leaderboard-body tr');
-                                    rows.forEach(row => {
-                                        if (row.classList.contains('highlight-row')) {
-                                            row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                                        }
-                                    });
-                                }, 500);
-                            }, 400);
-                        }, 500);
-                    } else {
-                        // === ИМЯ НЕ СОХРАНЕНО – открываем модалку ===
-                        setTimeout(() => {
-                            switchTab('leaderboard', null);
-                            setTimeout(() => {
-                                openModal(decoded.game, decoded.snakes);
-                                showRewardBanner(`${translations[lang].rewardReceived} +${decoded.snakes} 🐍 – введите имя`);
-                            }, 400);
-                        }, 500);
-                    }
-                    return;
-                }
-            }
-
-            // Если нет токена, но есть параметры game/score – открываем модалку
-            if (gameFromUrl) {
+            setTimeout(() => {
+                switchTab('leaderboard', null);
                 setTimeout(() => {
-                    switchTab('leaderboard', null);
+                    if (playerFromUrl) {
+                        document.getElementById('player-name').value = playerFromUrl;
+                        localStorage.setItem('snake_player_name', playerFromUrl);
+                    }
+                    openModal();
                     setTimeout(() => {
-                        openModal(gameFromUrl, scoreFromUrl ? parseInt(scoreFromUrl) : 1);
-                    }, 400);
-                }, 500);
-            }
+                        const gameSelect = document.getElementById('game-select');
+                        let match = Array.from(gameSelect.options).find(opt => opt.value === gameFromUrl);
+                        if (!match) {
+                            const newOption = document.createElement('option');
+                            newOption.value = gameFromUrl;
+                            newOption.textContent = escapeHtml(gameFromUrl);
+                            gameSelect.appendChild(newOption);
+                            match = newOption;
+                        }
+                        gameSelect.value = gameFromUrl;
+                        if (scoreFromUrl && !isNaN(parseInt(scoreFromUrl))) {
+                            document.getElementById('score-input').value = parseInt(scoreFromUrl);
+                        }
+                        document.getElementById('player-name').focus();
+                    }, 300);
+                }, 400);
+            }, 500);
         }
-
-        // ============================================================
-        // 🚀 ЗАПУСК
-        // ============================================================
-        loadGlobalLeaderboard();
         handleParamsFromGame();
+
+        // Инициализация таблицы
+        loadGlobalLeaderboard();
     </script>
 </body>
 </html>
